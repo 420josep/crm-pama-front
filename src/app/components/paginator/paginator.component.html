@@ -1,0 +1,4 @@
+<div class="paginator-container space-between">
+  <button *ngIf="currentPage > 1" class="secundary-button" (click)="prevPage()">Anterior</button>
+  <button *ngIf="currentPage < maxPage" class="secundary-button" (click)="nextPage()">Siguiente</button>
+</div>

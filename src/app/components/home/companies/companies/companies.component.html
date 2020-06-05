@@ -1,0 +1,51 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Lista de empresas</h1>
+    <div class="list-content-container">
+      <div class="space-between alone-search-container field-1">
+        <a routerLink="/menu/empresas/nueva" class="add-button">Añadir nueva empresa +</a>
+
+        <div class="flex-container field-2 relative-container">
+          <input class="search-input" (keyup)='searchUser()' [(ngModel)]="searchField" type="text" placeholder="Buscar empresa por su nombre">
+          <div *ngIf="searchField.length > 0" class="flex-container-centered delete-search-icon" (click)="deleteSearch()">
+            x
+          </div>
+          <div class="flex-container-centered input-icon-container" (click)="searchUser()">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Responsable</th>
+            <th>Número de usuarios</th>
+            <th>Fecha de creación</th>
+            <th>Plan</th>
+            <th class="table-right-border">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let company of companies; index as i">
+            <td [routerLink]="['/menu/empresas', company.id]"> {{(i+offset)+1}} </td>
+            <td [routerLink]="['/menu/empresas', company.id]"> {{company?.name}} </td>
+            <td [routerLink]="['/menu/empresas', company.id]"> {{company?.manager}} </td>
+            <td [routerLink]="['/menu/empresas', company.id]"> {{company?.usersNumber}} </td>
+            <td [routerLink]="['/menu/empresas', company.id]"> {{company?.creationDate}} </td>
+            <td [routerLink]="['/menu/empresas', company.id]"> {{company?.pricing}} </td>
+            <td [routerLink]="['/menu/empresas', company.id]"> {{company?.state}} </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="horizontal-align">
+        <div class="field-4">
+          <paginator *ngIf="totalCompanies>0" (updateCurrentPage)="updatePaginator($event)" [limit]="10"
+            [total]="totalCompanies"></paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

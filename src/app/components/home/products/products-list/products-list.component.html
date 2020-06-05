@@ -1,0 +1,63 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Lista de productos</h1>
+    <div class="list-content-container">
+      <div class="space-between actions-container">
+        <a routerLink="/menu/productos/nuevo" class="add-button">Añadir nuevo producto +</a>
+
+        <div class="flex-container field-2 relative-container">
+          <input class="search-input" type="text" (keyup)='searchProduct()' [(ngModel)]="searchField" placeholder="Buscar un producto por su nombre">
+          <div *ngIf="searchField.length > 0" class="flex-container-centered delete-search-icon" (click)="deleteSearch()">
+            x
+          </div>
+          <div class="flex-container-centered input-icon-container" (click)="searchProduct()">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Marca</th>
+            <th>Contenido</th>
+            <th>Precio</th>
+            <th>Categoría</th>
+            <th>Subcategoría</th>
+            <th *ngIf="currentUser?.type === 1">Empresa</th>
+            <th *ngIf="currentUser?.type === 1">Usuario de creación</th>
+            <th *ngIf="currentUser?.type === 1" class="table-right-border">Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products; index as i">
+            <td [routerLink]="['/menu/productos', product.id]"> {{(i+offset)+1}} </td>
+            <td [routerLink]="['/menu/productos', product.id]"> {{product?.name}} </td>
+            <td [routerLink]="['/menu/productos', product.id]"> {{product?.brand}} </td>
+            <td [routerLink]="['/menu/productos', product.id]"> {{product?.content}} </td>
+            <td [routerLink]="['/menu/productos', product.id]"> ${{product?.price | number}} </td>
+            <td [routerLink]="['/menu/productos', product.id]"> {{product?.subcategory}} </td>
+            <td [routerLink]="['/menu/productos', product.id]"> {{product?.category}} </td>
+            <td *ngIf="currentUser?.type === 1"[routerLink]="['/menu/productos', product.id]"> {{product?.company}} </td>
+            <td *ngIf="currentUser?.type === 1" [routerLink]="['/menu/productos', product.id]"> {{product?.creationUser}} </td>
+            <td *ngIf="currentUser?.type === 1" [routerLink]="['/menu/productos', product.id]"> {{product?.state}} </td>
+            <td>
+              <div>
+                <i class="far fa-trash-alt trash-icon" (click)="deleteProduct(product.id, product.name)"></i>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="horizontal-align">
+        <div class="field-4">
+          <paginator *ngIf="totalProducts>0" (updateCurrentPage)="updatePaginator($event)" [limit]="10"
+            [total]="totalProducts"></paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

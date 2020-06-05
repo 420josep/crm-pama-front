@@ -1,0 +1,44 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Nueva empresa</h1>
+    <div class="text-align-center error-text" *ngIf="!response">
+      ¡{{message}}!
+    </div>
+    <form [formGroup]="newCompanyForm" (ngSubmit)="saveCompany()">
+      <div class="form-container columns">
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="name">Nombre (*)</label>
+          <input formControlName="name" id="name" name="name" autocomplete="off" class="input-field" type="text">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="manager">Encargado (*)</label>
+          <input formControlName="manager" id="manager" name="manager" autocomplete="off" class="input-field" type="text">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="contact">Teléfono de contacto (*)</label>
+          <input formControlName="contact" id="contact" name="contact" autocomplete="off" class="input-field" pattern="[0-9]*" min="0"
+            onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number">
+        </div>
+
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Plan (*)</label>
+          <select formControlName="pricingId">
+            <option value=""></option>
+            <option *ngFor="let priceItem of pricingItems" [ngValue]="priceItem.id"> {{priceItem.name}} </option>
+          </select>
+        </div>
+        <div class="field-1 flex-container">
+          <label class="warning-text">¡Todos los campos con <span class="error-text">*</span> son obligatorios!</label>
+        </div>
+
+        <div class="field-1 flex-container-centered">
+          <button class="primary-button save-button" [disabled]="newCompanyForm.invalid">Guardar
+            &#43;</button>
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+</div>

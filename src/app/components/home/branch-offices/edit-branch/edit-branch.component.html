@@ -1,0 +1,71 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Editar una sucursal</h1>
+    <div class="text-align-center error-text" *ngIf="!response">
+      ¡{{message}}!
+    </div>
+    <form [formGroup]="editBranchForm" *ngIf="existBranch" (ngSubmit)="saveBranch()">
+      <div class="form-container columns">
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="name">Nombre (*)</label>
+          <input formControlName="name" id="name" name="name" autocomplete="off" class="input-field" type="text">
+        </div>
+        <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
+          <label class="label-field">Empresa (*)</label>
+          <select formControlName="companyID">
+            <option value=""></option>
+            <option *ngFor="let company of companies" [ngValue]="company.id" [selected]="form.companyID.value === company?.id"> {{company.name}} </option>
+          </select>
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">País (*)</label>
+          <select formControlName="countryID" (change)="getProvinces(form.countryID.value)">
+            <option value=""></option>
+            <option *ngFor="let country of countries" [ngValue]="country.id" [selected]="form.countryID.value === country?.id"> {{country.name}} </option>
+          </select>
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Departamento (*)</label>
+          <select formControlName="provinceID" (change)="getCities(form.provinceID.value)">
+            <option value=""></option>
+            <option *ngFor="let province of provinces" [ngValue]="province.id" [selected]="form.provinceID.value === province?.id"> {{province.name}} </option>
+          </select>
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Ciudad (*)</label>
+          <select formControlName="cityID">
+            <option value=""></option>
+            <option *ngFor="let city of cities" [ngValue]="city.id" [selected]="form.cityID.value === city?.id"> {{city.name}} </option>
+          </select>
+        </div>
+        <div class="flex-container field-1">
+          <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
+            <label class="label-field" for="state">Estado (*)</label>
+            <input autocomplete="off" formControlName="state" [checked]="form.state.value" id="state" name="state" class="input-field" type="checkbox">
+          </div>
+  
+          <div class="item-field vertical-columns field-2">
+            <label class="label-field">Fecha de creación </label>
+            <span > {{currentBranch?.creationDate}} </span>
+          </div>
+        </div>
+
+        <div class="field-1 flex-container">
+          <label class="warning-text">¡Todos los campos con <span class="error-text">*</span> son obligatorios!</label>
+        </div>
+
+        <div class="field-1 flex-container">
+          <div class="form-buttons-container space-between">
+            <button class="cancel-button" type="button" routerLink="/menu/sucursales/lista">Cancelar</button>
+            <button class="primary-button save-button" type="submit" [disabled]="editBranchForm.invalid">Actualizar</button>
+          </div>
+        </div>
+
+      </div>
+
+    </form>
+    <div class="field-1 flex-container-centered" *ngIf="!existBranch">
+      <button class="cancel-button back-button" type="button" routerLink="/menu/sucursales/lista">Volver</button>
+    </div>
+  </div>
+</div>

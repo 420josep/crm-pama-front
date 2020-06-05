@@ -1,0 +1,23 @@
+export interface SquareList {
+    id: number;
+    date: string;
+    totalSales: number;
+    totalOutputs: number;
+    mismatch: number;
+    branch: string;
+    company: string;
+}
+
+export interface Square {
+    id: number;
+    date: string;
+    initialMoney: number;
+    cash: number;
+    totalSalesMoney: number;
+    totalSales: number;
+    totalOutputs: number;
+    mismatch: number;
+    branch: string;
+    company: string;
+    creationDate: string;
+}

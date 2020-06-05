@@ -1,0 +1,59 @@
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="Sat, 01 Jan 2000 00:00:00 GMT">
+
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Ventas</h1>
+    <div class="list-content-container">
+      <div class="space-between alone-search-container field-1">
+        <a routerLink="/menu/ventas/nueva" class="add-button">Registrar una venta &#43;</a>
+
+        <div class="flex-container field-2 relative-container">
+          <input class="search-input" (keyup)='searchClient()' [(ngModel)]="searchField" type="text" placeholder="Buscar una venta por su # de fáctura, cliente o estado">
+          <div *ngIf="searchField.length > 0" class="flex-container-centered delete-search-icon" (click)="deleteSearch()">
+            x
+          </div>
+          <div class="flex-container-centered input-icon-container" (click)="searchClient()">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Fecha</th>
+            <th># Factura</th>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th *ngIf="currentUser.type != 3">Sucursal</th>
+            <th *ngIf="currentUser.type === 1">Empresa</th>
+            <th>Estado</th>
+            <th class="table-right-border">Medio de pago</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let sale of sales; trackBy:trackBySaleID; index as i">
+            <td [routerLink]="['/menu/ventas', sale.id]"> {{(i+offset)+1}} </td>
+            <td [routerLink]="['/menu/ventas', sale.id]"> {{sale?.date}} </td>
+            <td [routerLink]="['/menu/ventas', sale.id]"> {{sale?.billNumber}} </td>
+            <td [routerLink]="['/menu/ventas', sale.id]"> {{sale?.client}} </td>
+            <td [routerLink]="['/menu/ventas', sale.id]"> ${{sale?.total | number}} </td>
+            <td [routerLink]="['/menu/ventas', sale.id]" *ngIf="currentUser.type !=3"> {{sale?.branch}} </td>
+            <td [routerLink]="['/menu/ventas', sale.id]" *ngIf="currentUser.type === 1"> {{sale?.company}} </td>
+            <td [routerLink]="['/menu/ventas', sale.id]"> {{sale?.status}} </td>
+            <td [routerLink]="['/menu/ventas', sale.id]"> {{sale?.payment}} </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="horizontal-align">
+        <div class="field-4">
+          <paginator *ngIf="totalSales>0" (updateCurrentPage)="updatePaginator($event)" [limit]="10"
+            [total]="totalSales"></paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Nuevo producto</h1>
+    <div class="text-align-center error-text" *ngIf="!response">
+      ¡{{message}}!
+    </div>
+    <form [formGroup]="newProductForm" (ngSubmit)="createProduct()">
+      <div class="form-container columns">
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="name">Nombre (*)</label>
+          <input id="name" name="name" formControlName="name" class="input-field" type="text" autocomplete="off">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="brand">Marca (*)</label>
+          <input id="brand" name="brand" formControlName="brand" class="input-field" type="text" autocomplete="off">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Presentación (*)</label>
+          <select formControlName="presentationID">
+            <option value=""></option>
+            <option *ngFor="let presentation of presentationTypes" [ngValue]="presentation?.id"> {{presentation?.description}} - {{presentation?.abbreviated}} </option>
+          </select>
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="content">Contenido (*)</label>
+          <input id="content" name="content" formControlName="content" class="input-field" type="text" autocomplete="off">
+        </div>
+        <div *ngIf="currentUser.type === 1" class="flex-container field-1">
+          <div class="item-field vertical-columns field-2">
+            <label class="label-field">Empresa (*)</label>
+            <select formControlName="companyID" (change)="getCategories(form.companyID.value)">
+              <option value=""></option>
+              <option *ngFor="let company of companies" [ngValue]="company?.id"> {{company?.name}} </option>
+            </select>
+          </div>
+          <div class="item-field vertical-columns field-2">
+            <label class="label-field"><span class="error-text">Advertencia</span></label>
+            <span >*Debe seleccionar una empresa antes de continuar con las categorías</span>
+          </div> 
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Categoría (*)</label>
+          <select formControlName="categoryID" (change)="getSubcategories(form.categoryID.value)">
+            <option value=""></option>
+            <option *ngFor="let category of categories" [ngValue]="category?.id"> {{category?.name}} </option>
+          </select>
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Subategoría (*)</label>
+          <select formControlName="subcategoryID">
+            <option value=""></option>
+            <option *ngFor="let subcategory of subcategories" [ngValue]="subcategory?.id"> {{subcategory?.name}} </option>
+          </select>
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="price">Precio (*)</label>
+          <input id="price" name="price" formControlName="price" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+        </div>
+        <div class="field-1 flex-container">
+          <label class="warning-text">¡Todos los campos con <span class="error-text">*</span> son obligatorios!</label>
+        </div>
+        <div class="field-1 flex-container-centered">
+          <button class="primary-button save-button" [disabled]="newProductForm.invalid">Guardar
+            &#43;</button>
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+</div>

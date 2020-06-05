@@ -1,0 +1,47 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Cuadres de caja</h1>
+    <div class="list-content-container">
+      <div class="flex-container alone-search-container">
+        <a routerLink="/menu/caja/cerrar" class="add-button">Cerrar caja</a>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Fecha</th>
+            <th>Total vendido</th>
+            <th>Total gastos</th>
+            <th>Descuadre</th>
+            <th *ngIf="currentUser?.type != 3">Sucursal</th>
+            <th *ngIf="currentUser?.type === 1">Empresa</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let square of squares; index as i">
+            <td [routerLink]="['/menu/caja/cierre', square.id]"> {{(i+offset)+1}} </td>
+            <td [routerLink]="['/menu/caja/cierre', square.id]"> {{square?.date}} </td>
+            <td [routerLink]="['/menu/caja/cierre', square.id]"> ${{square?.totalSales | number}} </td>
+            <td [routerLink]="['/menu/caja/cierre', square.id]"> ${{square?.totalOutputs | number}} </td>
+            <td [routerLink]="['/menu/caja/cierre', square.id]"> ${{square?.mismatch | number}} </td>
+            <td [routerLink]="['/menu/caja/cierre', square.id]"> {{square?.branch}} </td>
+            <td [routerLink]="['/menu/caja/cierre', square.id]"  *ngIf="currentUser?.type === 1"> {{square?.company}} </td>
+            <td>
+              <div>
+                <i class="far fa-trash-alt trash-icon" (click)="deleteSquare(square.id, square.date)"></i>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="horizontal-align">
+        <div class="field-4">
+          <paginator *ngIf="totalSquares>0" (updateCurrentPage)="updatePaginator($event)" [limit]="10"
+            [total]="totalSquares"></paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+.table thead tr th:last-child {
+    color: #fff;
+    line-height: 1.4;
+    background-color: #0195dd;
+
+}
+
+.table tbody tr td:last-child {
+    background-color: unset;
+}

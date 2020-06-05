@@ -1,0 +1,48 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Inventario</h1>
+    <div class="list-content-container">
+      <div class="flex-container alone-search-container">
+
+        <div class="vertical-columns alone-search-content field-2 relative-container">
+          <input class="search-input" type="text" (keyup)='searchProduct()' [(ngModel)]="searchField" placeholder="Buscar un producto por su nombre o por su sucursal">
+          <div *ngIf="searchField.length > 0" class="flex-container-centered delete-search-icon" (click)="deleteSearch()">
+            x
+          </div>
+          <div class="flex-container-centered input-icon-container" (click)="searchProduct()">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Marca</th>
+            <th *ngIf="currentUser?.type === 1">Empresa</th>
+            <th>Sucursal</th>
+            <th class="table-right-border">Existencias</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products; index as i">
+            <td> {{(i+offset)+1}} </td>
+            <td> {{product?.name}} </td>
+            <td> {{product?.brand}} </td>
+            <td *ngIf="currentUser?.type === 1"> {{product?.company}} </td>
+            <td> {{product?.branch}} </td>
+            <td> {{product?.stock}} </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="horizontal-align">
+        <div class="field-4">
+          <paginator *ngIf="totalProducts>0" (updateCurrentPage)="updatePaginator($event)" [limit]="10"
+            [total]="totalProducts"></paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

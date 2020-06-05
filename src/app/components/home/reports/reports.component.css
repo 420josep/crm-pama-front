@@ -1,0 +1,14 @@
+
+.secundary-button {
+    padding: .5rem;
+    font-weight: bold;
+    font-size: 1em;
+    color: white;
+    background-color: #f0ad4e;
+    border: 1px solid #f0ad4e;
+}
+
+.secundary-button:hover {
+    color: #f0ad4e;
+    background-color: white;
+}

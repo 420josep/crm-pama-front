@@ -1,0 +1,79 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Cierre de caja </h1>
+    <div class="text-align-center error-text" *ngIf="!response">
+      ¡{{message}}!
+    </div>
+    <form [formGroup]="squareForm" (ngSubmit)="saveSquare()">
+      <div class="form-container vertical-columns">
+        <div class="field-1 flex-container">
+          <label class="warning-text">Por favor, diligencie todos los campos para continuar</label>
+        </div>
+        <div *ngIf="!canContinue" class="field-1 columns">
+          <div class="item-field vertical-columns field-2">
+            <label class="label-field" for="date">Fecha (*)</label>
+            <input type="date" formControlName="date" id="date" name="date">
+          </div>
+          <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
+            <label class="label-field">Empresa (*)</label>
+            <select formControlName="companyID" (change)="getBranchs(form.companyID.value)">
+              <option value=""></option>
+              <option *ngFor="let company of companies" [ngValue]="company.id"> {{company.name}} </option>
+            </select>
+          </div>
+          <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-2">
+            <label class="label-field">Sucursal (*)</label>
+            <select formControlName="branchID" (change)="checkBrands(1)">
+              <option value=""></option>
+              <option *ngFor="let branch of branchs" [ngValue]="branch?.id"> {{branch?.name}} </option>
+            </select>
+          </div>
+          <div class="field-1 flex-container-centered">
+            <button class="primary-button save-button" type="button" [disabled]="squareForm.invalid" (click)="checkSquare()">Verificar</button>
+          </div>
+        </div>
+
+        <div *ngIf="canContinue" class="field-1 columns data-container">
+          <div class="field-1">
+            <label class="total-text">Datos del cierre</label>
+          </div>
+          <div class="item-field vertical-columns field-2">
+            <label class="label-field" for="initialMoney">Dinero inicial de la caja (*)</label>
+            <input (keyup)="updateCashRegister()" id="initialMoney" name="initialMoney" formControlName="initialMoney" placeholder="Dinero en caja al momento de abrir" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+          </div>
+          <div class="item-field vertical-columns field-2">
+            <label class="label-field" for="cash">Dinero final en la caja (*)</label>
+            <input (keyup)="updateCashRegister()" id="cash" name="cash" formControlName="cash" placeholder="Dinero con el cual cerraste el día" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+          </div>
+          <div class="item-field vertical-columns field-2">
+            <label class="label-field">Total vendido:</label>
+            <span class="span-field"> ${{form.totalSalesMoney.value | number}} </span>
+          </div>
+          <div class="item-field vertical-columns field-2">
+            <label class="label-field">Total ventas realizadas:</label>
+            <span class="span-field"> {{form.totalSales.value}} </span>
+          </div>
+          <div class="item-field vertical-columns field-2">
+            <label class="label-field">Total gastos:</label>
+            <span class="span-field"> ${{form.totalOutputs.value | number}} </span>
+          </div>
+          <div class="item-field vertical-columns field-2">
+            <label class="label-field">Total en caja</label>
+            <span *ngIf="moneyInCash <= 0" class="span-field"> Digite el valor inicial de la caja para observar </span>
+            <span *ngIf="moneyInCash > 0" class="span-field"> ${{moneyInCash | number}} </span>
+          </div>
+          <div *ngIf="form.mismatch.value != 0" class="item-field vertical-columns field-2">
+            <label class="label-field">Diferencia entre la caja y lo esperado</label>
+            <span class="span-field" [ngClass]="{ 'is-invalid': form.mismatch.value < 0 }"> ${{form.mismatch.value | number}} </span>
+          </div>
+        </div>
+        <div *ngIf="canContinue" class="field-1 flex-container">
+          <div class="form-buttons-container space-between">
+            <button class="secundary-button" type="button" (click)="checkBrands(2)">Volver</button>
+            <button class="primary-button" type="submit" [disabled]="squareForm.invalid">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

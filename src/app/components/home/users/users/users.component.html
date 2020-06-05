@@ -1,0 +1,60 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Lista de usuarios</h1>
+    <div class="list-content-container">
+      <div class="space-between actions-container">
+        <a *ngIf="currentUser.type != 3" routerLink="/menu/usuarios/nuevo" class="add-button">Añadir nuevo usuario +</a>
+        <div class="flex-container field-2 relative-container">
+          <input class="search-input" (keyup)='searchUser()' [(ngModel)]="searchField" type="text" placeholder="Buscar un usuario por nombre">
+          <div *ngIf="searchField.length > 0" class="flex-container-centered delete-search-icon" (click)="deleteSearch()">
+            x
+          </div>
+          <div class="flex-container-centered input-icon-container" (click)="searchUser()">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombres y apellidos</th>
+            <th *ngIf="currentUser.type === 1">Usuario</th>
+            <th *ngIf="currentUser.type === 1">Empresa</th>
+            <th>Sucursal</th>
+            <th>Ciudad</th>
+            <th *ngIf="currentUser.type === 1">Tipo</th>
+            <th>Última conexión</th>
+            <th *ngIf="currentUser.type === 1" class="table-right-border">Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users; index as i">
+            <td [routerLink]="currentUser.type === 3 ? [] : ['/menu/usuarios', user.id]" > {{(i+offset)+1}} </td>
+            <td [routerLink]="currentUser.type === 3 ? [] : ['/menu/usuarios', user.id]"> {{user?.name}} </td>
+            <td *ngIf="currentUser.type === 1" [routerLink]="currentUser.type === 3 ? [] : ['/menu/usuarios', user.id]"> {{user?.username}} </td>
+            <td *ngIf="currentUser.type === 1" [routerLink]="currentUser.type === 3 ? [] : ['/menu/usuarios', user.id]"> {{user?.company}} </td>
+            <td [routerLink]="currentUser.type === 3 ? [] : ['/menu/usuarios', user.id]"> {{user?.branch}} </td>
+            <td [routerLink]="currentUser.type === 3 ? [] : ['/menu/usuarios', user.id]"> {{user?.city}} </td>
+            <td *ngIf="currentUser.type === 1" [routerLink]="currentUser.type === 3 ? [] : ['/menu/usuarios', user.id]"> {{user?.type}} </td>
+            <td [routerLink]="currentUser.type === 3 ? [] : ['/menu/usuarios', user.id]"> {{user?.lastConnection}} </td>
+            <td *ngIf="currentUser.type === 1" [routerLink]="currentUser.type === 3 ? [] : ['/menu/usuarios', user.id]"> {{user?.state}} </td>
+            <td>
+              <div>
+                <i class="far fa-trash-alt trash-icon" (click)="deleteUser(user.id, user.name)"></i>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="horizontal-align">
+        <div class="field-4">
+          <paginator *ngIf="totalUsers>0" (updateCurrentPage)="updatePaginator($event)" [limit]="10"
+            [total]="totalUsers"></paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

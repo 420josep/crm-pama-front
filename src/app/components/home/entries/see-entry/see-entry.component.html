@@ -1,0 +1,53 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Ingreso de mercancía # {{currentEntry?.billNumber}}</h1>
+    <div class="text-align-center error-text" *ngIf="!response">
+      ¡{{message}}!
+    </div>
+      <div *ngIf="existEntry" class="form-container columns">
+        <div class="field-1">
+          <label class="total-text">Datos del cierre del {{currentEntry?.date}}</label>
+        </div>
+        <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
+          <label class="label-field">Empresa:</label>
+          <span class="span-field"> {{currentEntry?.company}} </span>
+        </div>
+        <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-2">
+          <label class="label-field">Sucursal:</label>
+          <span class="span-field"> {{currentEntry?.branch}} </span>
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Proveedor:</label>
+          <span class="span-field"> {{currentEntry?.provider}} </span>
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Ingresado por: </label>
+          <span class="span-field"> {{currentEntry?.creationUser }} </span>
+        </div>
+        <div class="field-1">
+          <div class="dynamic-container vertical-columns">
+            <div class="field-1">
+              <label class="total-text">Productos en este ingreso</label>
+            </div>
+            <div *ngFor="let product of currentEntry?.products" class="field-1 flex-container">
+              <div class="item-field vertical-columns field-2">
+                <label class="label-field">Producto</label>
+                <span class="span-field"> {{product?.product}} </span>
+              </div>
+              <div class="item-field vertical-columns field-2">
+                <label class="label-field">Cantidad</label>
+                <span class="span-field"> {{product?.quantity | number}} </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-1 flex-container-centered" >
+          <button class="secundary-button save-button" type="button" routerLink="/menu/entradas/lista">Volver</button>
+        </div>
+      </div>
+    <div class="field-1 flex-container-centered" *ngIf="!existEntry">
+      <button class="cancel-button back-button" type="button" routerLink="/menu/entradas/lista">Volver</button>
+    </div>
+  </div>
+</div>

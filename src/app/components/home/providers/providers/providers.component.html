@@ -1,0 +1,59 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Lista de proveedores</h1>
+    <div class="list-content-container">
+      <div class="space-between actions-container">
+        <a routerLink="/menu/proveedores/nuevo" class="add-button">Añadir nuevo proveedor +</a>
+
+        <div class="flex-container field-2 relative-container">
+          <input class="search-input" type="text" (keyup)='searchProvider()' [(ngModel)]="searchField" placeholder="Buscar por nombre, alias o NIT">
+          <div *ngIf="searchField.length > 0" class="flex-container-centered delete-search-icon" (click)="deleteSearch()">
+            x
+          </div>
+          <div class="flex-container-centered input-icon-container" (click)="searchProvider()">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Alias</th>
+            <th>Encargado</th>
+            <th>Teléfono</th>
+            <th *ngIf="currentUser?.type === 1">Usuario de creación</th>
+            <th *ngIf="currentUser?.type === 1">Empresa</th>
+            <th *ngIf="currentUser?.type === 1" class="table-right-border">Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let provider of providers; index as i">
+            <td [routerLink]="['/menu/proveedores', provider.id]"> {{(i+offset)+1}} </td>
+            <td [routerLink]="['/menu/proveedores', provider.id]"> {{provider?.name}} </td>
+            <td [routerLink]="['/menu/proveedores', provider.id]"> {{provider?.nick}} </td>
+            <td [routerLink]="['/menu/proveedores', provider.id]"> {{provider?.manager}} </td>
+            <td [routerLink]="['/menu/proveedores', provider.id]"> {{provider?.phone}} </td>
+            <td *ngIf="currentUser?.type === 1"[routerLink]="['/menu/proveedores', provider.id]"> {{provider?.creationUser}} </td>
+            <td *ngIf="currentUser?.type === 1" [routerLink]="['/menu/proveedores', provider.id]"> {{provider?.company}} </td>
+            <td *ngIf="currentUser?.type === 1" [routerLink]="['/menu/proveedores', provider.id]"> {{provider?.state}} </td>
+            <td>
+              <div>
+                <i class="far fa-trash-alt trash-icon" (click)="deleteProvider(provider.id, provider.name)"></i>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="horizontal-align">
+        <div class="field-4">
+          <paginator *ngIf="totalProviders>0" (updateCurrentPage)="updatePaginator($event)" [limit]="10"
+            [total]="totalProviders"></paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

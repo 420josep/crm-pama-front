@@ -1,0 +1,55 @@
+<div class="fied-1 flex-container-centered login-container relative-container">
+  <div class="card card-container vertical-columns">
+    <div class="img-container fied-1 flex-container">
+      <img src="./../../../../assets/logo_health.jpg" class="logo" alt="">
+    </div>
+    <div class="flex-container field-1">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="columns card-content">
+          <div class="item-field field-1 vertical-columns">
+            <label class="label-field" for="user"
+              [ngClass]="{ 'error-text': (submitted && form.username.errors) || message == 'El username ingresado no existe' }">Usuario</label>
+            <input type="text" id="user" name="user" autocomplete="off" class="input-field" formControlName="username"
+              [ngClass]="{ 'is-invalid': (submitted && form.username.errors) || message == 'El username ingresado no existe' }">
+          </div>
+
+          <div *ngIf="submitted && form.username.errors" class="flex-container-centered field-1 error-text">
+            <i class="fas fa-exclamation-circle icon"></i>
+            Escribe tu nombre de usuario
+          </div>
+          <div *ngIf="submitted && !response && message == 'El username ingresado no existe'" class="flex-container-centered field-1 error-text">
+            <i class="fas fa-exclamation-circle icon"></i>
+            <label class="register-label">¡{{message}}!</label>
+          </div>
+
+          <div class="item-field field-1 vertical-columns">
+            <label class="label-field"
+              [ngClass]="{ 'error-text': (submitted && form.password.errors) || message == 'Contraseña incorrecta' }"
+              for="password">Contraseña</label>
+            <input type="password" id="password" formControlName="password"
+              [ngClass]="{ 'is-invalid': (submitted && form.password.errors) || message == 'Contraseña incorrecta' }"
+              name="password" class="input-field">
+          </div>
+
+          <div *ngIf="submitted && form.username.errors" class="flex-container-centered field-1 error-text">
+            <i class="fas fa-exclamation-circle icon"></i>
+            Escribe tu contraseña
+          </div>
+          <div *ngIf="submitted && !response && message == 'Contraseña incorrecta'" class="flex-container-centered field-1 error-text">
+            <i class="fas fa-exclamation-circle icon"></i>
+            <label class="register-label">¡{{message}}!</label>
+          </div>
+
+          <div class="horizontal-align item-field field-1">
+            <button class="primary-button">Ingresar</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+    <div class="footer">
+      <p>Desarrollado por PAMA, 2020</p>
+    </div>
+  </div>
+</div>

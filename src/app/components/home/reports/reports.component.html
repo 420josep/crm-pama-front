@@ -1,0 +1,146 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Reportes</h1>
+    <form [formGroup]="reportForm" (ngSubmit)="getReport()">
+      <div class="form-container columns">
+        <div class="flex-container field-1">
+          <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
+            <label class="label-field">Empresa (*)</label>
+            <select formControlName="companyID" (change)="getBranchs(form.companyID.value)">
+              <option value=""></option>
+              <option *ngFor="let company of companies" [ngValue]="company?.id"> {{company?.name}} </option>
+            </select>
+          </div>
+        </div>
+        <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-2">
+          <label class="label-field">Sucursal (*)</label>
+          <select formControlName="branchID" (change)="removeControls()">
+            <option value=""></option>
+            <option *ngFor="let branch of branchs" [ngValue]="branch?.id"> {{branch?.name}} </option>
+          </select>
+        </div>
+        <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-2">
+          <label class="label-field">Tipo de reporte:</label>
+          <select formControlName="reportType" (change)="showOptions(form.reportType.value)">
+            <option value=""></option>
+            <option *ngFor="let reportType of reportTypes" [ngValue]="reportType?.id"> {{reportType?.name}} </option>
+          </select>
+        </div>
+        <div class="field-1">
+          <div class="dynamic-container columns">
+            <div *ngIf="submitted" class="field-1">
+              <label class="total-text">Reporte / {{currentTypeName}} </label>
+            </div>
+            <div *ngIf="!submitted && form.reportType.value === 1" class="field-1 flex-container-centered">
+              <div class="item-field vertical-columns field-2">
+                <label class="label-field" for="day">Seleccione el día</label>
+                <input type="date" formControlName="day" id="day" name="day">
+              </div>
+            </div>
+
+            <div *ngIf="!submitted && form.reportType.value === 2" class="field-1 flex-container-centered">
+              <div class="item-field vertical-columns field-2">
+                <label class="label-field">Seleccione el año</label>
+                <select formControlName="year">
+                  <option *ngFor="let year of years" [ngValue]="year.id"> {{year?.name}} </option>
+                </select>
+              </div>
+            </div>
+
+            <div *ngIf="submitted && form.reportType.value === 1" class="field-1 flex-container">
+              <div class="item-field vertical-columns field-2">
+                <label class="label-field">Total ventas:</label>
+                <span class="span-field"> {{responseData?.totalSales | number}} </span>
+              </div>
+              <div class="item-field vertical-columns field-2">
+                <label class="label-field">Total vendido:</label>
+                <span class="span-field"> ${{responseData?.totalSalesMoney | number}} </span>
+              </div>
+            </div>
+
+            <div *ngIf="submitted && form.reportType.value === 2" class="field-1">
+              <div *ngFor="let response of responseData; let i=index" class="field-1 flex-container">
+                <div class="item-field vertical-columns field-3">
+                  <label class="label-field">Mes</label>
+                  <span class="span-field"> {{response?.month}} </span>
+                </div>
+                <div class="item-field vertical-columns field-3">
+                  <label class="label-field">Total ventas:</label>
+                  <span class="span-field"> {{response?.totalSales | number}} </span>
+                </div>
+                <div class="item-field vertical-columns field-2">
+                  <label class="label-field">Total vendido:</label>
+                  <span class="span-field"> ${{response?.totalSalesMoney | number}} </span>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="submitted && form.reportType.value === 3" class="field-1">
+              <div *ngFor="let response of responseData; let i=index" class="field-1 flex-container">
+                <div class="item-field vertical-columns field-3">
+                  <label class="label-field">Año</label>
+                  <span class="span-field"> {{response?.year}} </span>
+                </div>
+                <div class="item-field vertical-columns field-3">
+                  <label class="label-field">Total ventas:</label>
+                  <span class="span-field"> {{response?.totalSales | number}} </span>
+                </div>
+                <div class="item-field vertical-columns field-2">
+                  <label class="label-field">Total vendido:</label>
+                  <span class="span-field"> ${{response?.totalSalesMoney | number}} </span>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="submitted && form.reportType.value === 4" class="field-1">
+              <div *ngFor="let response of responseData; let i=index" class="field-1 flex-container">
+                <div class="item-field vertical-columns field-3">
+                  <label class="label-field">Nombres y apellidos</label>
+                  <span class="span-field"> {{response?.name}} </span>
+                </div>
+                <div class="item-field vertical-columns field-3">
+                  <label class="label-field">Total ventas realizadas:</label>
+                  <span class="span-field"> {{response?.totalSales | number}} </span>
+                </div>
+                <div class="item-field vertical-columns field-2">
+                  <label class="label-field">Total comprado:</label>
+                  <span class="span-field"> ${{response?.totalSalesMoney | number}} </span>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="submitted && (form.reportType.value === 5 || form.reportType.value === 6)" class="field-1">
+              <div *ngFor="let response of responseData; let i=index" class="field-1 flex-container">
+                <div class="item-field vertical-columns field-2">
+                  <label class="label-field">Producto</label>
+                  <span class="span-field"> {{response?.name}} </span>
+                </div>
+                <div class="item-field vertical-columns field-2">
+                  <label class="label-field">Unidades vendidas:</label>
+                  <span class="span-field"> {{response?.timesSold}} </span>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="!response" class="field-1 flex-container-centered">
+              <div class="text-align-center error-text">
+                ¡{{message}}!
+              </div>
+            </div>
+
+
+            <div *ngIf="!submitted" class="item-field flex-container-centered field-1">
+              <button class="primary-button" (click)="getReport()" [disabled]="reportForm.invalid" type="button">Generar</button>
+            </div>
+            <div *ngIf="submitted" class="item-field flex-container-centered field-1">
+              <button class="secundary-button" (click)="default()" [disabled]="reportForm.invalid" type="button">Volver</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+
+  </div>
+</div>

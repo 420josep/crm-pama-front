@@ -1,0 +1,47 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Entradas de mercancía</h1>
+    <div class="list-content-container">
+      <div class="space-between alone-search-container">
+        <a routerLink="/menu/entradas/nueva" class="add-button">Reportar un nuevo ingreso &#43;</a>
+        <div class="flex-container field-2 relative-container">
+          <input class="search-input" (keyup)='searchEntries()' [(ngModel)]="searchField" type="text" placeholder="Buscar por # de factura o por proveedor">
+          <div *ngIf="searchField.length > 0" class="flex-container-centered delete-search-icon" (click)="deleteSearch()">
+            x
+          </div>
+          <div class="flex-container-centered input-icon-container" (click)="searchEntries()">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Fecha</th>
+            <th>Número de factura</th>
+            <th>Proveedor</th>
+            <th *ngIf="currentUser?.type != 3">Sucursal</th>
+            <th *ngIf="currentUser?.type === 1" class="table-right-border">Empresa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entry of entries; index as i">
+            <td [routerLink]="['/menu/entradas/ver', entry.id]"> {{(i+offset)+1}} </td>
+            <td [routerLink]="['/menu/entradas/ver', entry.id]"> {{entry?.date}} </td>
+            <td [routerLink]="['/menu/entradas/ver', entry.id]"> {{entry?.billNumber}} </td>
+            <td [routerLink]="['/menu/entradas/ver', entry.id]"> {{entry?.provider}} </td>
+            <td [routerLink]="['/menu/entradas/ver', entry.id]" *ngIf="currentUser?.type != 3">{{entry?.branch}}</td>
+            <td [routerLink]="['/menu/entradas/ver', entry.id]" *ngIf="currentUser?.type === 1"> {{entry?.company}} </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="horizontal-align">
+        <div class="field-4">
+          <paginator *ngIf="totalEntries>0" (updateCurrentPage)="updatePaginator($event)" [limit]="10"
+            [total]="totalEntries"></paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

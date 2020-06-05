@@ -1,0 +1,50 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Editar gasto</h1>
+    <div class="text-align-center error-text" *ngIf="!response">
+      ¡{{message}}!
+    </div>
+    <form [formGroup]="editOutputForm" *ngIf="existOutput" (ngSubmit)="saveOutput()">
+      <div class="form-container columns">
+        <div class="flex-container field-1">
+          <div class="item-field vertical-columns field-2">
+            <label class="label-field">Fecha</label>
+            <span class="span-field">{{currentOutput?.date}} </span>
+          </div>
+          <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
+            <label class="label-field">Empresa</label>
+            <span class="span-field">{{currentOutput?.company}} </span>
+          </div>
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="value">Valor</label>
+          <input id="value" name="value" formControlName="value" placeholder="$" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+        </div>
+        <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-2">
+          <label class="label-field">Sucursal</label>
+          <select formControlName="branchID">
+            <option value=""></option>
+            <option *ngFor="let branch of branchs" [selected]="currentOutput?.branchID === branch?.id" [ngValue]="branch?.id"> {{branch?.name}} </option>
+          </select>
+        </div>
+        <div class="item-field vertical-columns field-1">
+          <label class="label-field" for="description">Descripción</label>
+          <textarea formControlName="description" id="description" name="description" placeholder="Deja el motivo de este gasto" autocomplete="off" maxlength="150" class="input-field text-area"></textarea>
+        </div>
+        <div class="field-1 flex-container">
+          <label class="warning-text">¡Todos los campos son obligatorios!</label>
+        </div>
+        <div class="field-1 flex-container">
+          <div class="form-buttons-container space-between">
+            <button class="cancel-button" type="button" routerLink="/menu/gastos/lista">Cancelar</button>
+            <button class="primary-button save-button" type="submit" [disabled]="editOutputForm.invalid">Actualizar</button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+    <div class="field-1 flex-container-centered" *ngIf="!existOutput">
+      <button class="cancel-button back-button" type="button" routerLink="/menu/gastos/lista">Volver</button>
+    </div>
+  </div>
+</div>

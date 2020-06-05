@@ -1,0 +1,10 @@
+.paginator-container {
+    width: 100%;
+    margin: 2rem auto;
+}
+
+.paginator-container button{
+    width: 40%;
+    margin: auto;
+}
+

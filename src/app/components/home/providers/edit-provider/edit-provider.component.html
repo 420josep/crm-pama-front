@@ -1,0 +1,72 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Editar proveedor</h1>
+    <div class="text-align-center error-text" *ngIf="!response">
+      ¡{{message}}!
+    </div>
+    <form [formGroup]="editProviderForm" (ngSubmit)="saveProvider()" *ngIf="response">
+      <div class="form-container columns">
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Nombre (*)</label>
+          <input formControlName="name" class="input-field" type="text">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Alias</label>
+          <input formControlName="nick" placeholder="Nombre alternativo más fácil de recordar" class="input-field"
+            type="text">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Razón Social (*)</label>
+          <input formControlName="businessName" class="input-field" type="text">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">NIT (*)</label>
+          <input formControlName="nit" class="input-field" type="text">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Responsable (*)</label>
+          <input formControlName="manager" class="input-field" type="text">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Teléfono (*)</label>
+          <input formControlName="phone" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number">
+        </div>
+        <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
+          <label class="label-field">Empresa (*)</label>
+          <select formControlName="companyID">
+            <option value=""></option>
+            <option *ngFor="let company of companies" [selected]="form.companyID.value === company?.id" [ngValue]="company?.id"> {{company?.name}} </option>
+          </select>
+        </div>
+        <div class="item-field vertical-columns field-1">
+          <label class="label-field">Descripción</label>
+          <textarea formControlName="description" placeholder="Breve descripción del proveedor para recordar más fácil" maxlength="150" class="input-field text-area"></textarea>
+        </div>
+        <div class="flex-container field-1">
+          <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
+            <label class="label-field" for="state">Estado (*)</label>
+            <input autocomplete="off" formControlName="state" [checked]="form.state.value" id="state" name="state" class="input-field" type="checkbox">
+          </div>
+  
+          <div class="item-field vertical-columns field-2">
+            <label class="label-field">Fecha de creación </label>
+            <span class="span-field"> {{currentProvider?.creationDate}} </span>
+          </div>
+        </div>
+        <div class="field-1 flex-container">
+          <label class="warning-text">¡Todos los campos con <span class="error-text">*</span> son obligatorios!</label>
+        </div>
+        <div class="field-1 flex-container">
+          <div class="form-buttons-container space-between">
+            <button class="cancel-button" type="button" routerLink="/menu/proveedores/lista">Cancelar</button>
+            <i class="far fa-trash-alt trash-icon" (click)="deleteProvider()"></i>
+            <button class="primary-button save-button" type="submit" [disabled]="editProviderForm.invalid">Actualizar</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="field-1 flex-container-centered" *ngIf="!response && message==='El proveedor buscado no existe'">
+      <button class="cancel-button back-button" type="button" routerLink="/menu/proveedores/lista">Volver</button>
+    </div>
+  </div>
+</div>

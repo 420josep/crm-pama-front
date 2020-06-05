@@ -1,0 +1,259 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import {Router, ActivatedRoute} from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/templates/user';
+import { ListItem } from 'src/app/templates/global';
+import { CompaniesService } from 'src/app/services/companies.service';
+import { BranchOfficeService } from 'src/app/services/branch-office.service';
+import { SalesService } from 'src/app/services/sales.service';
+import { ProductSaleList, Sale, EditProductSale } from 'src/app/templates/sale';
+import { ClientsService } from 'src/app/services/clients.service';
+import { DatePipe } from '@angular/common';
+
+@Component({
+  selector: 'app-edit-sale',
+  templateUrl: './edit-sale.component.html',
+  styleUrls: ['./edit-sale.component.css']
+})
+export class EditSaleComponent implements OnInit {
+  editSaleForm: FormGroup;
+  existSale: boolean = true;
+  saleID: string;
+  submitted: boolean = false;
+  message: string;
+  response: boolean = true;
+  currentUser: User;
+  clients: ListItem[];
+  products: ProductSaleList[];
+  companies: ListItem[];
+  branchs: ListItem[];
+  paymentMethods: ListItem[];
+  saleStatus: ListItem[];
+  total: number = 0;
+  currentSale: Sale;
+
+
+  constructor(
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder, 
+    private router: Router, 
+    private authService: AuthService,
+    private branchsService: BranchOfficeService,
+    private salesService: SalesService,
+    private clientsService: ClientsService,
+    private datePipe: DatePipe
+  ) { }
+
+  ngOnInit() {
+    this.saleID = this.route.snapshot.paramMap.get("id");
+
+    this.currentUser = this.authService.getUser;
+    
+    // Asignación de variables y método de validación
+    this.editSaleForm = this.formBuilder.group({
+      saleID: [this.saleID, [Validators.required]],
+      date: ['', [Validators.required]],
+      clientID: ['', [Validators.required]],
+      billNumber: ['', [Validators.required]],
+      branchID: ['', [Validators.required]],
+      total: ['', [Validators.required]],
+      realTotal: ['', [Validators.required]],
+      statusID: ['', [Validators.required]],
+      paymentID: ['', [Validators.required]],
+      observation: [''],
+      products: this.formBuilder.array([]),
+    });
+    this.salesService.getSaleStatus().subscribe( response => {
+      this.saleStatus = response;
+    });
+    this.salesService.getPaymentMethods().subscribe( response => {
+      this.paymentMethods = response;
+    });
+
+    this.getSale(this.saleID);
+    //this.addProduct();
+  }
+
+  get form() {
+    return this.editSaleForm.controls;
+  }
+
+  getSale( saleID: string ){
+    this.salesService.getSale(saleID).subscribe( response => {
+      if(response){
+        this.currentSale = response;
+        let date =  this.datePipe.transform(this.currentSale.date, 'yyyy-MM-dd');
+
+        if(this.currentUser.type === 3){
+          this.form.branchID.setValue(this.currentUser.branchID);
+          this.getData(this.currentUser.companyID);
+          this.getProducts(this.currentUser.branchID);
+        } else if(this.currentUser.type === 2){
+          this.form.branchID.setValue(this.currentSale.branchID);
+          this.getData(this.currentUser.companyID);
+          this.getProducts(this.currentSale.branchID);
+        } else {
+          this.form.branchID.setValue(this.currentSale.branchID);
+          this.getData(this.currentSale.companyID);
+          this.getProducts(this.currentSale.branchID);
+        }
+        this.form.date.setValue(date);
+        this.form.clientID.setValue(this.currentSale.clientID);
+        this.form.billNumber.setValue(this.currentSale.billNumber);
+        this.form.total.setValue(this.currentSale.total);
+        this.form.statusID.setValue(this.currentSale.statusID);
+        this.form.paymentID.setValue(this.currentSale.paymentID);
+        this.form.observation.setValue(this.currentSale.observation);
+
+      }else{
+        this.existSale = false;
+        this.response = false;
+        this.message = "La venta buscada no existe"
+      }
+    });
+  }
+
+  getData( companyID: number ) {
+    if (this.currentUser.type != 3) {
+      this.branchsService.getBranchItems(companyID.toString()).subscribe(response => {
+        this.branchs = response;
+      });
+    }
+
+    this.clientsService.getClientsList(companyID).subscribe( response => {
+      this.clients = response;
+    });
+
+  }
+
+  getProducts(branchID: number){
+    if( branchID == null || branchID == 0 )
+    {
+      this.products = [];
+      this.editSaleForm.controls.products = this.formBuilder.array([]);
+      this.updateTotal();
+    } else {
+      this.salesService.getProductsStock(branchID).subscribe(response => {
+        this.products = response;
+        if (this.products.length > 0) {
+          this.updateTotal();
+          this.enableProducts(1);
+        } else {
+          this.editSaleForm.controls.products = this.formBuilder.array([]);
+          this.updateTotal();
+        }
+      });
+    }
+  };
+
+  get productContainer(): FormArray {
+    return <FormArray>this.editSaleForm.get('products');
+  }
+
+  addProduct() {
+    (this.productContainer).push(this.addProductFormGroup());
+    if (this.products) {
+      if (this.products.length === 0) {
+        this.enableProducts(2);
+      }
+    }
+  }
+
+  enableProducts(option: number){
+    if (option === 1) {
+      for (let index = 0; index < this.productContainer.length; index++) {
+        this.productContainer.controls[index].get('product').enable();         
+      }
+    } else{
+      for (let index = 0; index < this.productContainer.length; index++) {
+        this.productContainer.controls[index].get('product').disable();         
+      }
+    }
+
+  }
+
+  removeProduct(index: number) {
+    this.productContainer.removeAt(index);
+    this.updateTotal();
+  }
+
+  addProductFormGroup() {
+    return this.formBuilder.group({
+      product: ['', Validators.required],
+      quantity: ['', Validators.required]
+    });
+  }
+
+  updateTotal() {
+    this.total = 0;
+    for (let index = 0; index < this.currentSale.products.length; index++) {
+      const product = this.currentSale.products[index];
+      this.total += product.productPrice * product.quantity;
+    }
+    for (let index = 0; index < this.productContainer.length; index++) {
+      const product = this.productContainer.controls[index].value.product;
+      const quantity = this.productContainer.controls[index].value.quantity;
+      if (product && (quantity > 0)) {
+        this.total += product.price * quantity;
+      }
+    }
+    if(this.total > 0) {
+      this.form.total.setValue(this.total);
+      this.form.realTotal.setValue(this.total);
+    } else {
+      this.form.total.setValue('');
+      this.form.realTotal.setValue('');
+    }
+  }
+
+  checkValues():boolean {
+    for (let index = 0; index < this.productContainer.length; index++) {
+      const product = this.productContainer.controls[index].value.product;
+      const quantity = this.productContainer.controls[index].value.quantity;
+      if ((quantity > product.stock) || (quantity <= 0)) {
+        return;
+      }
+    }
+    return true;
+  }
+
+  deleteSaleProduct( product: EditProductSale ) {
+    let confirm = window.confirm(`¿Seguro que desea eliminar el producto "${product.product}" de la factura "${this.currentSale.billNumber}"? (Esta opción no se puede deshacer)`);
+    if (confirm) {
+      this.salesService.deleteSaleProduct(product.id).subscribe(response => {
+        this.response = response['response'];
+        if (this.response) {
+          this.getSale(this.saleID);
+        } else {
+          this.message = response['message'];
+        }
+      })
+    }
+  }
+
+  //Falta aplicar el descuento del cliente
+  createSale(){
+    if(this.editSaleForm.valid){
+
+      if (this.checkValues()) {
+        this.salesService.updateSale(this.editSaleForm.value).subscribe( response => {
+          this.response = response['response'];
+          if(!this.response){
+            this.message = response ['message']
+          }else{
+            this.router.navigate(['menu/ventas/lista']);
+          }
+        });
+      } else {
+        this.response = false;
+        this.message = "Debe seleccionar una cantidad de las disponibles para cada producto";
+        setTimeout(() => {
+          this.response = true;
+          this.message = '';
+        }, 5000);
+      }
+    }
+  }
+
+}

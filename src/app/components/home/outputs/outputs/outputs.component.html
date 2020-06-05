@@ -1,0 +1,57 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Gastos</h1>
+    <div class="list-content-container">
+      <div class="space-between actions-container">
+        <a routerLink="/menu/gastos/reportar" class="add-button">Reportar un gasto &#43;</a>
+
+        <div class="flex-container field-2 relative-container">
+          <input class="search-input" (keyup)='searchClient()' [(ngModel)]="searchField" type="text" placeholder="Busca un gasto por su descripción">
+          <div *ngIf="searchField.length > 0" class="flex-container-centered delete-search-icon" (click)="deleteSearch()">
+            x
+          </div>
+          <div class="flex-container-centered input-icon-container" (click)="searchClient()">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Descripción</th>
+            <th>Valor</th>
+            <th *ngIf="currentUser.type != 3">Sucursal</th>
+            <th *ngIf="currentUser.type === 1">Empresa</th>
+            <th *ngIf="currentUser.type != 3">Usuario creación</th>
+            <th class="table-right-border">Fecha</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let output of outputs; index as i">
+            <td [routerLink]="['/menu/gastos', output.id]"> {{(i+offset)+1}} </td>
+            <td [routerLink]="['/menu/gastos', output.id]"> {{output?.description}} </td>
+            <td [routerLink]="['/menu/gastos', output.id]"> ${{output?.value |number}} </td>
+            <td [routerLink]="['/menu/gastos', output.id]" *ngIf="currentUser.type !=3"> {{output?.branch}} </td>
+            <td [routerLink]="['/menu/gastos', output.id]" *ngIf="currentUser.type === 1"> {{output?.company}} </td>
+            <td [routerLink]="['/menu/gastos', output.id]" *ngIf="currentUser.type !=3"> {{output?.creationUser}} </td>
+            <td [routerLink]="['/menu/gastos', output.id]"> {{output?.date}} </td>
+            <td>
+              <div>
+                <i class="far fa-trash-alt trash-icon" (click)="deleteOutput(output.id, output.description)"></i>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="horizontal-align">
+        <div class="field-4">
+          <paginator *ngIf="totalOutputs>0" (updateCurrentPage)="updatePaginator($event)" [limit]="10"
+            [total]="totalOutputs"></paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

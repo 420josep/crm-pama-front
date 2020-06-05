@@ -1,0 +1,57 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Lista de sucursales</h1>
+    <div class="list-content-container">
+      <div class="space-between actions-container field-1">
+        <a routerLink="/menu/sucursales/nueva" class="add-button">Añadir nueva sucursal +</a>
+
+        <div class="flex-container field-2 relative-container">
+          <input class="search-input" (keyup)='searchUser()' [(ngModel)]="searchField" type="text" placeholder="Buscar una sucursal por su nombre">
+          <div *ngIf="searchField.length > 0" class="flex-container-centered delete-search-icon" (click)="deleteSearch()">
+            x
+          </div>
+          <div class="flex-container-centered input-icon-container" (click)="searchUser()">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Número de usuarios</th>
+            <th *ngIf="currentUser.type === 1">Empresa</th>
+            <th>Ciudad</th>
+            <th>Fecha de creación</th>
+            <th *ngIf="currentUser.type === 1" class="table-right-border">Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let branch of branchs; index as i">
+            <td [routerLink]="['/menu/sucursales', branch.id]"> {{(i+offset)+1}} </td>
+            <td [routerLink]="['/menu/sucursales', branch.id]"> {{branch?.name}} </td>
+            <td [routerLink]="['/menu/sucursales', branch.id]"> {{branch?.usersNumber}} </td>
+            <td [routerLink]="['/menu/sucursales', branch.id]" *ngIf="currentUser.type === 1"> {{branch?.company}} </td>
+            <td [routerLink]="['/menu/sucursales', branch.id]"> {{branch?.city}} </td>
+            <td [routerLink]="['/menu/sucursales', branch.id]"> {{branch?.creationDate}} </td>
+            <td [routerLink]="['/menu/sucursales', branch.id]" *ngIf="currentUser.type === 1"> {{branch?.state}} </td>
+            <td>
+              <div>
+                <i class="far fa-trash-alt trash-icon" (click)="deleteBranch(branch.id, branch.name)"></i>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="horizontal-align">
+        <div class="field-4">
+          <paginator *ngIf="totalUsers>0" (updateCurrentPage)="updatePaginator($event)" [limit]="10"
+            [total]="totalUsers"></paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
