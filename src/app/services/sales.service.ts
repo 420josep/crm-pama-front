@@ -18,7 +18,7 @@ const httpOptions = {
 })
 export class SalesService {
   currentUser: User;
-  server = 'http://localhost/health-back/';
+  server = 'http://localhost/crm_pama_back/';
 
   constructor(
     private http: HttpClient,

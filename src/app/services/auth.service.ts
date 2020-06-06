@@ -14,7 +14,7 @@ const httpOptions = {
 export class AuthService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  server = 'http://localhost/health-back/';
+  server = 'http://localhost/crm_pama_back/';
   private loggedIn = false;
 
   constructor( 

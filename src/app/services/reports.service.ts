@@ -10,7 +10,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ReportsService {
-  server = 'http://localhost/health-back/';
+  server = 'http://localhost/crm_pama_back/';
 
   constructor(
     private http: HttpClient,

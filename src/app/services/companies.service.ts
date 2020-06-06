@@ -14,7 +14,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class CompaniesService {
-  server = 'http://localhost/health-back/';
+  server = 'http://localhost/crm_pama_back/';
 
   constructor(
     private http: HttpClient, 

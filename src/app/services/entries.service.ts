@@ -17,7 +17,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class EntriesService {
-  server = 'http://localhost/health-back/';
+  server = 'http://localhost/crm_pama_back/';
   currentUser: User;
 
   constructor(
