@@ -39,8 +39,8 @@
             <td [routerLink]="['/menu/productos', product.id]"> {{product?.brand}} </td>
             <td [routerLink]="['/menu/productos', product.id]"> {{product?.content}} </td>
             <td [routerLink]="['/menu/productos', product.id]"> ${{product?.price | number}} </td>
-            <td [routerLink]="['/menu/productos', product.id]"> {{product?.subcategory}} </td>
             <td [routerLink]="['/menu/productos', product.id]"> {{product?.category}} </td>
+            <td [routerLink]="['/menu/productos', product.id]"> {{product?.subcategory}} </td>
             <td *ngIf="currentUser?.type === 1"[routerLink]="['/menu/productos', product.id]"> {{product?.company}} </td>
             <td *ngIf="currentUser?.type === 1" [routerLink]="['/menu/productos', product.id]"> {{product?.creationUser}} </td>
             <td *ngIf="currentUser?.type === 1" [routerLink]="['/menu/productos', product.id]"> {{product?.state}} </td>
