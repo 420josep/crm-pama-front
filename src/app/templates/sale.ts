@@ -24,6 +24,7 @@ export interface SaleList {
     statusID: number;
     payment: string;
     paymentID: number;
+    creationUser: string;
 }
 
 export interface Sale {

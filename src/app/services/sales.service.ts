@@ -177,19 +177,22 @@ export class SalesService {
       if(response){
         let array: SaleList[] = [];
         for (let index = 0; index < response.length; index++) {
-          let company, branch = "";
+          let company, branch, creationUser = "";
           let date = response[index].date;
           date = this.tools.sqlToDate(date, 2);
 
           if(this.currentUser.type === 1) {
             company = response[index].company;
             branch = response[index].branch;
+            creationUser = response[index].creationUser;
           } else if(this.currentUser.type === 2) {
             company = "";
             branch = response[index].branch;
+            creationUser = response[index].creationUser;
           } else {
             company = "";
             branch = "";
+            creationUser = "";
           }
           const item: SaleList = {
             id: +response[index].id,
@@ -205,6 +208,7 @@ export class SalesService {
             status: response[index].status,
             paymentID: +response[index].paymentID,
             payment: response[index].payment,
+            creationUser: response[index].creationUser,
           }
           array.push(item);
         }
