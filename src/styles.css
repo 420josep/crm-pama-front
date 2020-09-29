@@ -496,6 +496,58 @@ select {
 	transform: scale(1.2);
 }
 
+.sale-container {
+	padding: 1rem;
+}
+
+.sale-container-card {
+	padding: 2rem;
+	border: 1px solid #c0c5c9;
+	cursor: pointer;
+    transition: 0.2s all ease;
+}
+
+.sale-container-card:hover {
+	box-shadow: 1px 1px 5px 0px rgba(128,128,128,.50);
+}
+
+.sale-container-card.cancelled {
+	border-top: 5px solid #b9db1f;
+}
+
+.sale-container-card.pending {
+	border-top: 5px solid #f0d032;
+}
+
+.sale-container-card.canceled {
+	border-top: 5px solid #d11919;
+}
+
+.sale-container-card .section:not(:first-child) {
+	padding: .5rem 0;
+}
+
+.sale-container-card .section:first-child {
+	padding-bottom: .5rem;
+}
+
+.sale-container-card span {
+	font-size: 1.2em;
+}
+
+.important-text {
+	font-weight: bolder;
+}
+
+@media only screen and (max-width: 1366px) {
+	.sale-container-card {
+		padding: 1.5rem;
+	}
+
+	.sale-container-card span{
+		font-size: .9em;
+	}
+}
 
 
 

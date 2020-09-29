@@ -34,6 +34,8 @@ export class SalesComponent implements OnInit {
     this.salesService.getSales( text, this.offset ).subscribe(sales => {
       this.sales = [];
       this.sales = sales;
+      console.log(this.sales);
+
     });
   }
 

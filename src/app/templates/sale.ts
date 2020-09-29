@@ -15,11 +15,15 @@ export interface SaleList {
     date: string;
     billNumber: number;
     client: string;
+    direction: string;
+    phone: string;
     total: number;
     branch: string;
     company: string;
     status: string;
+    statusID: number;
     payment: string;
+    paymentID: number;
 }
 
 export interface Sale {

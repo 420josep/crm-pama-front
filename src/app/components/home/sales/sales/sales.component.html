@@ -10,7 +10,7 @@
         <a routerLink="/menu/ventas/nueva" class="add-button">Registrar una venta &#43;</a>
 
         <div class="flex-container field-2 relative-container">
-          <input class="search-input" (keyup)='searchClient()' [(ngModel)]="searchField" type="text" placeholder="Buscar una venta por su # de fáctura, cliente o estado">
+          <input class="search-input" (keyup)='searchClient()' [(ngModel)]="searchField" type="text" placeholder="Buscar una venta por su # de factura, cliente o estado">
           <div *ngIf="searchField.length > 0" class="flex-container-centered delete-search-icon" (click)="deleteSearch()">
             x
           </div>
@@ -20,6 +20,73 @@
         </div>
 
       </div>
+
+      <div class="vertical-columns field-1">
+        <div *ngFor="let sale of sales; trackBy:trackBySaleID;" class="sale-container">
+          <div [routerLink]="['/menu/ventas', sale.id]" class="sale-container-card space-between" 
+            [ngClass]="{ 'cancelled': sale?.statusID === 1,  'pending': sale?.statusID === 2,  'canceled': sale?.statusID === 3}">
+            <div class="vertical-columns" style="flex: 1 1 0px">
+              <div class="section vertical-columns">
+                <span class="important-text">Factura:</span>
+                <span class="important-text"># {{sale?.billNumber}}</span>
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Fecha:</span>
+                <span>{{sale?.date}}</span>
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Cliente:</span>
+                <span class="important-text">{{sale?.client}}</span>
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Dirección:</span>
+                <span><i class="fas fa-map-marker-alt"></i> {{sale?.direction}}</span> 
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Teléfono:</span>
+                <span><i class="fas fa-mobile-alt"></i> {{sale?.phone}}</span>
+              </div>
+            </div>
+            <div class="vertical-columns" style="flex: 1 1 0px">
+              <div class="section vertical-columns">
+                <span class="important-text">Estado:</span>
+                <span>{{sale?.status}}</span>
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Medio de pago:</span>
+                <span *ngIf="sale?.paymentID === 1"><i class="fas fa-money-bill-wave"></i> {{sale?.payment}}</span>
+                <span *ngIf="sale?.paymentID === 2 || sale?.paymentID === 3"><i class="far fa-credit-card"></i> {{sale?.payment}}</span>
+                <span *ngIf="sale?.paymentID ===4"><i class="fas fa-exchange-alt"></i> {{sale?.payment}}</span>
+
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Total:</span>
+                <span class="important-text">${{sale?.total | number}}</span>
+              </div>
+            </div>
+            <div *ngIf="currentUser.type !=3" class="vertical-columns" style="flex: 1 1 0px">
+              <div class="section vertical-columns">
+                <span *ngIf="currentUser.type === 1" class="important-text">Empresa:</span>
+                <span *ngIf="currentUser.type === 1">{{sale?.company}}</span>
+              </div>
+              <div class="section vertical-columns">
+                <span *ngIf="currentUser.type !=3" class="important-text">Sucursal:</span>
+                <span *ngIf="currentUser.type !=3">{{sale?.branch}}</span>
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Fecha de pago:</span>
+                <span>Fecha de pago</span>
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Usuario que la registró:</span>
+                <span>Usuario que la registró</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+<!--
       <table class="table">
         <thead>
           <tr>
@@ -48,6 +115,7 @@
           </tr>
         </tbody>
       </table>
+      -->
       <div class="horizontal-align">
         <div class="field-4">
           <paginator *ngIf="totalSales>0" (updateCurrentPage)="updatePaginator($event)" [limit]="10"

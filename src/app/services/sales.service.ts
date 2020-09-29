@@ -196,10 +196,14 @@ export class SalesService {
             date: date,
             billNumber: +response[index].billNumber,
             client: response[index].client,
+            direction: response[index].direction,
+            phone: response[index].phone,
             total: +response[index].total,
             branch: branch,
             company: company,
+            statusID: +response[index].statusID,
             status: response[index].status,
+            paymentID: +response[index].paymentID,
             payment: response[index].payment,
           }
           array.push(item);
