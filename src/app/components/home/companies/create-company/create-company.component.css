@@ -1,0 +1,23 @@
+.inputimg {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputimg + label {
+    height: 150px;
+    text-align: center;
+    border: 1px solid #c0c5c9;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.inputimg + label i {
+    font-size: 2rem;
+}
+
+
+

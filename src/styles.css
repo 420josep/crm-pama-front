@@ -1,6 +1,6 @@
 
 body{
-	font-family: 'Livvic', sans-serif;
+	font-family: 'Noto Sans', sans-serif;
 	width: 100%;
 	height: 100%;
 	padding: 0px;
@@ -80,11 +80,27 @@ select {
     padding: .5rem;
     cursor: pointer;
 	color: #808080;
-	font-family: 'Livvic', sans-serif;
+	font-family: 'Noto Sans', sans-serif;
 }
 
 *:focus{
 	outline: 0;
+}
+
+/* Ancho de la barra del scroll */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Color de fondo del scroll */
+::-webkit-scrollbar-track {
+    background-color: #d1d1d1; 
+}
+
+/* Estilo del scroll */
+::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 5px;
 }
 
 .flex-container{
@@ -153,16 +169,11 @@ select {
 }
 
 .title {
-	font-family: 'Livvic', sans-serif;
+	font-family: 'Noto Sans', sans-serif;
 	font-size: 3rem;
-	text-align: center;
+	text-align: left;
 	letter-spacing: 0.1em;
 	color: #2a2a2a;
-}
-
-.form-container {
-	width: 60%;
-	margin: 1rem auto;
 }
 
 .item-field {
@@ -185,7 +196,7 @@ select {
 }
 
 .input-field {
-	font-family: 'Livvic', sans-serif;
+	font-family: 'Noto Sans', sans-serif;
 	margin-bottom: .3rem;
 	color: #525a60;
 	border: none;
@@ -286,8 +297,8 @@ select {
 	color: #47d147;
 }
 
-.list-content-container {
-	width: 80%;
+.list-content-container,
+.form-container {
 	margin: 1rem auto;
 }
 
@@ -433,7 +444,7 @@ select {
 }
 
 .card-title{
-	font-family: 'Livvic', sans-serif;
+	font-family: 'Noto Sans', sans-serif;
     font-size: 1.3rem;
     text-align: center;
 	letter-spacing: 0.1em;
@@ -523,16 +534,12 @@ select {
 	border-top: 5px solid #d11919;
 }
 
-.sale-container-card .section:not(:first-child) {
-	padding: .5rem 0;
-}
-
-.sale-container-card .section:first-child {
-	padding-bottom: .5rem;
+.sale-container-card .section {
+	padding-bottom: 1rem;
 }
 
 .sale-container-card span {
-	font-size: 1.2em;
+	font-size: 1.1em;
 }
 
 .important-text {

@@ -39,20 +39,6 @@
           </div> 
         </div>
         <div class="item-field vertical-columns field-2">
-          <label class="label-field">Categoría (*)</label>
-          <select formControlName="categoryID" (change)="getSubcategories(form.categoryID.value)">
-            <option value=""></option>
-            <option *ngFor="let category of categories" [ngValue]="category?.id"> {{category?.name}} </option>
-          </select>
-        </div>
-        <div class="item-field vertical-columns field-2">
-          <label class="label-field">Subategoría (*)</label>
-          <select formControlName="subcategoryID">
-            <option value=""></option>
-            <option *ngFor="let subcategory of subcategories" [ngValue]="subcategory?.id"> {{subcategory?.name}} </option>
-          </select>
-        </div>
-        <div class="item-field vertical-columns field-2">
           <label class="label-field" for="price">Precio (*)</label>
           <input id="price" name="price" formControlName="price" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
         </div>

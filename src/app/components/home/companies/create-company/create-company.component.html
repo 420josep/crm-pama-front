@@ -6,6 +6,17 @@
     </div>
     <form [formGroup]="newCompanyForm" (ngSubmit)="saveCompany()">
       <div class="form-container columns">
+        <div class="field-1 flex-container-centered">
+          <div class="field-2 flex-container-centered item-field">
+            <div class="field-2 vertical-columns">
+              <label class="label-field" for="inputimg">Logo (*)</label>
+              <input type="file" id="inputimg" name="inputimg" class="inputimg">
+              <label for="inputimg" class="flex-container-centered">
+                  <i class="fas fa-upload"></i>
+              </label>
+            </div>
+          </div>
+        </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="name">Nombre (*)</label>
           <input formControlName="name" id="name" name="name" autocomplete="off" class="input-field" type="text">

@@ -54,14 +54,11 @@ export class EditProductComponent implements OnInit {
       presentationID: ['', [Validators.required]],
       content: ['', [Validators.required]],
       price: ['', [Validators.required]],
-      categoryID: ['', [Validators.required]],
-      subcategoryID: ['', [Validators.required]],
       userID: [this.currentUser.id, [Validators.required]],
       companyID: ['', [Validators.required]],
     });
     if(this.currentUser.type != 1){
       this.form.companyID.setValue(this.currentUser.companyID);
-      this.getCategories(this.currentUser.companyID);
     }else{
       this.editProductForm.addControl('state', new FormControl("", Validators.required));
 
@@ -84,12 +81,8 @@ export class EditProductComponent implements OnInit {
         this.form.presentationID.setValue(this.currentProduct.presentationID);
         this.form.content.setValue(this.currentProduct.content);
         this.form.price.setValue(this.currentProduct.price);
-        this.getSubcategories(this.currentProduct.categoryID);
-        this.form.categoryID.setValue(this.currentProduct.categoryID);
-        this.form.subcategoryID.setValue(this.currentProduct.subcategoryID);
         if(this.currentUser.type === 1){
           this.form.companyID.setValue(this.currentProduct.companyID);
-          this.getCategories(this.currentProduct.companyID);
           this.form.state.setValue(this.currentProduct.state);
         }
       }else{
@@ -102,36 +95,6 @@ export class EditProductComponent implements OnInit {
 
   get form() {
     return this.editProductForm.controls;
-  }
-
-  getCategories( companyID: number ){
-    if( companyID == null || companyID == 0 )
-    {
-      this.form.categoryID.setValue('');
-      this.form.categoryID.disable();
-      this.form.subcategoryID.setValue('');
-      this.form.subcategoryID.disable();
-      return;
-    }
-    this.categoriesService.getCategoriesList(companyID).subscribe( categories => {
-      this.categories = categories;
-      this.form.categoryID.enable();
-    });
-  }
-
-  getSubcategories( categoryID: number ){
-
-    if( categoryID == null || categoryID == 0 )
-    {
-      this.form.subcategoryID.setValue('');
-      this.form.subcategoryID.disable();
-      return;
-    }
-    this.categoriesService.getSubcategories(categoryID).subscribe( subcategories => {
-      this.subcategories = subcategories;
-
-      this.form.subcategoryID.enable();
-    });
   }
 
   saveProduct(){

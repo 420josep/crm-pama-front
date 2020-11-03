@@ -9,6 +9,12 @@ import { User } from 'src/app/templates/user';
 })
 export class HomeComponent implements OnInit {
   currentUser: User;
+  showSales: boolean = false;
+  showProducts: boolean = false;
+  showClients: boolean = false;
+  showProviders: boolean = false;
+  showRegister: boolean = false;
+  showAdministration: boolean = false;
 
   constructor(
     private authService: AuthService
@@ -25,6 +31,15 @@ export class HomeComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  closeTabs(){
+    this.showSales = false;
+    this.showProducts = false;
+    this.showClients = false;
+    this.showProviders = false;
+    this.showRegister = false;
+    this.showAdministration = false;
   }
 
 }

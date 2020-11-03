@@ -3,7 +3,9 @@ export interface User {
   firstName: string;
   lastName: string;
   branchID: number;
+  branch: string;
   companyID: number;
+  company: string;
   dni: string;
   email: string;
   phone: string;

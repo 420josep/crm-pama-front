@@ -1,80 +1,122 @@
-<nav class="flex-container navbar">
-  <div class="navbar-content space-between">
-    <div class="logo-container">
-      <img src="./../../../assets/logo.jpg" class="logo" alt="">
-    </div>
-    <div class="vertical-align">
-      <ul class="flex-container links-container">
-        <li routerLink="./ventas" routerLinkActive="active" class="list-item vertical-align">
-          Ventas
-          <i class="fas fa-angle-down arrow-down-icon"></i>
-          <div class="list-content vertical-columns">
-            <a routerLink="./ventas/nueva" (click)="$event.stopPropagation()" class="space-between">Nueva venta <i class="fas fa-plus icon-item"></i></a>
-            <a routerLink="./ventas/lista" (click)="$event.stopPropagation()" class="space-between">Todas las ventas <i class="fas fa-list-ul icon-item"></i></a>
-            <div class="separator-line"></div>
-            <a routerLink="./clientes/lista" (click)="$event.stopPropagation()" class="space-between">Lista de clientes <i class="fas fa-list-ul icon-item"></i></a>
-            <a routerLink="./clientes/nuevo" (click)="$event.stopPropagation()" class="space-between">Nuevo cliente <i class="fas fa-user-plus icon-item"></i></a>
-          </div>
-        </li>
-        <li routerLink="./productos" routerLinkActive="active"  class="list-item vertical-align">
-          Productos
-          <i class="fas fa-angle-down arrow-down-icon"></i>
-          <div class="list-content vertical-columns">
-            <a routerLink="./productos/inventario" (click)="$event.stopPropagation()" class="space-between">Inventario <i class="fas fa-clipboard-list icon-item"></i></a>
-            <a routerLink="./productos/lista" (click)="$event.stopPropagation()" class="space-between">Lista de productos <i class="fas fa-list-ul icon-item"></i></a>
-            <a routerLink="./productos/nuevo" (click)="$event.stopPropagation()" class="space-between">Nuevo producto <i class="fas fa-plus icon-item"></i></a>
-            <div class="separator-line"></div>
-            <a routerLink="./categorias" (click)="$event.stopPropagation()" class="space-between">Categorías <i class="fas fa-list-ul icon-item"></i></a>
-          </div>
-        </li>
-        <li routerLink="./proveedores" routerLinkActive="active" class="list-item vertical-align">
-          Proveedores
-          <i class="fas fa-angle-down arrow-down-icon"></i>
-          <div class="list-content vertical-columns">
-            <a routerLink="./entradas/nueva" (click)="$event.stopPropagation()" class="space-between">Registrar mercancía<i class="fas fa-dolly icon-item"></i></a>
-            <a routerLink="./entradas/lista" (click)="$event.stopPropagation()" class="space-between">Entradas de mercancía<i class="fas fa-list-ul icon-item"></i></a>
-            <div class="separator-line"></div>
-            <a routerLink="./proveedores/lista" (click)="$event.stopPropagation()" class="space-between">Lista de proveedores <i class="fas fa-list-ul icon-item"></i></a>
-            <a routerLink="./proveedores/nuevo" (click)="$event.stopPropagation()" class="space-between">Nuevo proveedor <i class="fas fa-user-plus icon-item"></i></a>
-          </div>
-        </li>
-        <li  routerLink="./caja" routerLinkActive="active" class="list-item vertical-align">
-          Caja
-          <i class="fas fa-angle-down arrow-down-icon"></i>
-          <div class="list-content vertical-columns">
-            <a routerLink="./caja/cerrar" (click)="$event.stopPropagation()" class="space-between">Cerrar caja <i class="fas fa-cash-register icon-item"></i></a>
-            <a routerLink="./caja/cierres" (click)="$event.stopPropagation()" class="space-between">Cuadres de caja <i class="fas fa-list-ul icon-item"></i></a>
-            <div class="separator-line"></div>
-            <a routerLink="./gastos/reportar" (click)="$event.stopPropagation()" class="space-between">Reportar un gasto <i class="fas fa-plus icon-item"></i></a>
-            <a routerLink="./gastos/lista" (click)="$event.stopPropagation()" class="space-between">Gastos <i class="fas fa-money-bill-wave icon-item"></i></a>
-            <div *ngIf="currentUser?.type != 3" class="separator-line"></div>
-            <a *ngIf="currentUser?.type != 3" routerLink="./reportes" (click)="$event.stopPropagation()" class="space-between">Reportes <i class="fas fa-chart-line icon-item"></i></a>
-          </div>
-        </li>
-        <li *ngIf="currentUser?.type != 3" routerLink="./usuarios" routerLinkActive="active" class="list-item vertical-align">
-          Administración
-          <i class="fas fa-angle-down arrow-down-icon"></i>
-          <div class="list-content vertical-columns">
-            <a routerLink="./usuarios/lista" (click)="$event.stopPropagation()" class="space-between">Usuarios<i class="fas fa-list-ul icon-item"></i></a>
-            <a routerLink="./usuarios/nuevo" (click)="$event.stopPropagation()" class="space-between">Crear usuario <i class="fas fa-user-plus icon-item"></i></a>
-            <div class="separator-line"></div>
-            <a *ngIf="currentUser?.type === 1" routerLink="./empresas/lista" (click)="$event.stopPropagation()" class="space-between">Empresas<i class="far fa-building icon-item"></i></a>
-            <a *ngIf="currentUser?.type === 1" routerLink="./empresas/nueva" (click)="$event.stopPropagation()" class="space-between">Crear empresa<i class="fas fa-users-cog icon-item"></i></a>
-            <div *ngIf="currentUser?.type === 1" class="separator-line"></div>
-            <a routerLink="./sucursales/lista" (click)="$event.stopPropagation()" class="space-between">Sucursales<i class="fas fa-building icon-item"></i></a>
-          </div>
-        </li>
-        <li class="list-item vertical-align">
-          <span>Hola, {{currentUser?.firstName}}</span>
-          <i class="fas fa-user-circle icon-item"></i>
+<div class="flex-container">
+  <nav class="navbar">
+    <div class="navbar-content vertical-columns space-between field-1">
+      <div class="field-1 vertical-columns">
+        <div class="flex-container-centered">
+          <img src="./../../../assets/logo_health.jpg" class="logo" alt="">
+        </div>
+        <div class="vertical-columns">
+          <span class="vertical-align">Hola, {{currentUser?.firstName}}</span>
+          <span class="description-text">{{currentUser?.branch}}</span>
+          <span class="description-text">{{currentUser?.company}}</span>
+        </div>
+      </div>
 
-          <div class="list-content vertical-columns">
-            <a target="_blank" href="https://api.whatsapp.com/send?phone=573013782907" class="space-between">Ayuda <i class="far fa-question-circle user-icons"></i></a>
-            <a (click)="logout()" class="space-between">Cerrar sesión <i class="fas fa-door-open user-icons"></i></a>
+      <ul class="flex-container links-container vertical-columns">
+        <li class="list-item vertical-columns">
+          <div class="vertical-align">
+            <div class="flex-container-centered" style="width: 10%;margin-right: 1rem;">
+              <i class="fas fa-home icon-item"></i>
+            </div>
+            Inicio
           </div>
         </li>
+        <li routerLink="./ventas" routerLinkActive="active" (click)="closeTabs();showSales = !showSales" class="list-item vertical-columns">
+          <div class="vertical-align">
+            <div class="flex-container-centered" style="width: 10%;margin-right: 1rem;">
+              <i class="fas fa-shopping-cart icon-item"></i>
+            </div>
+            Ventas
+          </div>
+        </li>
+        <div *ngIf="showSales" class="list-content field-1 vertical-columns">
+          <a routerLink="./ventas/nueva" (click)="$event.stopPropagation()" class="space-between">Nueva venta</a>
+          <a routerLink="./ventas/lista" (click)="$event.stopPropagation()" class="space-between">Todas las ventas</a>
+        </div>
+        <li routerLink="./productos" routerLinkActive="active" (click)="closeTabs();showProducts = !showProducts"  class="list-item vertical-columns">
+          <div class="vertical-align">
+            <div class="flex-container-centered" style="width: 10%;margin-right: 1rem;">
+              <i class="fas fa-clipboard-list icon-item"></i>
+            </div>
+            Productos
+          </div>
+        </li>
+        <div *ngIf="showProducts" class="list-content field-1 vertical-columns">
+          <a routerLink="./productos/inventario" (click)="$event.stopPropagation()" class="space-between">Inventario</a>
+          <a routerLink="./productos/lista" (click)="$event.stopPropagation()" class="space-between">Lista de productos</a>
+          <a routerLink="./productos/nuevo" (click)="$event.stopPropagation()" class="space-between">Nuevo producto</a>
+        </div>
+        <li routerLink="./clientes" routerLinkActive="active" (click)="closeTabs();showClients = !showClients" class="list-item vertical-columns">
+          <div class="vertical-align">
+            <div class="flex-container-centered" style="width: 10%;margin-right: 1rem;">
+              <i class="fas fa-users icon-item"></i>
+            </div>
+            Clientes
+          </div>
+        </li>
+        <div *ngIf="showClients" class="list-content field-1 vertical-columns">
+          <a routerLink="./clientes/lista" (click)="$event.stopPropagation()" class="space-between">Lista de clientes</a>
+          <a routerLink="./clientes/nuevo" (click)="$event.stopPropagation()" class="space-between">Nuevo cliente</a>
+        </div>
+        <li routerLink="./proveedores" routerLinkActive="active" (click)="closeTabs();showProviders = !showProviders" class="list-item vertical-columns">
+          <div class="vertical-align">
+            <div class="flex-container-centered" style="width: 10%;margin-right: 1rem;">
+              <i class="fas fa-dolly icon-item"></i>
+            </div>
+            Proveedores
+          </div>
+        </li>
+        <div *ngIf="showProviders" class="list-content field-1 vertical-columns">
+          <a routerLink="./entradas/nueva" (click)="$event.stopPropagation()" class="space-between">Registrar mercancía</a>
+          <a routerLink="./entradas/lista" (click)="$event.stopPropagation()" class="space-between">Entradas de mercancía</a>
+          <a routerLink="./proveedores/lista" (click)="$event.stopPropagation()" class="space-between">Lista de proveedores</a>
+          <a routerLink="./proveedores/nuevo" (click)="$event.stopPropagation()" class="space-between">Nuevo proveedor</a>
+        </div>
+        <li routerLink="./caja" routerLinkActive="active" (click)="closeTabs();showRegister = !showRegister" class="list-item vertical-columns">
+          <div class="vertical-align">
+            <div class="flex-container-centered" style="width: 10%;margin-right: 1rem;">
+              <i class="fas fa-cash-register icon-item"></i>
+            </div>
+            Caja
+          </div>
+        </li>
+        <div *ngIf="showRegister" class="list-content field-1 vertical-columns">
+          <a routerLink="./caja/cerrar" (click)="$event.stopPropagation()" class="space-between">Cerrar caja </a>
+          <a routerLink="./caja/cierres" (click)="$event.stopPropagation()" class="space-between">Cuadres de caja</a>
+          <a routerLink="./gastos/reportar" (click)="$event.stopPropagation()" class="space-between">Reportar un gasto</a>
+          <a routerLink="./gastos/lista" (click)="$event.stopPropagation()" class="space-between">Gastos</a>
+        </div>
+        <li *ngIf="currentUser?.type != 3" routerLink="./reportes" routerLinkActive="active" routerLinkActive="active" class="list-item vertical-columns">
+          <div class="vertical-align">
+            <div class="flex-container-centered" style="width: 10%;margin-right: 1rem;">
+              <i class="fas fa-chart-line icon-item"></i>
+            </div>
+            Reportes
+          </div>
+        </li>
+        <li routerLink="./usuarios" routerLinkActive="active" (click)="closeTabs();showAdministration = !showAdministration" *ngIf="currentUser?.type != 3" class="list-item vertical-columns">
+          <div class="vertical-align">
+            <div class="flex-container-centered" style="width: 10%;margin-right: 1rem;">
+              <i class="far fa-building icon-item"></i>
+            </div>
+            Administración
+          </div>
+        </li>
+        <div *ngIf="showAdministration" class="list-content field-1 vertical-columns">
+          <a routerLink="./usuarios/lista" (click)="$event.stopPropagation()" class="space-between">Usuarios</a>
+          <a routerLink="./usuarios/nuevo" (click)="$event.stopPropagation()" class="space-between">Crear Usuarios</a>
+          <a *ngIf="currentUser?.type === 1" routerLink="./empresas/lista" (click)="$event.stopPropagation()" class="space-between">Empresas</a>
+          <a *ngIf="currentUser?.type === 1" routerLink="./empresas/nueva" (click)="$event.stopPropagation()" class="space-between">Crear empresa</a>
+          <a routerLink="./sucursales/lista" (click)="$event.stopPropagation()" class="space-between">Sucursales</a>
+        </div>
       </ul>
+      <div class="field-1 vertical-columns">
+        <span (click)="logout()" class="logout"><i class="fas fa-sign-out-alt icon-item"></i> Cerrar sesión</span>
+        <span style="text-align: center;font-size: .7em;font-style: italic; font-weight: bolder;">PAMA Software</span>
+      </div>
     </div>
+  </nav>
+  <div class="field-1" style="height: 100vh;overflow-y: auto;">
+    <router-outlet></router-outlet>
   </div>
-</nav>
-<router-outlet></router-outlet>
+</div>

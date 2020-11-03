@@ -48,18 +48,13 @@ export class NewProductComponent implements OnInit {
       presentationID: ['', [Validators.required]],
       content: ['', [Validators.required]],
       price: ['', [Validators.required]],
-      categoryID: ['', [Validators.required]],
-      subcategoryID: ['', [Validators.required]],
       userID: [this.currentUser.id, [Validators.required]],
       companyID: ['', [Validators.required]],
     });
     
     if(this.currentUser.type != 1){
       this.form.companyID.setValue(this.currentUser.companyID);
-      this.getCategories(this.currentUser.companyID);
     }else{
-      this.form.categoryID.disable();
-      this.form.subcategoryID.disable();
       this.companiesService.getCompaniesList().subscribe(response => {
         this.companies = response;
       });
@@ -71,34 +66,6 @@ export class NewProductComponent implements OnInit {
 
   get form() {
     return this.newProductForm.controls;
-  }
-
-  getCategories( companyID: number ){
-    if( companyID == null || companyID == 0 )
-    {
-      this.form.categoryID.setValue('');
-      this.form.categoryID.disable();
-      this.form.subcategoryID.setValue('');
-      this.form.subcategoryID.disable();
-      return;
-    }
-    this.categoriesService.getCategoriesList(companyID).subscribe( categories => {
-      this.categories = categories;
-      this.form.categoryID.enable();
-    });
-  }
-
-  getSubcategories( categoryID: number ){
-    if( categoryID == null || categoryID == 0 )
-    {
-      this.form.subcategoryID.setValue('');
-      this.form.subcategoryID.disable();
-      return;
-    }
-    this.categoriesService.getSubcategories(categoryID).subscribe( subcategories => {
-      this.subcategories = subcategories;
-      this.form.subcategoryID.enable();
-    });
   }
 
   /**

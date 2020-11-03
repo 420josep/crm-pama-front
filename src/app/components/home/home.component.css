@@ -1,20 +1,21 @@
 .navbar {
-    width: 100%;
-    border-bottom: 1px solid #c0c5c9;
-    ;
+    border-right: 1px solid #c0c5c9;
+    width: 20%;
+    left: 0;
+    overflow: auto;
+    color: #525a60;
 }
 
 .navbar-content {
-    width: 95%;
-    margin: .5rem auto;
-}
-
-.logo-container {
-    width: 10%;
+    padding: 1rem;
+    height: 100%;
 }
 
 .logo {
-    width: 80%;
+    margin: 1rem 0;
+    width: 90%;
+    max-height: 100px;
+    object-fit: contain;
 }
 
 .links-container {
@@ -23,84 +24,61 @@
 }
 
 .list-item {
-    margin: 0 1rem;
     list-style-type: none;
-    padding: 1rem;
-    color: #525a60;
+    padding: .5rem 1rem;
     border-radius: 5px;
     border: 1px solid transparent;
     position: relative;
     transition: all ease .2s;
     cursor: pointer;
+    font-size: 1.1em;
 }
 
 .icon-item {
-    margin-left: .5rem;
     font-size: 1.2rem;
 }
 
-.list-item:last-child i {
-    font-size: 2em;
-}
-
-.list-item:last-child:hover {
-    color: #0195dd;
-}
-
-.list-item:not(:last-child):hover {
-    color: #0195dd;
-    border: 1px solid #0195dd;
+.list-item:hover {
+    color: #ee4d65;
 }
 
 .list-item.active {
-    color: white;
-    background-color: #0195dd;
-    border: 1px solid #0195dd;
-}
-
-.list-item.active:hover {
-    color: #0195dd;
-    background-color: white;
-}
-
-.list-item:hover .list-content{
-    animation: scale-display .2s;
-    display: inline-flex;
-}
-
-.list-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 102%;
-    background-color: white;
-    width: max-content;
-    border: 1px solid #c0c5c9;
-    border-radius: 5px;
-    z-index: 99;
+    color: #ee4d65;
+    border-left: 5px solid  #ee4d65;
 }
 
 .list-content a {
     text-decoration: none;
-    color: #525a60;
-    text-align: center;
     padding: 0.5rem 1rem;
     cursor: pointer;
+    color: #525a60;
+    font-size: 1em;
+    transition: all ease .2s;
 }
 
 .list-content a:hover{
-    background-color: #0195dd;
-    color: white;
-}
-
-.arrow-down-icon {
-    transform: translateY(10%);
-    margin-left: .3rem;
+    color: #ee4d65;
 }
 
 .user-icons {
     font-size: 1.3rem !important;
     margin-left: .5rem;
+}
+
+.logout {
+    padding: .5rem 1rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+.logout:hover {
+    color: #ee4d65;
+}
+
+.description-text {
+    font-size: .9em;
+    font-style: italic;
+    font-weight: bolder;
 }
 
 @keyframes scale-display {

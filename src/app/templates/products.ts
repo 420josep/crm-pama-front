@@ -10,8 +10,6 @@ export interface ProductListItem {
     brand: string;
     content: string;
     price: number;
-    subcategory: string;
-    category: string;
     company: string;
     creationUser: string;
     state: string;
@@ -24,8 +22,6 @@ export interface Product {
     presentationID: number;
     content: string;
     price: number;
-    subcategoryID: number;
-    categoryID: number;
     companyID: number;
     creationDate: string;
     state: string;
