@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
   showProviders: boolean = false;
   showRegister: boolean = false;
   showAdministration: boolean = false;
+  companyLogo: string;
 
   constructor(
     private authService: AuthService
@@ -24,7 +25,8 @@ export class HomeComponent implements OnInit {
     this.authService.currentUser.subscribe(user => {
       if(user != null){
         this.currentUser = user;
-        console.log(this.currentUser);
+        // TODO pendiente por cambiar a servidor
+        this.companyLogo = 'http://localhost/crm_pama_back/' + this.currentUser.companyLogo;
       }
     });
   }

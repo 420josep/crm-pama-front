@@ -4,16 +4,20 @@
     <div class="text-align-center error-text" *ngIf="!response">
       ¡{{message}}!
     </div>
-    <form [formGroup]="form" *ngIf="existCompany" (ngSubmit)="saveCompany()">
+    <form [formGroup]="editCompanyForm" *ngIf="existCompany" (ngSubmit)="saveCompany()">
       <div class="form-container columns">
         <div class="field-1 flex-container-centered">
           <div class="field-2 flex-container-centered item-field">
             <div class="field-2 vertical-columns">
               <label class="label-field" for="inputimg">Logo (*)</label>
-              <input type="file" id="inputimg" name="inputimg" class="inputimg">
-              <label for="inputimg" class="flex-container-centered">
-                  <i class="fas fa-upload"></i>
-              </label>
+              <div class="field-1 logo-container" style="position: relative;">
+                <input type="file" id="inputimg" name="inputimg" class="inputimg" accept='.png,.jpg,.jpeg' (change)="onFileChange($event, logo)">
+                <label for="inputimg" class="flex-container-centered field-1" >  
+                </label>
+                <i class="fas fa-upload centered-object"></i>
+                <img *ngIf="companyLogoSrc" id="companyLogo" src="{{companyLogoSrc}}" class="centered-object field-1" >
+                <img #logo id="logo" [ngClass]="{ 'hidden': !logo.src }" class="centered-object field-1" >
+              </div>
             </div>
           </div>
         </div>
@@ -35,13 +39,13 @@
           <label class="label-field">Plan (*)</label>
           <select formControlName="pricingID">
             <option value=""></option>
-            <option *ngFor="let priceItem of pricingItems" [ngValue]="priceItem.id" [selected]="form.controls.pricingID.value === priceItem?.id"> {{priceItem.name}} </option>
+            <option *ngFor="let priceItem of pricingItems" [ngValue]="priceItem.id" [selected]="form.pricingID.value === priceItem?.id"> {{priceItem.name}} </option>
           </select>
         </div>
 
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="state">Estado (*)</label>
-          <input autocomplete="off" formControlName="state" [checked]="form.controls.state.value" id="state" name="state" class="input-field" type="checkbox">
+          <input autocomplete="off" formControlName="state" [checked]="form.state.value" id="state" name="state" class="input-field" type="checkbox">
         </div>
 
         <div class="field-1 flex-container">

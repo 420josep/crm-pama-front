@@ -45,7 +45,7 @@ export class CompaniesService {
    * @param coupon Formulario con los datos del bono a crear
   */
   createCompany(company: any) {
-    return this.http.post(this.server + '/create_company.php', company, httpOptions);
+    return this.http.post(this.server + '/create_company.php', company, { reportProgress: true, observe: 'events' });
   }
 
   getTotalCompanies(text: string) {
@@ -123,6 +123,7 @@ export class CompaniesService {
       if(response){
         const company: Company = {
           id: +response.id,
+          logo: response.logo,
           name: response.name,
           manager: response.manager,
           contact: response.contact,
@@ -172,9 +173,8 @@ export class CompaniesService {
     }));
   }
 
-  updateCompany( data: any ) {
-    let json = JSON.stringify(data);
-    return this.http.post(this.server + 'update_company.php', json, httpOptions);
+  updateCompany( company: any ) {
+    return this.http.post(this.server + '/update_company.php', company, { reportProgress: true, observe: 'events' });
   }
 
 }

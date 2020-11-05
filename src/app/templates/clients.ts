@@ -20,3 +20,9 @@ export interface Client {
     creationDate: string;
     state: boolean;
 }
+
+export interface ClientsList {
+    id: number;
+    name: string;
+    discount: number;
+}

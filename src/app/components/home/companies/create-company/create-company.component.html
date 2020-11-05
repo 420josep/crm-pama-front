@@ -10,10 +10,13 @@
           <div class="field-2 flex-container-centered item-field">
             <div class="field-2 vertical-columns">
               <label class="label-field" for="inputimg">Logo (*)</label>
-              <input type="file" id="inputimg" name="inputimg" class="inputimg">
-              <label for="inputimg" class="flex-container-centered">
-                  <i class="fas fa-upload"></i>
-              </label>
+              <div class="field-1 logo-container" style="position: relative;">
+                <input type="file" id="inputimg" name="inputimg" class="inputimg" accept='.png,.jpg,.jpeg' (change)="onFileChange($event, logo)">
+                <label for="inputimg" class="flex-container-centered field-1" >  
+                </label>
+                <i class="fas fa-upload centered-object"></i>
+                <img #logo id="logo" [ngClass]="{ 'hidden': !logo.src }" class="centered-object field-1" >
+              </div>
             </div>
           </div>
         </div>
@@ -33,7 +36,7 @@
 
         <div class="item-field vertical-columns field-2">
           <label class="label-field">Plan (*)</label>
-          <select formControlName="pricingId">
+          <select formControlName="pricingID">
             <option value=""></option>
             <option *ngFor="let priceItem of pricingItems" [ngValue]="priceItem.id"> {{priceItem.name}} </option>
           </select>

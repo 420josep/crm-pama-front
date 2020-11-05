@@ -265,6 +265,7 @@ export class SalesService {
             date: response.date,
             clientID: +response.clientID,
             total: +response.total,
+            realTotal: +response.realTotal,
             billNumber: +response.billNumber,
             branchID: branch,
             companyID: companyID,

@@ -122,6 +122,7 @@ export class SquaresService {
             id: +response[index].id,
             date: date,
             totalSales: +response[index].totalSales,
+            totalSalesMoney: +response[index].totalSalesMoney,
             totalOutputs: +response[index].totalOutputs,
             mismatch: +response[index].mismatch,
             branch: branch,

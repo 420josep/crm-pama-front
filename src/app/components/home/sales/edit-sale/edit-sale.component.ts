@@ -10,6 +10,7 @@ import { SalesService } from 'src/app/services/sales.service';
 import { ProductSaleList, Sale, EditProductSale } from 'src/app/templates/sale';
 import { ClientsService } from 'src/app/services/clients.service';
 import { DatePipe } from '@angular/common';
+import { ClientsList } from 'src/app/templates/clients';
 
 @Component({
   selector: 'app-edit-sale',
@@ -24,13 +25,15 @@ export class EditSaleComponent implements OnInit {
   message: string;
   response: boolean = true;
   currentUser: User;
-  clients: ListItem[];
+  clients: ClientsList[];
   products: ProductSaleList[];
   companies: ListItem[];
   branchs: ListItem[];
   paymentMethods: ListItem[];
   saleStatus: ListItem[];
   total: number = 0;
+  subtotal: number = 0;
+  discount: number = 0;
   currentSale: Sale;
 
 
@@ -54,6 +57,7 @@ export class EditSaleComponent implements OnInit {
     this.editSaleForm = this.formBuilder.group({
       saleID: [this.saleID, [Validators.required]],
       date: ['', [Validators.required]],
+      client: ['', [Validators.required]],
       clientID: ['', [Validators.required]],
       billNumber: ['', [Validators.required]],
       branchID: ['', [Validators.required]],
@@ -83,6 +87,7 @@ export class EditSaleComponent implements OnInit {
     this.salesService.getSale(saleID).subscribe( response => {
       if(response){
         this.currentSale = response;
+        console.log(this.currentSale);
         let date =  this.datePipe.transform(this.currentSale.date, 'yyyy-MM-dd');
 
         if(this.currentUser.type === 3){
@@ -102,6 +107,7 @@ export class EditSaleComponent implements OnInit {
         this.form.clientID.setValue(this.currentSale.clientID);
         this.form.billNumber.setValue(this.currentSale.billNumber);
         this.form.total.setValue(this.currentSale.total);
+        this.form.realTotal.setValue(this.currentSale.realTotal);
         this.form.statusID.setValue(this.currentSale.statusID);
         this.form.paymentID.setValue(this.currentSale.paymentID);
         this.form.observation.setValue(this.currentSale.observation);
@@ -123,8 +129,23 @@ export class EditSaleComponent implements OnInit {
 
     this.clientsService.getClientsList(companyID).subscribe( response => {
       this.clients = response;
+      if (this.clients) {
+        for (let index = 0; index < this.clients.length; index++) {
+          if (this.form.clientID.value === this.clients[index].id ) {
+            this.form.client.setValue(this.clients[index]);
+            this.discount = this.clients[index].discount;
+            break;
+          }
+        }
+      }
     });
 
+  }
+
+  selectDiscount(client: ClientsList) {
+    this.form.clientID.setValue(client.id);
+    this.discount = client.discount;
+    this.updateTotal();
   }
 
   getProducts(branchID: number){
@@ -187,20 +208,37 @@ export class EditSaleComponent implements OnInit {
 
   updateTotal() {
     this.total = 0;
-    for (let index = 0; index < this.currentSale.products.length; index++) {
-      const product = this.currentSale.products[index];
-      this.total += product.productPrice * product.quantity;
-    }
+    this.subtotal = 0;
     for (let index = 0; index < this.productContainer.length; index++) {
       const product = this.productContainer.controls[index].value.product;
       const quantity = this.productContainer.controls[index].value.quantity;
       if (product && (quantity > 0)) {
-        this.total += product.price * quantity;
+        this.subtotal += product.price * quantity;
+        if (this.discount > 0) {
+          let realDiscount = (100 - this.discount)/100;
+          this.total += Math.floor((product.price * quantity) * realDiscount);
+        } else {
+          this.total = this.subtotal;
+        }
       }
     }
-    if(this.total > 0) {
+    for (let index = 0; index < this.currentSale.products.length; index++) {
+      let product = this.currentSale.products[index];
+      let quantity = this.currentSale.products[index].quantity;
+
+      if (product && (quantity > 0)) {
+        this.subtotal += product.productPrice * quantity;
+        if (this.discount > 0) {
+          let realDiscount = (100 - this.discount)/100;
+          this.total += Math.floor((product.productPrice * quantity) * realDiscount);
+        } else {
+          this.total = this.subtotal;
+        }
+      }
+    }
+    if(this.subtotal > 0) {
       this.form.total.setValue(this.total);
-      this.form.realTotal.setValue(this.total);
+      this.form.realTotal.setValue(this.subtotal);
     } else {
       this.form.total.setValue('');
       this.form.realTotal.setValue('');

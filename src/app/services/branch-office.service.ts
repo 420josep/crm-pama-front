@@ -187,4 +187,22 @@ export class BranchOfficeService {
     const json = JSON.stringify(object);
     return this.http.post(this.server + 'delete_branch.php', json, httpOptions);
   }
+
+  getLastBillNumber ( branchID: number ) {
+    const params = new HttpParams()
+    .set('branchID', branchID.toString());
+
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json; UTF8' }),
+      params: params
+    };
+
+    return this.http.get<number>(this.server + 'get_last_bill_number.php', httpOptions).pipe(map( response => {
+      if(response){
+        return +response;
+      }else {
+        return 0;
+      }
+    }));
+  }
 }

@@ -11,7 +11,6 @@ body{
 
 button {
 	border: none;
-	border-radius: 5px;
 	cursor: pointer;
 	transition: 0.2s all ease;
 	letter-spacing: 0.1em;
@@ -66,16 +65,14 @@ textarea:focus::-webkit-input-placeholder {
 
 input {
 	border: none;
-    border: 2px solid #c0c5c9;
-    border-radius: 5px;
-    padding: .4rem;
+    border: 1px solid #c0c5c9;
+    padding: .5rem;
 	color: #808080;
 	font-size: .9em;
 }
 
 select {
 	border: 0;
-    border-radius: 5px;
     border: 1px solid #c0c5c9;
     padding: .5rem;
     cursor: pointer;
@@ -201,7 +198,6 @@ select {
 	color: #525a60;
 	border: none;
 	border: 1px solid #c0c5c9;
-	border-radius: 5px;
 	padding: .5rem;
 }
 
@@ -312,55 +308,32 @@ select {
 .table thead tr th {
 	font-size: 1.3em;
 	font-weight: 500;
+	cursor: default;
+}
+
+.table tr th,
+.table tr td {
+	border: 1px solid #c0c5c9;
 	padding: .5rem;
 }
 
-.table thead tr th:first-child {
-	border-top-left-radius: 5px;
-}
-
-.table-right-border {
-    border-top-right-radius: 5px;
-}
-
-.table thead tr th:not(:last-child) {
-    color: #fff;
-    line-height: 1.4;
-    background-color: #0195dd;
-
-}
-
-.table tbody tr {
+.table tr td {
 	font-size: 1.1em;
 	cursor: pointer;
-	color: #525a60;
-}
-
-.table tbody tr td:not(:last-child) {
-    color: #808080;
-	line-height: 1.4;
-}
-
-.table tbody tr:nth-child(even) {
-    background-color: #e6f6ff;
-}
-
-.table tbody tr td:last-child {
-    background-color: #fff;
+	color: #808080;
 }
 
 .table tbody tr:hover{
-	background: #76cffb;
-	color: white;
+	background: #d3d3d3;
 	transition: 0.2s all ease;
 }
 
-.table tbody tr:hover td:not(:last-child) {
-	color: white;
+.table tbody tr:hover td {
+	color: #2a2a2a;
 }
 
-.table tbody tr:hover td:last-child {
-	background: white;
+.table tbody tr:hover td .trash-icon {
+	color: white;
 }
 
 .trash-icon {
@@ -373,7 +346,6 @@ select {
 
 .trash-icon:hover {
 	transform: scale(1.3);
-	color: #ff4d4d;
 }
 
 .form-buttons-container {
@@ -394,7 +366,6 @@ select {
 }
 
 .actions-container {
-	width: 97%;
 	margin-bottom: 2rem;
 }
 
@@ -409,7 +380,6 @@ select {
 	background-color: #f0ad4e;
 	color: white;
 	border: 1px solid #f0ad4e;
-	border-radius: 5px;
 	text-decoration: none;
 	letter-spacing: 0.1em;
 }
@@ -417,6 +387,7 @@ select {
 .add-button:hover {
 	color: #f0ad4e;
 	background-color: white;
+	transition: 0.2s all ease;
 }
 
 .input-icon-container {
@@ -508,37 +479,37 @@ select {
 }
 
 .sale-container {
-	padding: 1rem;
+	padding: 1rem 0;
 }
 
-.sale-container-card {
+.summary-container-card {
 	padding: 2rem;
 	border: 1px solid #c0c5c9;
 	cursor: pointer;
     transition: 0.2s all ease;
 }
 
-.sale-container-card:hover {
+.summary-container-card:hover {
 	box-shadow: 1px 1px 5px 0px rgba(128,128,128,.50);
 }
 
-.sale-container-card.cancelled {
+.summary-container-card.cancelled {
 	border-top: 5px solid #b9db1f;
 }
 
-.sale-container-card.pending {
+.summary-container-card.pending {
 	border-top: 5px solid #f0d032;
 }
 
-.sale-container-card.canceled {
+.summary-container-card.canceled {
 	border-top: 5px solid #d11919;
 }
 
-.sale-container-card .section {
+.summary-container-card .section {
 	padding-bottom: 1rem;
 }
 
-.sale-container-card span {
+.summary-container-card span {
 	font-size: 1.1em;
 }
 
@@ -546,12 +517,16 @@ select {
 	font-weight: bolder;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 @media only screen and (max-width: 1366px) {
-	.sale-container-card {
+	.summary-container-card {
 		padding: 1.5rem;
 	}
 
-	.sale-container-card span{
+	.summary-container-card span{
 		font-size: .9em;
 	}
 }

@@ -2,6 +2,7 @@ export interface SquareList {
     id: number;
     date: string;
     totalSales: number;
+    totalSalesMoney: number;
     totalOutputs: number;
     mismatch: number;
     branch: string;

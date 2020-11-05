@@ -23,18 +23,18 @@
             {{currentSale?.company}}
           </div>
         </div>
-        <div class="item-field vertical-columns field-2">
-          <label class="label-field">Cliente (*)</label>
-          <select formControlName="clientID">
-            <option value=""></option>
-            <option *ngFor="let client of clients" [ngValue]="client?.id"> {{client?.name}} </option>
-          </select>
-        </div>
         <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-2">
           <label class="label-field">Sucursal (*)</label>
           <select formControlName="branchID" (change)="getProducts(form.branchID.value)">
             <option value=""></option>
             <option *ngFor="let branch of branchs" [ngValue]="branch?.id"> {{branch?.name}} </option>
+          </select>
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Cliente (*)</label>
+          <select formControlName="client" (change)="selectDiscount(form.client.value)">
+            <option value=""></option>
+            <option *ngFor="let client of clients" [ngValue]="client">{{client?.name}} - {{client?.discount}}% </option>
           </select>
         </div>
         <div class="item-field vertical-columns field-2">
@@ -113,10 +113,22 @@
                 </div>
               </div>
             </div>
-            <div class="item-field flex-container field-1">
+            <div *ngIf="discount > 0" class="item-field flex-container field-1">
               <div class="item-field flex-container total-container">
-                <span class="total-text" for="quantity">Total :</span>
-                <span class="total-text" *ngIf="total > 0"> ${{total | number}} </span>
+                <span class="total-text" for="quantity">Subtotal :</span>
+                <span class="total-text" > ${{subtotal | number}} </span>
+              </div>
+            </div>
+            <div *ngIf="discount > 0" class="item-field flex-container field-1">
+              <div class="item-field flex-container total-container">
+                <span class="total-text" for="quantity">Total (-{{discount}}% Desc):</span>
+                <span class="total-text"> ${{total | number}} </span>
+              </div>
+            </div>
+            <div *ngIf="discount === 0" class="item-field flex-container field-1">
+              <div class="item-field flex-container total-container">
+                <span class="total-text" for="quantity">Total:</span>
+                <span class="total-text"> ${{subtotal | number}} </span>
               </div>
             </div>
             <div class="item-field flex-container-centered field-1">

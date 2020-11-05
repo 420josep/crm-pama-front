@@ -5,6 +5,7 @@ export interface User {
   branchID: number;
   branch: string;
   companyID: number;
+  companyLogo: string;
   company: string;
   dni: string;
   email: string;

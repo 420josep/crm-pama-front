@@ -10,6 +10,7 @@ import { SalesService } from 'src/app/services/sales.service';
 import { ProductSaleList } from 'src/app/templates/sale';
 import { ClientsService } from 'src/app/services/clients.service';
 import { DatePipe } from '@angular/common';
+import { ClientsList } from 'src/app/templates/clients';
 
 @Component({
   selector: 'app-create-sale',
@@ -31,6 +32,8 @@ export class CreateSaleComponent implements OnInit {
   paymentMethods: ListItem[];
   saleStatus: ListItem[];
   total: number = 0;
+  subtotal: number = 0;
+  discount: number = 0;
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -50,6 +53,7 @@ export class CreateSaleComponent implements OnInit {
     // Asignación de variables y método de validación
     this.newSaleForm = this.formBuilder.group({
       date: [today, [Validators.required]],
+      client: ['', [Validators.required]],
       clientID: ['', [Validators.required]],
       billNumber: ['', [Validators.required]],
       branchID: ['', [Validators.required]],
@@ -111,6 +115,7 @@ export class CreateSaleComponent implements OnInit {
       });
     } else {
       this.form.branchID.setValue(this.currentUser.branchID);
+      this.getLastBill(this.currentUser.branchID);
       this.getProducts(this.currentUser.branchID);
     }
 
@@ -120,6 +125,23 @@ export class CreateSaleComponent implements OnInit {
 
     this.newSaleForm.controls.products = this.formBuilder.array([]);
     this.addProduct();
+    this.updateTotal();
+  }
+
+  getBranchData(branchID: number) {
+    this.getLastBill(branchID);
+    this.getProducts(branchID);
+  }
+
+  getLastBill( branchID: number ) {
+    this.branchsService.getLastBillNumber(branchID).subscribe( response => {
+      this.form.billNumber.setValue(response);
+    });
+  }
+
+  selectDiscount(client: ClientsList) {
+    this.form.clientID.setValue(client.id);
+    this.discount = client.discount;
     this.updateTotal();
   }
 
@@ -179,16 +201,23 @@ export class CreateSaleComponent implements OnInit {
 
   updateTotal() {
     this.total = 0;
+    this.subtotal = 0;
     for (let index = 0; index < this.productContainer.length; index++) {
       const product = this.productContainer.controls[index].value.product;
       const quantity = this.productContainer.controls[index].value.quantity;
       if (product && (quantity > 0)) {
-        this.total += product.price * quantity;
+        this.subtotal += product.price * quantity;
+        if (this.discount > 0) {
+          let realDiscount = (100 - this.discount)/100;
+          this.total += Math.floor((product.price * quantity) * realDiscount);
+        } else {
+          this.total = this.subtotal;
+        }
       }
     }
-    if(this.total > 0) {
+    if(this.subtotal > 0) {
       this.form.total.setValue(this.total);
-      this.form.realTotal.setValue(this.total);
+      this.form.realTotal.setValue(this.subtotal);
     } else {
       this.form.total.setValue('');
       this.form.realTotal.setValue('');

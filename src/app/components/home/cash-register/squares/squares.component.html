@@ -11,6 +11,7 @@
           <tr>
             <th>#</th>
             <th>Fecha</th>
+            <th>Total ventas</th>
             <th>Total vendido</th>
             <th>Total gastos</th>
             <th>Descuadre</th>
@@ -23,7 +24,8 @@
           <tr *ngFor="let square of squares; index as i">
             <td [routerLink]="['/menu/caja/cierre', square.id]"> {{(i+offset)+1}} </td>
             <td [routerLink]="['/menu/caja/cierre', square.id]"> {{square?.date}} </td>
-            <td [routerLink]="['/menu/caja/cierre', square.id]"> ${{square?.totalSales | number}} </td>
+            <td [routerLink]="['/menu/caja/cierre', square.id]"> {{square?.totalSales | number}} </td>
+            <td [routerLink]="['/menu/caja/cierre', square.id]"> ${{square?.totalSalesMoney | number}} </td>
             <td [routerLink]="['/menu/caja/cierre', square.id]"> ${{square?.totalOutputs | number}} </td>
             <td [routerLink]="['/menu/caja/cierre', square.id]"> ${{square?.mismatch | number}} </td>
             <td [routerLink]="['/menu/caja/cierre', square.id]"> {{square?.branch}} </td>

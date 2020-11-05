@@ -32,6 +32,7 @@ export interface Sale {
     date: string;
     clientID: number;
     total: number;
+    realTotal: number;
     billNumber: number;
     branchID: number;
     companyID: number;

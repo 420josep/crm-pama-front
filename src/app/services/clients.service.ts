@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { ClientListItem, Client } from '../templates/clients';
+import { ClientListItem, Client, ClientsList } from '../templates/clients';
 import { ToolsService } from './tools.service';
 import { ListItem } from '../templates/global';
 import { User } from '../templates/user';
@@ -180,13 +180,14 @@ export class ClientsService {
         params: params
     };
 
-    return this.http.get<ListItem[]>(this.server + 'get_clients.php', httpOptions).pipe(map(response => {
+    return this.http.get<ClientsList[]>(this.server + 'get_clients.php', httpOptions).pipe(map(response => {
         if (response) {
-            let items: ListItem[] = [];
+            let items: ClientsList[] = [];
             for (let index = 0; index < response.length; index++) {
-                const item: ListItem = {
+                const item: ClientsList = {
                     id: +response[index].id,
                     name: response[index].name,
+                    discount: +response[index].discount,
                 }
                 items.push(item);
             }

@@ -64,6 +64,7 @@ export class AuthService {
       firstName: user.firstName,
       lastName: user.lastName,
       companyID: +user.companyID,
+      companyLogo: user.companyLogo,
       company: user.company,
       branchID: +user.branchID,
       branch: user.branch,

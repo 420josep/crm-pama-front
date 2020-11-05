@@ -23,7 +23,7 @@
 
       <div class="vertical-columns field-1">
         <div *ngFor="let sale of sales; trackBy:trackBySaleID;" class="sale-container">
-          <div [routerLink]="['/menu/ventas', sale.id]" class="sale-container-card space-between" 
+          <div [routerLink]="['/menu/ventas', sale.id]" class="summary-container-card space-between" 
             [ngClass]="{ 'cancelled': sale?.statusID === 1,  'pending': sale?.statusID === 2,  'canceled': sale?.statusID === 3}">
             <div class="vertical-columns" style="flex: 1 1 0px">
               <div class="section vertical-columns">
@@ -65,13 +65,13 @@
               </div>
             </div>
             <div *ngIf="currentUser.type !=3" class="vertical-columns" style="flex: 1 1 0px">
-              <div class="section vertical-columns">
-                <span *ngIf="currentUser.type === 1" class="important-text">Empresa:</span>
-                <span *ngIf="currentUser.type === 1">{{sale?.company}}</span>
+              <div *ngIf="currentUser.type === 1" class="section vertical-columns">
+                <span class="important-text">Empresa:</span>
+                <span >{{sale?.company}}</span>
               </div>
-              <div class="section vertical-columns">
-                <span *ngIf="currentUser.type !=3" class="important-text">Sucursal:</span>
-                <span *ngIf="currentUser.type !=3">{{sale?.branch}}</span>
+              <div *ngIf="currentUser.type !=3" class="section vertical-columns">
+                <span class="important-text">Sucursal:</span>
+                <span >{{sale?.branch}}</span>
               </div>
               <div class="section vertical-columns">
                 <span class="important-text">Fecha de pago:</span>
