@@ -156,6 +156,7 @@ export class UsersService {
           lastName: response.lastName,
           companyID: +response.companyID,
           company: response.company,
+          companyLogo: response.companyLogo,
           branchID: +response.branchID,
           branch: response.branch,
           dni: response.dni,
