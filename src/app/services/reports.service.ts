@@ -10,8 +10,11 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ReportsService {
-  server = 'http://localhost/crm_pama_back/';
+  //server = 'http://localhost/crm_pama_back/';
 
+  // Deploy
+  server = 'https://crm-pama-back.herokuapp.com/';
+  
   constructor(
     private http: HttpClient,
   ) { }

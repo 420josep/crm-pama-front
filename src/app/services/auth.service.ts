@@ -14,7 +14,11 @@ const httpOptions = {
 export class AuthService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  server = 'http://localhost/crm_pama_back/';
+  //server = 'http://localhost/crm_pama_back/';
+
+  // Deploy
+  server = 'https://crm-pama-back.herokuapp.com/';
+  
   private loggedIn = false;
 
   constructor( 

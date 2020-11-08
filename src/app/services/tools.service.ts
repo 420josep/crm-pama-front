@@ -10,8 +10,11 @@ const largeMonths = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Jul
   providedIn: 'root'
 })
 export class ToolsService {
-  server = 'http://localhost/crm_pama_back/';
+  //server = 'http://localhost/crm_pama_back/';
 
+  // Deploy
+  server = 'https://crm-pama-back.herokuapp.com/';
+  
   constructor(
     private http: HttpClient,
   ) { }

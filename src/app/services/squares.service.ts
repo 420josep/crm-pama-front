@@ -20,8 +20,11 @@ const httpOptions = {
 })
 export class SquaresService {
   currentUser: User;
-  server = 'http://localhost/crm_pama_back/';
+  //server = 'http://localhost/crm_pama_back/';
 
+  // Deploy
+  server = 'https://crm-pama-back.herokuapp.com/';
+  
   constructor(
     private http: HttpClient,
     private authService: AuthService,
