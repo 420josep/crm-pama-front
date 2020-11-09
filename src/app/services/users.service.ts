@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { ToolsService } from './tools.service';
 import { AuthService } from './auth.service';
 import { ListItem } from '../templates/global';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -17,10 +18,6 @@ const httpOptions = {
 })
 export class UsersService {
   currentUser: User;
-  //server = 'http://localhost/crm_pama_back/';
-
-  // Deploy
-  server = 'https://crm-pama-back.herokuapp.com/';
 
   constructor(
     private http: HttpClient,
@@ -32,7 +29,7 @@ export class UsersService {
 
   /** POST: add a new hero to the database */
   addUser(user: User) {
-    return this.http.post(this.server + 'create_user.php', user, httpOptions);
+    return this.http.post(environment.apiURL + 'create_user.php', user, httpOptions);
   }
 
   /** POST: add a new hero to the database */
@@ -49,7 +46,7 @@ export class UsersService {
       params: params
     };
     
-    return this.http.get<UserListItem[]>(this.server + 'get_users.php', httpOptions).pipe(map( response => {
+    return this.http.get<UserListItem[]>(environment.apiURL + 'get_users.php', httpOptions).pipe(map( response => {
       if(response){
         let arrayUsers: UserListItem[] = [];
         for (let index = 0; index < response.length; index++) {
@@ -110,7 +107,7 @@ export class UsersService {
       params: params
     };
     
-    return this.http.get<number>(this.server + 'get_users.php', httpOptions).pipe(map( response => {
+    return this.http.get<number>(environment.apiURL + 'get_users.php', httpOptions).pipe(map( response => {
       if(response){
         return +response;
       }else {
@@ -124,12 +121,12 @@ export class UsersService {
       userID: userID,
     };
     const json = JSON.stringify(object);
-    return this.http.post(this.server + 'delete_user.php', json, httpOptions);
+    return this.http.post(environment.apiURL + 'delete_user.php', json, httpOptions);
   }
 
   updateUser(data: User) {
     let json = JSON.stringify(data);
-    return this.http.post(this.server + 'update_user.php', json, httpOptions);
+    return this.http.post(environment.apiURL + 'update_user.php', json, httpOptions);
   }
 
   getUser( userID: string ) {
@@ -144,7 +141,7 @@ export class UsersService {
       params: params
     };
     
-    return this.http.get<User>(this.server + 'get_users.php', httpOptions).pipe(map( response => {
+    return this.http.get<User>(environment.apiURL + 'get_users.php', httpOptions).pipe(map( response => {
       if(response){
         let lastConnection = response.lastConnection;
         if(lastConnection){
@@ -189,7 +186,7 @@ export class UsersService {
       params: params
     };
 
-    return this.http.get<ListItem[]>(this.server + 'get_users.php', httpOptions).pipe(map( response => {
+    return this.http.get<ListItem[]>(environment.apiURL + 'get_users.php', httpOptions).pipe(map( response => {
       if(response){
         let array: ListItem[] = [];
         for (let index = 0; index < response.length; index++) {

@@ -35,7 +35,8 @@ export class EditSaleComponent implements OnInit {
   subtotal: number = 0;
   discount: number = 0;
   currentSale: Sale;
-
+  ivaValue: number = 0;
+  discountValue: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -66,6 +67,8 @@ export class EditSaleComponent implements OnInit {
       statusID: ['', [Validators.required]],
       paymentID: ['', [Validators.required]],
       observation: [''],
+      discountValue: ['', [Validators.required]],
+      ivaValue: ['', [Validators.required]],
       products: this.formBuilder.array([]),
     });
     this.salesService.getSaleStatus().subscribe( response => {
@@ -111,7 +114,12 @@ export class EditSaleComponent implements OnInit {
         this.form.statusID.setValue(this.currentSale.statusID);
         this.form.paymentID.setValue(this.currentSale.paymentID);
         this.form.observation.setValue(this.currentSale.observation);
-
+        this.form.discountValue.setValue(this.currentSale.discountValue);
+        this.form.ivaValue.setValue(this.currentSale.ivaValue);
+        this.discountValue = this.currentSale.discountValue;
+        this.ivaValue = this.currentSale.ivaValue;
+        this.subtotal = this.currentSale.realTotal;
+        this.total = this.currentSale.total;
       }else{
         this.existSale = false;
         this.response = false;
@@ -158,7 +166,19 @@ export class EditSaleComponent implements OnInit {
       this.salesService.getProductsStock(branchID).subscribe(response => {
         this.products = response;
         if (this.products.length > 0) {
-          this.updateTotal();
+          for (let index = 0; index < this.currentSale.products.length; index++) {
+            this.addProduct();
+            const element = this.currentSale.products[index];
+            for (let secondIndex = 0; secondIndex < this.products.length; secondIndex++) {
+              if (this.currentSale.products[index].productID === this.products[secondIndex].id) {
+                this.products[secondIndex]['id'] = this.currentSale.products[index].id;
+                this.products[secondIndex]['productID'] = this.currentSale.products[index].productID;
+                this.productContainer.controls[index].get('product').setValue(this.products[secondIndex]);
+                break;
+              }
+            }
+          }
+          //this.updateTotal();
           this.enableProducts(1);
         } else {
           this.editSaleForm.controls.products = this.formBuilder.array([]);
@@ -202,10 +222,92 @@ export class EditSaleComponent implements OnInit {
   addProductFormGroup() {
     return this.formBuilder.group({
       product: ['', Validators.required],
-      quantity: ['', Validators.required]
+      quantity: [1, Validators.required]
     });
   }
 
+  updateTotal() {
+    this.total = 0;
+    this.subtotal = 0;
+    this.ivaValue = 0;
+    this.discountValue = 0;
+
+    for (let index = 0; index < this.productContainer.length; index++) {
+      const product = this.productContainer.controls[index].value.product;
+      const quantity = this.productContainer.controls[index].value.quantity;
+      if (product && (quantity > 0)) {
+        this.subtotal += product.price * quantity;
+        // Se calcula el iva de cada producto junto con sus cantidades
+        if (product.iva) {
+          this.ivaValue += (product.price * quantity) - Math.floor((product.price * quantity)/1.19);
+        }
+      }
+    }
+    if(this.subtotal > 0) {
+      this.total = this.subtotal;
+      if (this.discount > 0) {
+        let realDiscount = (100 - this.discount)/100;
+        console.log(realDiscount);
+        this.total = Math.floor(this.total * realDiscount);
+      }
+      this.discountValue = this.subtotal - this.total;
+
+      this.form.total.setValue(this.total);
+      this.form.realTotal.setValue(this.subtotal);
+      this.form.discountValue.setValue(this.discountValue);
+      this.form.ivaValue.setValue(this.ivaValue);
+    } else {
+      this.form.total.setValue('');
+      this.form.realTotal.setValue('');
+      this.form.discountValue.setValue('');
+      this.form.ivaValue.setValue('');
+    }
+  }
+
+    /**
+   * Método para validar que no se añada 2 veces el mismo producto
+   */
+  checkSameProducts() {
+    if(this.productContainer.length > 1){
+      for (let index = 0; index < this.productContainer.length; index++) {
+        for (let secondIndex = 0; secondIndex < this.productContainer.length; secondIndex++) {
+          let x = this.productContainer.controls[index].get('product').value;
+          let y = this.productContainer.controls[secondIndex].get('product').value;
+          if (x && y) {
+            if (index != secondIndex) {
+              if (x.id === y.id) {
+                this.productContainer.controls[secondIndex].get('product').setValue(null);
+                this.updateTotal();
+                this.response = false;
+                this.message = "No puedes añadir 2 veces el mismo producto";
+                setTimeout(() => {
+                  this.response = true;
+                  this.message = '';
+                }, 3000);
+                return;
+              }
+            }
+          }
+        }
+      }
+    }
+    this.updateTotal();
+  }
+
+  updateQuantity( position:number, option: number) {
+    if (this.productContainer.controls[position].value.product) {
+      if (option === 1 && this.productContainer.controls[position].value.quantity >= 2) {
+        this.productContainer.controls[position].get('quantity').setValue(this.productContainer.controls[position].value.quantity - 1);
+        this.updateTotal();
+      } 
+      if (option === 2) {
+        this.productContainer.controls[position].get('quantity').setValue(this.productContainer.controls[position].value.quantity + 1);
+        this.updateTotal();
+      }
+    }
+  }
+
+  /*
   updateTotal() {
     this.total = 0;
     this.subtotal = 0;
@@ -243,7 +345,7 @@ export class EditSaleComponent implements OnInit {
       this.form.total.setValue('');
       this.form.realTotal.setValue('');
     }
-  }
+  }*/
 
   checkValues():boolean {
     for (let index = 0; index < this.productContainer.length; index++) {

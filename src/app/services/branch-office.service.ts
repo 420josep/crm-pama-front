@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { BranchOffice, BranchOfficeListItem } from '../templates/company';
 import { ToolsService } from './tools.service';
 import { ListItem } from '../templates/global';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -18,10 +19,6 @@ const httpOptions = {
 })
 export class BranchOfficeService {
   currentUser: User;
-  //server = 'http://localhost/crm_pama_back/';
-
-  // Deploy
-  server = 'https://crm-pama-back.herokuapp.com/';
 
   constructor(
     private http: HttpClient,
@@ -32,7 +29,7 @@ export class BranchOfficeService {
   }
 
   createBranchOffice(branch: any) {
-    return this.http.post(this.server + '/create_branch_office.php', branch, httpOptions);
+    return this.http.post(environment.apiURL + '/create_branch_office.php', branch, httpOptions);
   }
 
   getTotalBranchs( text: string ) {
@@ -47,7 +44,7 @@ export class BranchOfficeService {
       params: params
     };
 
-    return this.http.get<number>(this.server + 'get_branch_offices.php', httpOptions).pipe(map( response => {
+    return this.http.get<number>(environment.apiURL + 'get_branch_offices.php', httpOptions).pipe(map( response => {
       if(response){
         return +response;
       }else {
@@ -70,7 +67,7 @@ export class BranchOfficeService {
       params: params
     };
     
-    return this.http.get<BranchOfficeListItem[]>(this.server + 'get_branch_offices.php', httpOptions).pipe(map( response => {
+    return this.http.get<BranchOfficeListItem[]>(environment.apiURL + 'get_branch_offices.php', httpOptions).pipe(map( response => {
       if(response){
         let arrayBranchs: BranchOfficeListItem[] = [];
         for (let index = 0; index < response.length; index++) {
@@ -124,7 +121,7 @@ export class BranchOfficeService {
       params: params
     };
 
-    return this.http.get<BranchOffice>(this.server + 'get_branch_offices.php', httpOptions).pipe(map( response => {
+    return this.http.get<BranchOffice>(environment.apiURL + 'get_branch_offices.php', httpOptions).pipe(map( response => {
       if(response){
         let creationDate = response.creationDate;
         creationDate = this.tools.sqlToDate(creationDate, 1);
@@ -151,7 +148,7 @@ export class BranchOfficeService {
 
   updateBranch( data: any ) {
     let json = JSON.stringify(data);
-    return this.http.post(this.server + 'update_branch.php', json, httpOptions);
+    return this.http.post(environment.apiURL + 'update_branch.php', json, httpOptions);
   }
 
   getBranchItems( companyID: string ){
@@ -165,7 +162,7 @@ export class BranchOfficeService {
       params: params
     };
 
-    return this.http.get<ListItem[]>(this.server + 'get_branch_offices.php', httpOptions).pipe(map( response => {
+    return this.http.get<ListItem[]>(environment.apiURL + 'get_branch_offices.php', httpOptions).pipe(map( response => {
       if(response){
         let array: ListItem[] = [];
         for (let index = 0; index < response.length; index++) {
@@ -188,7 +185,7 @@ export class BranchOfficeService {
       branchID: branchID,
     };
     const json = JSON.stringify(object);
-    return this.http.post(this.server + 'delete_branch.php', json, httpOptions);
+    return this.http.post(environment.apiURL + 'delete_branch.php', json, httpOptions);
   }
 
   getLastBillNumber ( branchID: number ) {
@@ -200,7 +197,7 @@ export class BranchOfficeService {
       params: params
     };
 
-    return this.http.get<number>(this.server + 'get_last_bill_number.php', httpOptions).pipe(map( response => {
+    return this.http.get<number>(environment.apiURL + 'get_last_bill_number.php', httpOptions).pipe(map( response => {
       if(response){
         return +response;
       }else {

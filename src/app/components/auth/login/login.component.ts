@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.authService.login(this.form.username.value, this.form.password.value).subscribe(response => {
-      console.log(response);
+      //console.log(response);
       if (response['response']) {
           this.router.navigate(["/menu"]);
       } else {

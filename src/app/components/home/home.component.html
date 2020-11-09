@@ -13,7 +13,7 @@
       </div>
 
       <ul class="flex-container links-container vertical-columns">
-        <li class="list-item vertical-columns">
+        <li routerLink="./inicio" routerLinkActive="active" (click)="closeTabs()" class="list-item vertical-columns">
           <div class="vertical-align">
             <div class="flex-container-centered" style="width: 10%;margin-right: 1rem;">
               <i class="fas fa-home icon-item"></i>
@@ -32,6 +32,8 @@
         <div *ngIf="showSales" class="list-content field-1 vertical-columns">
           <a routerLink="./ventas/nueva" (click)="$event.stopPropagation()" class="space-between">Nueva venta</a>
           <a routerLink="./ventas/lista" (click)="$event.stopPropagation()" class="space-between">Todas las ventas</a>
+          <a routerLink="./ventas/cartera" (click)="$event.stopPropagation()" class="space-between">Cartera</a>
+          <a routerLink="./ventas/cotizacion" (click)="$event.stopPropagation()" class="space-between">Cotización</a>
         </div>
         <li routerLink="./productos" routerLinkActive="active" (click)="closeTabs();showProducts = !showProducts"  class="list-item vertical-columns">
           <div class="vertical-align">
@@ -83,7 +85,7 @@
         <div *ngIf="showRegister" class="list-content field-1 vertical-columns">
           <a routerLink="./caja/cerrar" (click)="$event.stopPropagation()" class="space-between">Cerrar caja </a>
           <a routerLink="./caja/cierres" (click)="$event.stopPropagation()" class="space-between">Cuadres de caja</a>
-          <a routerLink="./gastos/reportar" (click)="$event.stopPropagation()" class="space-between">Reportar un gasto</a>
+          <a routerLink="./gastos/registrar" (click)="$event.stopPropagation()" class="space-between">Registrar un gasto</a>
           <a routerLink="./gastos/lista" (click)="$event.stopPropagation()" class="space-between">Gastos</a>
         </div>
         <li *ngIf="currentUser?.type != 3" routerLink="./reportes" routerLinkActive="active" routerLinkActive="active" class="list-item vertical-columns">

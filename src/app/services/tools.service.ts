@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ListItem } from '../templates/global';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 const months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Agos", "Sep", "Oct", "Nov", "Dic"];
 const largeMonths = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -10,10 +11,6 @@ const largeMonths = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Jul
   providedIn: 'root'
 })
 export class ToolsService {
-  //server = 'http://localhost/crm_pama_back/';
-
-  // Deploy
-  server = 'https://crm-pama-back.herokuapp.com/';
   
   constructor(
     private http: HttpClient,
@@ -81,7 +78,7 @@ export class ToolsService {
       params: params
     };
 
-    return this.http.get<ListItem[]>(this.server + 'get_geography.php', httpOptions).pipe(map( response => {
+    return this.http.get<ListItem[]>(environment.apiURL + 'get_geography.php', httpOptions).pipe(map( response => {
       if(response){
         let array: ListItem[] = [];
         for (let index = 0; index < response.length; index++) {
@@ -115,7 +112,7 @@ export class ToolsService {
       params: params
     };
 
-    return this.http.get<ListItem[]>(this.server + 'get_geography.php', httpOptions).pipe(map( response => {
+    return this.http.get<ListItem[]>(environment.apiURL + 'get_geography.php', httpOptions).pipe(map( response => {
       if(response){
         let array: ListItem[] = [];
         for (let index = 0; index < response.length; index++) {
@@ -149,7 +146,7 @@ export class ToolsService {
       params: params
     };
 
-    return this.http.get<ListItem[]>(this.server + 'get_geography.php', httpOptions).pipe(map( response => {
+    return this.http.get<ListItem[]>(environment.apiURL + 'get_geography.php', httpOptions).pipe(map( response => {
       if(response){
         let array: ListItem[] = [];
         for (let index = 0; index < response.length; index++) {

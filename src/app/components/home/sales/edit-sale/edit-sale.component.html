@@ -1,5 +1,8 @@
 <div class="field-1 flex-container">
   <div class="content-container vertical-columns">
+    <div class="field-1" style="margin-top: 3rem;">
+      <a routerLink="/menu/ventas/lista" class="add-button"><i class="fas fa-chevron-left"></i> Volver</a>
+    </div>
     <h1 class="title">Editar venta #{{currentSale?.billNumber}} </h1>
     <div class="text-align-center error-text" *ngIf="!response">
       ¡{{message}}!
@@ -9,42 +12,40 @@
         <div class="field-1 flex-container">
           <label class="warning-text">¡Todos los campos con <span class="error-text">*</span> son obligatorios!</label>
         </div>
-        <div class="item-field vertical-columns field-2">
+        <div class="item-field vertical-columns field-3">
           <label class="label-field" for="date">Fecha (*)</label>
           <input type="date" formControlName="date" id="date" name="date">
         </div>
-        <div class="item-field vertical-columns field-2">
-          <label class="label-field" for="billNumber">Número de factura (*)</label>
-          <input id="billNumber" name="billNumber" formControlName="billNumber" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+        <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-3">
+          <label class="label-field">Empresa</label>
+          {{currentSale?.company}}
         </div>
-        <div *ngIf="currentUser.type === 1" class="flex-container field-1">
-          <div class="item-field vertical-columns field-2">
-            <label class="label-field">Empresa</label>
-            {{currentSale?.company}}
-          </div>
-        </div>
-        <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-2">
+        <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-3">
           <label class="label-field">Sucursal (*)</label>
           <select formControlName="branchID" (change)="getProducts(form.branchID.value)">
             <option value=""></option>
             <option *ngFor="let branch of branchs" [ngValue]="branch?.id"> {{branch?.name}} </option>
           </select>
         </div>
-        <div class="item-field vertical-columns field-2">
+        <div class="item-field vertical-columns field-3">
+          <label class="label-field" for="billNumber">Número de factura (*)</label>
+          <input id="billNumber" name="billNumber" formControlName="billNumber" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+        </div>
+        <div class="item-field vertical-columns field-3">
           <label class="label-field">Cliente (*)</label>
           <select formControlName="client" (change)="selectDiscount(form.client.value)">
             <option value=""></option>
             <option *ngFor="let client of clients" [ngValue]="client">{{client?.name}} - {{client?.discount}}% </option>
           </select>
         </div>
-        <div class="item-field vertical-columns field-2">
+        <div class="item-field vertical-columns field-3">
           <label class="label-field">Estado (*)</label>
           <select formControlName="statusID">
             <option value=""></option>
             <option *ngFor="let status of saleStatus" [ngValue]="status?.id"> {{status?.name}} </option>
           </select>
         </div>
-        <div class="item-field vertical-columns field-2">
+        <div class="item-field vertical-columns field-3">
           <label class="label-field">Método de pago (*)</label>
           <select formControlName="paymentID">
             <option value=""></option>
@@ -55,85 +56,99 @@
           <label class="label-field" for="observation">Observación</label>
           <textarea formControlName="observation" id="observation" name="observation" placeholder="Por si necesitas dejar un comentario de algo sucedido con esta venta" autocomplete="off" maxlength="150" class="input-field text-area"></textarea>
         </div>
-        <div class="field-1">
-          <div class="dynamic-container vertical-columns">
-            <div class="field-1">
-              <label class="total-text">Productos de esta venta</label>
+        <div class="item-field vertical-columns field-1">
+          <label class="label-field">Productos en esta venta</label>
+          <div class="field-1 flex-container columns">
+            <div class="flex-container-centered field-2">
+              <label class="label-field">Producto</label>
             </div>
-            <div *ngFor="let saleProduct of currentSale?.products; let y=index" class="field-1 flex-container">
-              <div class="item-field vertical-columns field-2">
-                <label class="label-field">Producto {{y+1}}</label>
-                <span class="span-field"> {{saleProduct?.product}} </span>
+            <div class="columns field-2">
+              <div class="flex-container-centered field-5">
+                <label class="label-field">IVA</label>
               </div>
-              <div class="flex-container field-2">
-                <div class="item-field vertical-columns field-2">
-                  <label class="label-field" [ngClass]="{ 'is-invalid': productForm?.value.product?.stock < productForm?.value.quantity }" for="quantity">Cantidad</label>
-                  <span class="span-field"> {{saleProduct?.quantity}} </span>
-                </div>
-                <div class="item-field vertical-columns field-2">
-                  <label class="label-field" for="quantity">Valor unitario:</label>
-                  <span class="span-field"> ${{saleProduct?.productPrice | number}} </span>
-                </div>
+              <div class="flex-container-centered field-5">
+                <label class="label-field">Cantidad</label>
               </div>
-              <div class="field-5 flex-container-centered">
-                <i (click)="deleteSaleProduct( saleProduct )" class="far fa-trash-alt trash-icon"></i>
+              <div class="flex-container-centered field-5">
+                <label class="label-field">Valor unitario</label>
+              </div>
+              <div class="flex-container-centered field-5">
+                <label class="label-field">Valor total</label>
               </div>
             </div>
           </div>
-        </div>
-        <div class="field-1">
-          <div class="dynamic-container vertical-columns">
-            <div formArrayName="products" *ngFor="let productForm of productContainer.controls; let i=index">
-              <div formGroupName="{{i}}">
-                <div class="field-1 flex-container">
-                  <div class="item-field vertical-columns field-2">
-                    <label class="label-field">Producto {{i+1}} (*)</label>
-                    <select formControlName="product" (change)="updateTotal()">
-                      <option value=""></option>
-                      <option *ngFor="let product of products;"  [ngValue]="product">{{product?.name}} (Disponibles: {{product?.stock}})</option>
-                    </select>
+          <div formArrayName="products" *ngFor="let product of productContainer.controls; let i=index">
+            <div formGroupName="{{i}}">
+              <div class="field-1 columns">
+                <div class="field-2 flex-container-centered">
+                  <select formControlName="product" class="field-1" (change)="checkSameProducts()">
+                    <option value=""></option>
+                    <option *ngFor="let product of products" [ngValue]="product"> {{product?.name}} (Disponibles: {{product?.stock}}) </option>
+                  </select>
+                </div>
+                <div class="columns field-2">
+                  <div class="field-5 flex-container-centered">
+                    <span *ngIf="product?.value.product && product?.value.product.iva" class="span-field field-1">19%</span>
+                    <span *ngIf="product?.value.product && !product?.value.product.iva" class="span-field field-1">0%</span>
                   </div>
-                  <div class="flex-container field-2">
-                    <div class="item-field vertical-columns field-2">
-                      <label class="label-field" [ngClass]="{ 'is-invalid': productForm?.value.product?.stock < productForm?.value.quantity }" for="quantity">Cantidad (*)</label>
-                      <input 
-                        [ngClass]="{ 'is-invalid': productForm?.value.product?.stock < productForm?.value.quantity }"
-                        id="quantity" name="quantity" formControlName="quantity"
-                        (keyup)="updateTotal()" (blur)="updateTotal()" class="input-field" 
-                        pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+                  <div class="field-5 flex-container-centered relative-container">
+                    <div *ngIf="product?.value.product" (click)="updateQuantity(i, 1)" [ngClass]="{ 'error': product?.value.product && (product?.value.product?.stock < product?.value.quantity) }" class="left-arrow flex-container-centered">
+                      <i class="fas fa-minus"></i>
                     </div>
-                    <div class="item-field vertical-columns field-2">
-                      <label class="label-field" for="quantity">Valor unitario:</label>
-                      <span class="span-field" *ngIf="productForm?.value.product"> ${{productForm?.value.product.price | number}} </span>
+                    <input *ngIf="product?.value.product"
+                      [ngClass]="{ 'is-invalid': product?.value.product && (product?.value.product?.stock < product?.value.quantity) }"
+                      id="quantity{{i+1}}" name="quantity{{i+1}}" formControlName="quantity"
+                      (keyup)="updateTotal()" (blur)="updateTotal()" class="input-field field-1" style="text-align: center;"
+                      pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+
+                    <div *ngIf="product?.value.product" (click)="updateQuantity(i, 2)" [ngClass]="{ 'error': product?.value.product && (product?.value.product?.stock < product?.value.quantity) }" class="rigth-arrow flex-container-centered">
+                      <i class="fas fa-plus"></i>
                     </div>
+                  </div>
+                  <div class="field-5 flex-container-centered">
+                    <span class="span-field field-1" *ngIf="product?.value.product"> ${{product?.value.product.price | number}} </span>
+                  </div>
+                  <div class="field-5 flex-container-centered">
+                    <span class="span-field field-1" *ngIf="product?.value.product && product?.value.quantity > 0"> ${{product?.value.product.price * product?.value.quantity | number}} </span>
                   </div>
                   <div class="field-5 flex-container-centered">
                     <i (click)="removeProduct( i )" class="far fa-trash-alt trash-icon"></i>
                   </div>
                 </div>
               </div>
+
             </div>
-            <div *ngIf="discount > 0" class="item-field flex-container field-1">
-              <div class="item-field flex-container total-container">
-                <span class="total-text" for="quantity">Subtotal :</span>
-                <span class="total-text" > ${{subtotal | number}} </span>
-              </div>
+          </div>
+          <div *ngIf="discount > 0" class="item-field vertical-columns field-1">
+            <div class="flex-container total-container">
+              <span class="total-text" for="quantity">Subtotal :</span>
+              <span class="total-text" > ${{subtotal | number}} </span>
             </div>
-            <div *ngIf="discount > 0" class="item-field flex-container field-1">
-              <div class="item-field flex-container total-container">
-                <span class="total-text" for="quantity">Total (-{{discount}}% Desc):</span>
-                <span class="total-text"> ${{total | number}} </span>
-              </div>
+            <div class="flex-container total-container">
+              <span class="total-text" for="quantity">Descuento (-{{discount}}%):</span>
+              <span class="total-text"> ${{discountValue | number}} </span>
             </div>
-            <div *ngIf="discount === 0" class="item-field flex-container field-1">
-              <div class="item-field flex-container total-container">
-                <span class="total-text" for="quantity">Total:</span>
-                <span class="total-text"> ${{subtotal | number}} </span>
-              </div>
+            <div class="flex-container total-container">
+              <span class="total-text" for="quantity">IVA:</span>
+              <span class="total-text"> ${{ivaValue | number}} </span>
             </div>
-            <div class="item-field flex-container-centered field-1">
-              <button class="primary-button" (click)="addProduct()" type="button">Añadir otro &#43;</button>
+            <div class="flex-container total-container">
+              <span class="total-text" for="quantity">Total:</span>
+              <span class="total-text"> ${{total | number}} </span>
             </div>
+          </div>
+          <div *ngIf="discount === 0" class="item-field vertical-columns field-1">
+            <div class="flex-container total-container">
+              <span class="total-text" for="quantity">IVA:</span>
+              <span class="total-text"> ${{ivaValue | number}} </span>
+            </div>
+            <div class="flex-container total-container">
+              <span class="total-text" for="quantity">Total:</span>
+              <span class="total-text"> ${{subtotal | number}} </span>
+            </div>
+          </div>
+          <div class="item-field flex-container-centered field-1">
+            <button class="primary-button" (click)="addProduct()" type="button">Añadir otro &#43;</button>
           </div>
         </div>
         <div class="field-1 text-align-center error-text" *ngIf="!response">

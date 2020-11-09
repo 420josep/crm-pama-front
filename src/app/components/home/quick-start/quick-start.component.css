@@ -1,0 +1,28 @@
+.quick-start-link {
+    cursor: pointer;
+    padding: 1rem;
+    border: 1px solid #c0c5c9;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    min-height: 100px;
+    font-size: 1.1em;
+    transition: all ease .2s;
+    color: #525a60;
+    text-decoration: none;
+}
+.quick-start-link:hover {
+    letter-spacing: 0.1em;
+    color: #2a2a2a;
+}
+
+.quick-start-link.one:hover {background-color: #F4F1BB;}
+.quick-start-link.two:hover {background-color: #66D7D1;color: white;}
+.quick-start-link.three:hover {background-color: #FFF87F;}
+
+.quick-start-link.four:hover {background-color: #00A5CF;color: white;}
+.quick-start-link.five:hover {background-color: #9FFFCB;}
+.quick-start-link.six:hover {background-color: #25A18E;color: white;}
+
+.quick-start-link.seven:hover {background-color: #f1faee;}
+.quick-start-link.eight:hover {background-color: #a8dadc;}
+.quick-start-link.nine:hover {background-color: #457b9d;color: white;}

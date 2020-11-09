@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -10,10 +11,6 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ReportsService {
-  //server = 'http://localhost/crm_pama_back/';
-
-  // Deploy
-  server = 'https://crm-pama-back.herokuapp.com/';
   
   constructor(
     private http: HttpClient,
@@ -28,6 +25,6 @@ export class ReportsService {
         headers: new HttpHeaders({ 'Content-Type': 'application/json; UTF8' }),
         params: sale
     };
-    return this.http.get(this.server + 'reports.php', httpOptions);
+    return this.http.get(environment.apiURL + 'reports.php', httpOptions);
   }
 }

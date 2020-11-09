@@ -449,8 +449,7 @@ select {
 
 .total-container {
 	margin-left: auto;
-	margin-right: 9rem;
-	padding: .5rem;
+	margin-right: 10rem;
 }
 
 .total-text {
@@ -519,6 +518,39 @@ select {
 
 .hidden {
     visibility: hidden;
+}
+
+.left-arrow,
+.rigth-arrow {
+    height: 100%;
+    position: absolute;
+    color: #808080;
+    font-size: .8em;
+    padding: .5rem;
+    cursor: pointer;
+    transition: all ease .2s;
+}
+
+.left-arrow {
+    border-right: 1px solid #c0c5c9;
+    left: 0;
+    top: 0;
+}
+
+.rigth-arrow {
+    border-left: 1px solid #c0c5c9;
+    right: 0;
+    top: 0;
+}
+
+.left-arrow.error {
+    color:  #ff4d4d;
+    border-right: 1px solid #ff4d4d;
+}
+
+.rigth-arrow.error {
+    color:  #ff4d4d;
+    border-left: 1px solid #ff4d4d;
 }
 
 @media only screen and (max-width: 1366px) {

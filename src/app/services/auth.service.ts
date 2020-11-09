@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '../templates/user';
 import { ToolsService } from './tools.service';
+import { environment } from './../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json; UTF8' })
@@ -14,10 +15,6 @@ const httpOptions = {
 export class AuthService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  //server = 'http://localhost/crm_pama_back/';
-
-  // Deploy
-  server = 'https://crm-pama-back.herokuapp.com/';
   
   private loggedIn = false;
 
@@ -44,7 +41,7 @@ export class AuthService {
     .set('username', username)
     .set('password', password);
 
-    return this.http.get(this.server+'login.php', { responseType: 'json', params }).pipe( map( res => 
+    return this.http.get(environment.apiURL+'login.php', { responseType: 'json', params }).pipe( map( res => 
     {
         if( res['response'] ){
           this.saveUser( res['message'] );

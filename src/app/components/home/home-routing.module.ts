@@ -34,13 +34,19 @@ import { CreateOutputComponent } from './outputs/create-output/create-output.com
 import { OutputsComponent } from './outputs/outputs/outputs.component';
 import { EditOutputComponent } from './outputs/edit-output/edit-output.component';
 import { ReportsComponent } from './reports/reports.component';
+import { QuickStartComponent } from './quick-start/quick-start.component';
+import { QuotationComponent } from './quotation/quotation.component';
+import { WalletComponent } from './wallet/wallet.component';
 
 const routes: Routes = [
   { 
     path: '',
     component:  HomeComponent,
     children: [
-      { path: '', redirectTo: 'ventas/lista' },
+      { path: '', redirectTo: 'inicio' },
+      { path: 'inicio', component:  QuickStartComponent },
+      { path: 'ventas/cotizacion', component:  QuotationComponent },
+      { path: 'ventas/cartera', component:  WalletComponent },
       { path: 'ventas', redirectTo: 'ventas/lista' },
       { path: 'ventas/nueva', component:  CreateSaleComponent },
       { path: 'ventas/lista', component:  SalesComponent },
@@ -77,7 +83,7 @@ const routes: Routes = [
       { path: 'caja/cerrar', component:  CreateSquareComponent },
       { path: 'caja/cierres', component:  SquaresComponent },
       { path: 'caja/cierre/:id', component: EditSquareComponent },
-      { path: 'gastos/reportar', component:  CreateOutputComponent },
+      { path: 'gastos/registrar', component:  CreateOutputComponent },
       { path: 'gastos/lista', component:  OutputsComponent },
       { path: 'gastos/:id', component: EditOutputComponent },
       { path: 'reportes', component: ReportsComponent },

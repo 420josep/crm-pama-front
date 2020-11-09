@@ -7,6 +7,7 @@ import { ListItem } from '../templates/global';
 import { stringify } from 'querystring';
 import { ProductSaleList, SaleList, Sale, EditProductSale } from '../templates/sale';
 import { ToolsService } from './tools.service';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -18,10 +19,6 @@ const httpOptions = {
 })
 export class SalesService {
   currentUser: User;
-  //server = 'http://localhost/crm_pama_back/';
-
-  // Deploy
-  server = 'https://crm-pama-back.herokuapp.com/';
   
   constructor(
     private http: HttpClient,
@@ -46,7 +43,7 @@ export class SalesService {
         params: params
     };
 
-    return this.http.get<ListItem[]>(this.server + 'get_sales.php', httpOptions).pipe(map(response => {
+    return this.http.get<ListItem[]>(environment.apiURL + 'get_sales.php', httpOptions).pipe(map(response => {
         if (response) {
             let items: ListItem[] = [];
             for (let index = 0; index < response.length; index++) {
@@ -74,7 +71,7 @@ export class SalesService {
         params: params
     };
 
-    return this.http.get<ListItem[]>(this.server + 'get_sales.php', httpOptions).pipe(map(response => {
+    return this.http.get<ListItem[]>(environment.apiURL + 'get_sales.php', httpOptions).pipe(map(response => {
         if (response) {
             let items: ListItem[] = [];
             for (let index = 0; index < response.length; index++) {
@@ -92,7 +89,7 @@ export class SalesService {
   }
 
   createSale(sale: any) {
-    return this.http.post(this.server + 'create_sale.php', sale, httpOptions);
+    return this.http.post(environment.apiURL + 'create_sale.php', sale, httpOptions);
   }
 
   getProductsStock( branchID: number ) {
@@ -114,7 +111,7 @@ export class SalesService {
         params: params,
     };
 
-    return this.http.get<ProductSaleList[]>(this.server + 'get_products.php', httpOptions).pipe(map(response => {
+    return this.http.get<ProductSaleList[]>(environment.apiURL + 'get_products.php', httpOptions).pipe(map(response => {
         if (response) {
           let items: ProductSaleList[] = [];
             for (let index = 0; index < response.length; index++) {
@@ -123,6 +120,7 @@ export class SalesService {
                     name: response[index].name,
                     price: +response[index].price,
                     stock: +response[index].stock,
+                    iva: response[index].iva
                 }
                 items.push(item);
             }
@@ -145,7 +143,7 @@ export class SalesService {
       params: params
     };
 
-    return this.http.get<number>(this.server + 'get_sales.php', httpOptions).pipe(map( response => {
+    return this.http.get<number>(environment.apiURL + 'get_sales.php', httpOptions).pipe(map( response => {
       if(response){
         return +response;
       }else {
@@ -175,8 +173,8 @@ export class SalesService {
         headers: headers,
         params: params,
     };
-
-    return this.http.get<SaleList[]>(this.server + 'get_sales.php?random=' + (new Date()).getTime(), httpOptions).pipe(map( response => {
+    
+    return this.http.get<SaleList[]>(environment.apiURL + 'get_sales.php?random=' + (new Date()).getTime(), httpOptions).pipe(map( response => {
       if(response){
         let array: SaleList[] = [];
         for (let index = 0; index < response.length; index++) {
@@ -235,7 +233,7 @@ export class SalesService {
       params: params
     };
 
-    return this.http.get<Sale>(this.server + 'get_sales.php', httpOptions).pipe(map( response => {
+    return this.http.get<Sale>(environment.apiURL + 'get_sales.php', httpOptions).pipe(map( response => {
       if(response){
           let company = "";
           let branch, companyID = 0;
@@ -256,9 +254,11 @@ export class SalesService {
           for (let index = 0; index < response.products.length; index++) {
             const item: EditProductSale = {
               id: +response.products[index].id,
+              productID: +response.products[index].productID,
               product: response.products[index].product,
               productPrice: +response.products[index].productPrice,
               quantity: +response.products[index].quantity,
+              iva: response.products[index].iva
             }
             products.push(item);
           }
@@ -276,6 +276,8 @@ export class SalesService {
             statusID: +response.statusID,
             paymentID: +response.paymentID,
             observation: response.observation,
+            discountValue: +response.discountValue,
+            ivaValue: +response.ivaValue,
             products: products
           }
           return item;
@@ -290,7 +292,7 @@ export class SalesService {
   updateSale( data: any ) {
     //let json = JSON.stringify(data);
     //console.log(json);
-    return this.http.post(this.server + 'update_sale.php', data, httpOptions);
+    return this.http.post(environment.apiURL + 'update_sale.php', data, httpOptions);
   }
 
   deleteSaleProduct(saleDetailID: number) {
@@ -298,7 +300,7 @@ export class SalesService {
       saleDetailID: saleDetailID,
     };
     const json = JSON.stringify(object);
-    return this.http.post(this.server + 'delete_sale_product.php', json, httpOptions);
+    return this.http.post(environment.apiURL + 'delete_sale_product.php', json, httpOptions);
   }
 
 

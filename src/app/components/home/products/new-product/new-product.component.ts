@@ -50,6 +50,7 @@ export class NewProductComponent implements OnInit {
       price: ['', [Validators.required]],
       userID: [this.currentUser.id, [Validators.required]],
       companyID: ['', [Validators.required]],
+      iva: [true, [Validators.required]],
     });
     
     if(this.currentUser.type != 1){

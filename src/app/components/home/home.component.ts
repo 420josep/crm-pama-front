@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/templates/user';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +27,7 @@ export class HomeComponent implements OnInit {
       if(user != null){
         this.currentUser = user;
         // TODO pendiente por cambiar a servidor
-        this.companyLogo = 'http://localhost/crm_pama_back/' + this.currentUser.companyLogo;
+        this.companyLogo = environment.apiURL + this.currentUser.companyLogo;
       }
     });
   }

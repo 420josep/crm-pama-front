@@ -37,7 +37,6 @@ export class EditProductComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private companiesService: CompaniesService,
-    private categoriesService: CategoryService,
     private productsService: ProductsService
   ) { }
 
@@ -56,6 +55,7 @@ export class EditProductComponent implements OnInit {
       price: ['', [Validators.required]],
       userID: [this.currentUser.id, [Validators.required]],
       companyID: ['', [Validators.required]],
+      iva: ['', [Validators.required]],
     });
     if(this.currentUser.type != 1){
       this.form.companyID.setValue(this.currentUser.companyID);
@@ -81,6 +81,7 @@ export class EditProductComponent implements OnInit {
         this.form.presentationID.setValue(this.currentProduct.presentationID);
         this.form.content.setValue(this.currentProduct.content);
         this.form.price.setValue(this.currentProduct.price);
+        this.form.iva.setValue(this.currentProduct.iva);
         if(this.currentUser.type === 1){
           this.form.companyID.setValue(this.currentProduct.companyID);
           this.form.state.setValue(this.currentProduct.state);

@@ -1,0 +1,34 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Acceso Rápido</h1>
+    <div class="list-content-container columns field-1" style="margin-top:5rem">
+      <div class="flex-container field-3">
+        <a routerLink="/menu/ventas/nueva" class="quick-start-link field-1 flex-container-centered one">Registrar una venta</a>
+      </div>
+      <div class="flex-container field-3">
+        <a routerLink="/menu/ventas/lista" class="quick-start-link field-1 flex-container-centered two">Lista de ventas</a>
+      </div>
+      <div class="flex-container field-3">
+        <a routerLink="/menu/productos/inventario" class="quick-start-link field-1 flex-container-centered three">Ver inventario</a>
+      </div>
+      <div class="flex-container field-3">
+        <a routerLink="/menu/clientes/nuevo" class="quick-start-link field-1 flex-container-centered four">Registrar un cliente</a>
+      </div>
+      <div class="flex-container field-3">
+        <a routerLink="/menu/entradas/nueva" class="quick-start-link field-1 flex-container-centered five">Registrar un ingreso de mercancía</a>
+      </div>
+      <div class="flex-container field-3">
+        <a routerLink="/menu/gastos/registrar" class="quick-start-link field-1 flex-container-centered six">Registrar un gasto</a>
+      </div>
+      <div class="flex-container field-3">
+        <a routerLink="/menu/caja/cerrar" class="quick-start-link field-1 flex-container-centered seven">Cerrar caja</a>
+      </div>
+      <div *ngIf="currentUser?.type != 3" class="flex-container field-3">
+        <a routerLink="/menu/reportes" class="quick-start-link field-1 flex-container-centered eight">Reportes</a>
+      </div>
+      <div class="flex-container field-3">
+        <a routerLink="/menu/productos/lista" class="quick-start-link field-1 flex-container-centered nine">Lista de productos</a>
+      </div>
+    </div>
+  </div>
+</div>

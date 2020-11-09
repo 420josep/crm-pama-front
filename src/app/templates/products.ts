@@ -24,6 +24,7 @@ export interface Product {
     price: number;
     companyID: number;
     creationDate: string;
+    iva: boolean;
     state: string;
 }
 

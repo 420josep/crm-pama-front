@@ -8,6 +8,7 @@ export interface ProductSaleList {
     name: string;
     price: number;
     stock: number;
+    iva: boolean;
 }
 
 export interface SaleList {
@@ -40,13 +41,17 @@ export interface Sale {
     statusID: number;
     paymentID: number;
     observation: string;
+    discountValue: number;
+    ivaValue: number;
     products: EditProductSale[];
 }
 
 export interface EditProductSale {
     id: number;
+    productID: number;
     product: string;
     productPrice: number;
     quantity: number;
+    iva: boolean;
 }
 

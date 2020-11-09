@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { ToolsService } from './tools.service';
 import { ListItem } from '../templates/global';
 import { EntriesList, Entry, ProductEntry } from '../templates/entries';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -18,10 +19,6 @@ const httpOptions = {
 })
 export class EntriesService {
   currentUser: User;
-  //server = 'http://localhost/crm_pama_back/';
-
-  // Deploy
-  server = 'https://crm-pama-back.herokuapp.com/';
 
   constructor(
     private http: HttpClient,
@@ -32,7 +29,7 @@ export class EntriesService {
   }
 
   createEntry(entry: any) {
-    return this.http.post(this.server + 'create_entry.php', entry, httpOptions);
+    return this.http.post(environment.apiURL + 'create_entry.php', entry, httpOptions);
   }
 
   getTotalEntries( text: string ) {
@@ -47,7 +44,7 @@ export class EntriesService {
       params: params
     };
 
-    return this.http.get<number>(this.server + 'get_entries.php', httpOptions).pipe(map( response => {
+    return this.http.get<number>(environment.apiURL + 'get_entries.php', httpOptions).pipe(map( response => {
       if(response){
         return +response;
       }else {
@@ -69,7 +66,7 @@ export class EntriesService {
       params: params
     };
 
-    return this.http.get<EntriesList[]>(this.server + 'get_entries.php', httpOptions).pipe(map( response => {
+    return this.http.get<EntriesList[]>(environment.apiURL + 'get_entries.php', httpOptions).pipe(map( response => {
       if(response){
         let array: EntriesList[] = [];
         for (let index = 0; index < response.length; index++) {
@@ -116,7 +113,7 @@ export class EntriesService {
       params: params
     };
 
-    return this.http.get<Entry>(this.server + 'get_entries.php', httpOptions).pipe(map( response => {
+    return this.http.get<Entry>(environment.apiURL + 'get_entries.php', httpOptions).pipe(map( response => {
       console.log(response);
       if(response){
         let date = response.date;

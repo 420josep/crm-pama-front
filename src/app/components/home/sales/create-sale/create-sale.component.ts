@@ -34,6 +34,8 @@ export class CreateSaleComponent implements OnInit {
   total: number = 0;
   subtotal: number = 0;
   discount: number = 0;
+  ivaValue: number = 0;
+  discountValue: number = 0;
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -65,6 +67,8 @@ export class CreateSaleComponent implements OnInit {
       products: this.formBuilder.array([]),
       userID: [this.currentUser.id, [Validators.required]],
       companyID: ['', [Validators.required]],
+      discountValue: ['', [Validators.required]],
+      ivaValue: ['', [Validators.required]],
     });
     
     this.addProduct();
@@ -73,8 +77,8 @@ export class CreateSaleComponent implements OnInit {
       this.form.companyID.setValue(this.currentUser.companyID);
       this.getData(this.currentUser.companyID);
     }else{
-      this.form.clientID.setValue('');
-      this.form.clientID.disable();
+      this.form.client.setValue('');
+      this.form.client.disable();
       this.form.branchID.setValue('');
       this.form.branchID.disable();
       this.companiesService.getCompaniesList().subscribe(response => {
@@ -98,15 +102,16 @@ export class CreateSaleComponent implements OnInit {
     if( companyID == null || companyID == 0 )
     {
       this.form.clientID.setValue('');
-      this.form.clientID.disable();
+      this.form.client.setValue('');
+      this.form.client.disable();
       this.form.branchID.setValue('');
       this.form.branchID.disable();
       return;
     }
     this.form.clientID.setValue('');
-    this.form.clientID.enable();
-    this.form.branchID.setValue('');
-    this.form.branchID.enable();
+    this.form.client.setValue('');
+    this.form.client.enable();
+
     if (this.currentUser.type != 3) {
       this.branchsService.getBranchItems(companyID.toString()).subscribe(response => {
         this.branchs = response;
@@ -155,6 +160,7 @@ export class CreateSaleComponent implements OnInit {
     } else {
       this.salesService.getProductsStock(branchID).subscribe(response => {
         this.products = response;
+        console.log(this.products);
         if (this.products.length > 0) {
           this.enableProducts();
         } else {
@@ -195,32 +201,88 @@ export class CreateSaleComponent implements OnInit {
   addProductFormGroup() {
     return this.formBuilder.group({
       product: [{value:'', disabled: true}, Validators.required],
-      quantity: ['', Validators.required]
+      quantity: [1, Validators.required]
     });
   }
 
   updateTotal() {
     this.total = 0;
     this.subtotal = 0;
+    this.ivaValue = 0;
+    this.discountValue = 0;
+
     for (let index = 0; index < this.productContainer.length; index++) {
       const product = this.productContainer.controls[index].value.product;
       const quantity = this.productContainer.controls[index].value.quantity;
       if (product && (quantity > 0)) {
         this.subtotal += product.price * quantity;
-        if (this.discount > 0) {
-          let realDiscount = (100 - this.discount)/100;
-          this.total += Math.floor((product.price * quantity) * realDiscount);
-        } else {
-          this.total = this.subtotal;
+        // Se calcula el iva de cada producto junto con sus cantidades
+        if (product.iva) {
+          this.ivaValue += (product.price * quantity) - Math.floor((product.price * quantity)/1.19);
         }
       }
     }
     if(this.subtotal > 0) {
+      this.total = this.subtotal;
+      if (this.discount > 0) {
+        let realDiscount = (100 - this.discount)/100;
+        console.log(realDiscount);
+        this.total = Math.floor(this.total * realDiscount);
+      }
+      this.discountValue = this.subtotal - this.total;
+
       this.form.total.setValue(this.total);
       this.form.realTotal.setValue(this.subtotal);
+      this.form.discountValue.setValue(this.discountValue);
+      this.form.ivaValue.setValue(this.ivaValue);
     } else {
       this.form.total.setValue('');
       this.form.realTotal.setValue('');
+      this.form.discountValue.setValue('');
+      this.form.ivaValue.setValue('');
+    }
+  }
+
+  /**
+   * Método para validar que no se añada 2 veces el mismo producto
+   */
+  checkSameProducts() {
+    if(this.productContainer.length > 1){
+      for (let index = 0; index < this.productContainer.length; index++) {
+        for (let secondIndex = 0; secondIndex < this.productContainer.length; secondIndex++) {
+          let x = this.productContainer.controls[index].get('product').value;
+          let y = this.productContainer.controls[secondIndex].get('product').value;
+          if (x && y) {
+            if (index != secondIndex) {
+              if (x.id === y.id) {
+                this.productContainer.controls[secondIndex].get('product').setValue(null);
+                this.updateTotal();
+                this.response = false;
+                this.message = "No puedes añadir 2 veces el mismo producto";
+                setTimeout(() => {
+                  this.response = true;
+                  this.message = '';
+                }, 3000);
+                return;
+              }
+            }
+          }
+        }
+      }
+    }
+    this.updateTotal();
+  }
+
+  updateQuantity( position:number, option: number) {
+    if (this.productContainer.controls[position].value.product) {
+      if (option === 1 && this.productContainer.controls[position].value.quantity >= 2) {
+        this.productContainer.controls[position].get('quantity').setValue(this.productContainer.controls[position].value.quantity - 1);
+        this.updateTotal();
+      } 
+      if (option === 2) {
+        this.productContainer.controls[position].get('quantity').setValue(this.productContainer.controls[position].value.quantity + 1);
+        this.updateTotal();
+      }
     }
   }
 
@@ -235,7 +297,6 @@ export class CreateSaleComponent implements OnInit {
     return true;
   }
 
-  //Falta aplicar el descuento del cliente
   createSale(){
     if(this.newSaleForm.valid){
 

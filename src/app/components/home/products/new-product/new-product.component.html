@@ -1,5 +1,8 @@
 <div class="field-1 flex-container">
   <div class="content-container vertical-columns">
+    <div class="field-1" style="margin-top: 3rem;">
+      <a routerLink="/menu/productos/lista" class="add-button"><i class="fas fa-chevron-left"></i> Volver</a>
+    </div>
     <h1 class="title">Nuevo producto</h1>
     <div class="text-align-center error-text" *ngIf="!response">
       ¡{{message}}!
@@ -28,7 +31,7 @@
         <div *ngIf="currentUser.type === 1" class="flex-container field-1">
           <div class="item-field vertical-columns field-2">
             <label class="label-field">Empresa (*)</label>
-            <select formControlName="companyID" (change)="getCategories(form.companyID.value)">
+            <select formControlName="companyID">
               <option value=""></option>
               <option *ngFor="let company of companies" [ngValue]="company?.id"> {{company?.name}} </option>
             </select>
@@ -41,6 +44,10 @@
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="price">Precio (*)</label>
           <input id="price" name="price" formControlName="price" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="iva">¿Posee IVA? (*)</label>
+          <input autocomplete="off" formControlName="iva" [checked]="form.iva.value" id="iva" name="iva" class="input-field" type="checkbox">
         </div>
         <div class="field-1 flex-container">
           <label class="warning-text">¡Todos los campos con <span class="error-text">*</span> son obligatorios!</label>

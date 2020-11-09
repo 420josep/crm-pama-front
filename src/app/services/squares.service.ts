@@ -8,6 +8,7 @@ import { stringify } from 'querystring';
 import { ProductSaleList, SaleList, Sale, EditProductSale } from '../templates/sale';
 import { ToolsService } from './tools.service';
 import { SquareList, Square } from '../templates/squares';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -20,10 +21,6 @@ const httpOptions = {
 })
 export class SquaresService {
   currentUser: User;
-  //server = 'http://localhost/crm_pama_back/';
-
-  // Deploy
-  server = 'https://crm-pama-back.herokuapp.com/';
   
   constructor(
     private http: HttpClient,
@@ -46,7 +43,7 @@ export class SquaresService {
         params: params
     };
 
-    return this.http.get(this.server + 'get_squares.php', httpOptions);
+    return this.http.get(environment.apiURL + 'get_squares.php', httpOptions);
   }
 
   getSquareData( date: string, branchID: number ) {
@@ -62,11 +59,11 @@ export class SquaresService {
         params: params
     };
 
-    return this.http.get(this.server + 'get_squares.php', httpOptions);
+    return this.http.get(environment.apiURL + 'get_squares.php', httpOptions);
   }
 
   createSquare(square: any) {
-    return this.http.post(this.server + 'create_square.php', square, httpOptions);
+    return this.http.post(environment.apiURL + 'create_square.php', square, httpOptions);
   }
 
   getTotalSquares( text: string ) {
@@ -81,7 +78,7 @@ export class SquaresService {
       params: params
     };
 
-    return this.http.get<number>(this.server + 'get_squares.php', httpOptions).pipe(map( response => {
+    return this.http.get<number>(environment.apiURL + 'get_squares.php', httpOptions).pipe(map( response => {
       if(response){
         return +response;
       }else {
@@ -103,7 +100,7 @@ export class SquaresService {
       params: params
     };
 
-    return this.http.get<SquareList[]>(this.server + 'get_squares.php', httpOptions).pipe(map( response => {
+    return this.http.get<SquareList[]>(environment.apiURL + 'get_squares.php', httpOptions).pipe(map( response => {
       if(response){
         let array: SquareList[] = [];
         for (let index = 0; index < response.length; index++) {
@@ -154,7 +151,7 @@ export class SquaresService {
       params: params
     };
 
-    return this.http.get<Square>(this.server + 'get_squares.php', httpOptions).pipe(map( response => {
+    return this.http.get<Square>(environment.apiURL + 'get_squares.php', httpOptions).pipe(map( response => {
       if(response){
           let company, branch = "";
           let date = this.tools.sqlToDate(response.date, 2);
@@ -197,7 +194,7 @@ export class SquaresService {
   updateSquare( data: any ) {
     //let json = JSON.stringify(data);
     //console.log(json);
-    return this.http.post(this.server + 'update_square.php', data, httpOptions);
+    return this.http.post(environment.apiURL + 'update_square.php', data, httpOptions);
   }
 
   deleteSquare(squareID: number) {
@@ -205,7 +202,7 @@ export class SquaresService {
       squareID: squareID,
     };
     const json = JSON.stringify(object);
-    return this.http.post(this.server + 'delete_square.php', json, httpOptions);
+    return this.http.post(environment.apiURL + 'delete_square.php', json, httpOptions);
   }
 
 }

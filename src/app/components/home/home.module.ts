@@ -40,6 +40,9 @@ import { EditSquareComponent } from './cash-register/edit-square/edit-square.com
 import { ReportsComponent } from './reports/reports.component';
 import {  HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomHttpInterceptorService } from 'src/app/services/interceptor';
+import { QuickStartComponent } from './quick-start/quick-start.component';
+import { QuotationComponent } from './quotation/quotation.component';
+import { WalletComponent } from './wallet/wallet.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +80,9 @@ import { CustomHttpInterceptorService } from 'src/app/services/interceptor';
     SquaresComponent,
     EditSquareComponent,
     ReportsComponent,
+    QuickStartComponent,
+    QuotationComponent,
+    WalletComponent,
   ],
   imports: [
     CommonModule,

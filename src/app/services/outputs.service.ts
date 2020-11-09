@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { ToolsService } from './tools.service';
 import { ListItem } from '../templates/global';
 import { OutputList, Output } from '../templates/outputs';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -17,10 +18,6 @@ const httpOptions = {
 })
 export class OutputsService {
   currentUser: User;
-  //server = 'http://localhost/crm_pama_back/';
-
-  // Deploy
-  server = 'https://crm-pama-back.herokuapp.com/';
 
   constructor(
     private http: HttpClient,
@@ -33,7 +30,7 @@ export class OutputsService {
   createOutput(output: any) {
     //let json = JSON.stringify(output);
     //console.log(json);
-    return this.http.post(this.server + 'create_output.php', output, httpOptions);
+    return this.http.post(environment.apiURL + 'create_output.php', output, httpOptions);
   }
 
   getTotalOutputs( text: string ) {
@@ -48,7 +45,7 @@ export class OutputsService {
       params: params
     };
 
-    return this.http.get<number>(this.server + 'get_outputs.php', httpOptions).pipe(map( response => {
+    return this.http.get<number>(environment.apiURL + 'get_outputs.php', httpOptions).pipe(map( response => {
       if(response){
         return +response;
       }else {
@@ -70,7 +67,7 @@ export class OutputsService {
       params: params
     };
 
-    return this.http.get<OutputList[]>(this.server + 'get_outputs.php', httpOptions).pipe(map( response => {
+    return this.http.get<OutputList[]>(environment.apiURL + 'get_outputs.php', httpOptions).pipe(map( response => {
       if(response){
         let array: OutputList[] = [];
         for (let index = 0; index < response.length; index++) {
@@ -115,7 +112,7 @@ export class OutputsService {
       outputID: outputID,
     };
     const json = JSON.stringify(object);
-    return this.http.post(this.server + 'delete_output.php', json, httpOptions);
+    return this.http.post(environment.apiURL + 'delete_output.php', json, httpOptions);
   }
 
   getOutput( outputID: string ) {
@@ -130,7 +127,7 @@ export class OutputsService {
       params: params
     };
 
-    return this.http.get<Output>(this.server + 'get_outputs.php', httpOptions).pipe(map( response => {
+    return this.http.get<Output>(environment.apiURL + 'get_outputs.php', httpOptions).pipe(map( response => {
       if(response){
           let company, date = "";
           date = this.tools.sqlToDate(response.date, 1);
@@ -170,6 +167,6 @@ export class OutputsService {
   updateOutput( data: any ) {
     //let json = JSON.stringify(data);
     //console.log(json);
-    return this.http.post(this.server + 'update_output.php', data, httpOptions);
+    return this.http.post(environment.apiURL + 'update_output.php', data, httpOptions);
   }
 }

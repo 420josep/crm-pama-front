@@ -6,6 +6,7 @@ import { User } from '../templates/user';
 import { map } from 'rxjs/operators';
 import { ToolsService } from './tools.service';
 import { ListItem } from '../templates/global';
+import { environment } from 'src/environments/environment';
 
 
 const httpOptions = {
@@ -19,10 +20,6 @@ const httpOptions = {
 })
 export class ProviderServices {
   currentUser: User;
-  //server = 'http://localhost/crm_pama_back/';
-
-  // Deploy
-  server = 'https://crm-pama-back.herokuapp.com/';
 
   constructor(
     private http: HttpClient,
@@ -34,7 +31,7 @@ export class ProviderServices {
 
   /** POST: add a new hero to the database */
   addProvider(provider: Provider) {
-    return this.http.post(this.server + 'create_provider.php', provider, httpOptions);
+    return this.http.post(environment.apiURL + 'create_provider.php', provider, httpOptions);
   }
 
   /** POST: add a new hero to the database */
@@ -51,7 +48,7 @@ export class ProviderServices {
       params: params
     };
 
-    return this.http.get<ProviderListItem[]>(this.server + 'get_providers.php', httpOptions).pipe(map( response => {
+    return this.http.get<ProviderListItem[]>(environment.apiURL + 'get_providers.php', httpOptions).pipe(map( response => {
       if(response){
         let array: ProviderListItem[] = [];
         for (let index = 0; index < response.length; index++) {
@@ -102,7 +99,7 @@ export class ProviderServices {
       params: params
     };
 
-    return this.http.get<number>(this.server + 'get_providers.php', httpOptions).pipe(map( response => {
+    return this.http.get<number>(environment.apiURL + 'get_providers.php', httpOptions).pipe(map( response => {
       if(response){
         return +response;
       }else {
@@ -123,7 +120,7 @@ export class ProviderServices {
       params: params
     };
 
-    return this.http.get<Provider>(this.server + 'get_providers.php', httpOptions).pipe(map( response => {
+    return this.http.get<Provider>(environment.apiURL + 'get_providers.php', httpOptions).pipe(map( response => {
       if(response){
           let creationDate = response.creationDate;
           creationDate = this.tools.sqlToDate(creationDate, 1);
@@ -170,7 +167,7 @@ export class ProviderServices {
   updateProvider( data: any ) {
     let json = JSON.stringify(data);
     console.log(json);
-    return this.http.post(this.server + 'update_provider.php', json, httpOptions);
+    return this.http.post(environment.apiURL + 'update_provider.php', json, httpOptions);
   }
 
   /** DELETE: delete the hero from the server */
@@ -179,7 +176,7 @@ export class ProviderServices {
       providerID: providerID,
     };
     const json = JSON.stringify(object);
-    return this.http.post(this.server + 'delete_provider.php', json, httpOptions);
+    return this.http.post(environment.apiURL + 'delete_provider.php', json, httpOptions);
   }
 
   getProvidersList( companyID: number ) {
@@ -193,7 +190,7 @@ export class ProviderServices {
         params: params
     };
 
-    return this.http.get<ListItem[]>(this.server + 'get_providers.php', httpOptions).pipe(map(response => {
+    return this.http.get<ListItem[]>(environment.apiURL + 'get_providers.php', httpOptions).pipe(map(response => {
         if (response) {
             let items: ListItem[] = [];
             for (let index = 0; index < response.length; index++) {

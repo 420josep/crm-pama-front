@@ -6,6 +6,7 @@ import { ToolsService } from './tools.service';
 import { ListItem } from '../templates/global';
 import { User } from '../templates/user';
 import { AuthService } from './auth.service';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -17,10 +18,6 @@ const httpOptions = {
 })
 export class ClientsService {
   currentUser: User;
-  //server = 'http://localhost/crm_pama_back/';
-
-  // Deploy
-  server = 'https://crm-pama-back.herokuapp.com/';
   
   constructor(
     private http: HttpClient,
@@ -31,7 +28,7 @@ export class ClientsService {
   }
 
   createClient(client: any) {
-    return this.http.post(this.server + 'create_client.php', client, httpOptions);
+    return this.http.post(environment.apiURL + 'create_client.php', client, httpOptions);
   }
 
   getTotalClients( text: string ) {
@@ -46,7 +43,7 @@ export class ClientsService {
       params: params
     };
 
-    return this.http.get<number>(this.server + 'get_clients.php', httpOptions).pipe(map( response => {
+    return this.http.get<number>(environment.apiURL + 'get_clients.php', httpOptions).pipe(map( response => {
       if(response){
         return +response;
       }else {
@@ -68,7 +65,7 @@ export class ClientsService {
       params: params
     };
 
-    return this.http.get<ClientListItem[]>(this.server + 'get_clients.php', httpOptions).pipe(map( response => {
+    return this.http.get<ClientListItem[]>(environment.apiURL + 'get_clients.php', httpOptions).pipe(map( response => {
       if(response){
         let array: ClientListItem[] = [];
         for (let index = 0; index < response.length; index++) {
@@ -110,7 +107,7 @@ export class ClientsService {
       clientID: clientID,
     };
     const json = JSON.stringify(object);
-    return this.http.post(this.server + 'delete_client.php', json, httpOptions);
+    return this.http.post(environment.apiURL + 'delete_client.php', json, httpOptions);
   }
 
   getClient( clientID: string ) {
@@ -125,7 +122,7 @@ export class ClientsService {
       params: params
     };
 
-    return this.http.get<Client>(this.server + 'get_clients.php', httpOptions).pipe(map( response => {
+    return this.http.get<Client>(environment.apiURL + 'get_clients.php', httpOptions).pipe(map( response => {
       if(response){
           let creationDate = response.creationDate;
           creationDate = this.tools.sqlToDate(creationDate,1);
@@ -169,7 +166,7 @@ export class ClientsService {
 
   updateClient( data: any ) {
     let json = JSON.stringify(data);
-    return this.http.post(this.server + 'update_client.php', json, httpOptions);
+    return this.http.post(environment.apiURL + 'update_client.php', json, httpOptions);
   }
 
   getClientsList( companyID: number ) {
@@ -183,7 +180,7 @@ export class ClientsService {
         params: params
     };
 
-    return this.http.get<ClientsList[]>(this.server + 'get_clients.php', httpOptions).pipe(map(response => {
+    return this.http.get<ClientsList[]>(environment.apiURL + 'get_clients.php', httpOptions).pipe(map(response => {
         if (response) {
             let items: ClientsList[] = [];
             for (let index = 0; index < response.length; index++) {

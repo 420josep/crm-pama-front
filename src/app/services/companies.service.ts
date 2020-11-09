@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { PricingItem, CompanyListItem, Company } from '../templates/company';
 import { ToolsService } from './tools.service';
 import { ListItem } from '../templates/global';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -14,10 +15,6 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class CompaniesService {
-  //server = 'http://localhost/crm_pama_back/';
-
-  // Deploy
-  server = 'https://crm-pama-back.herokuapp.com/';
   
   constructor(
     private http: HttpClient, 
@@ -25,7 +22,7 @@ export class CompaniesService {
   ) { }
 
   getPricing(){
-    return this.http.get<PricingItem[]>(this.server + 'get_pricing_items.php', httpOptions).pipe(map( response => {
+    return this.http.get<PricingItem[]>(environment.apiURL + 'get_pricing_items.php', httpOptions).pipe(map( response => {
       if(response){
         let array: PricingItem[] = [];
         for (let index = 0; index < response.length; index++) {
@@ -48,7 +45,7 @@ export class CompaniesService {
    * @param coupon Formulario con los datos del bono a crear
   */
   createCompany(company: any) {
-    return this.http.post(this.server + '/create_company.php', company, { reportProgress: true, observe: 'events' });
+    return this.http.post(environment.apiURL + '/create_company.php', company, { reportProgress: true, observe: 'events' });
   }
 
   getTotalCompanies(text: string) {
@@ -61,7 +58,7 @@ export class CompaniesService {
       params: params
     };
 
-    return this.http.get<number>(this.server + 'get_companies.php', httpOptions).pipe(map( response => {
+    return this.http.get<number>(environment.apiURL + 'get_companies.php', httpOptions).pipe(map( response => {
       if(response){
         return +response;
       }else {
@@ -82,7 +79,7 @@ export class CompaniesService {
       params: params
     };
 
-    return this.http.get<CompanyListItem[]>(this.server + 'get_companies.php', httpOptions).pipe(map( response => {
+    return this.http.get<CompanyListItem[]>(environment.apiURL + 'get_companies.php', httpOptions).pipe(map( response => {
       if(response){
         let arrayUsers: CompanyListItem[] = [];
         for (let index = 0; index < response.length; index++) {
@@ -122,7 +119,7 @@ export class CompaniesService {
       params: params
     };
 
-    return this.http.get<Company>(this.server + 'get_companies.php', httpOptions).pipe(map( response => {
+    return this.http.get<Company>(environment.apiURL + 'get_companies.php', httpOptions).pipe(map( response => {
       if(response){
         const company: Company = {
           id: +response.id,
@@ -158,7 +155,7 @@ export class CompaniesService {
       params: params
     };
 
-    return this.http.get<ListItem[]>(this.server + 'get_companies.php', httpOptions).pipe(map( response => {
+    return this.http.get<ListItem[]>(environment.apiURL + 'get_companies.php', httpOptions).pipe(map( response => {
       if(response){
         let array: ListItem[] = [];
         for (let index = 0; index < response.length; index++) {
@@ -177,7 +174,7 @@ export class CompaniesService {
   }
 
   updateCompany( company: any ) {
-    return this.http.post(this.server + '/update_company.php', company, { reportProgress: true, observe: 'events' });
+    return this.http.post(environment.apiURL + '/update_company.php', company, { reportProgress: true, observe: 'events' });
   }
 
 }
