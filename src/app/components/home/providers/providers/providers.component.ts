@@ -40,17 +40,6 @@ export class ProvidersComponent implements OnInit {
     });
   }
 
-  deleteProvider( providerID: number, providerName: string) {
-    let confirm = window.confirm(`¿Eliminamos el proveedor "${providerName}"?`);
-    if (confirm) {
-      this.providerServices.deleteProvider(providerID).subscribe( response => {
-        if(response['response']){
-          this.getProviders('');
-        }
-      });
-    }
-  }
-
   updatePaginator( event ){
     this.offset = event.offset;
     this.getProviders('');
@@ -71,5 +60,16 @@ export class ProvidersComponent implements OnInit {
   deleteSearch(){
     this.searchField = '';
     this.getProviders('');
+  }
+
+  deleteProvider( providerID: number, providerName: string) {
+    let confirm = window.confirm(`¿Eliminamos el proveedor "${providerName}"?`);
+    if (confirm) {
+      this.providerServices.deleteProvider(providerID).subscribe( response => {
+        if(response['response']){
+          this.getProviders('');
+        }
+      });
+    }
   }
 }

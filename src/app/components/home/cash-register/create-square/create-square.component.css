@@ -2,16 +2,14 @@
     margin: 1rem 0;
 }
 
-.secundary-button {
-    padding: .5rem;
-    font-weight: bold;
-    font-size: 1em;
-    color: white;
-    background-color: #f0ad4e;
-    border: 1px solid #f0ad4e;
+.money-table {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    border-collapse: collapse;
+    margin-top: 1rem;
 }
 
-.secundary-button:hover {
-    color: #f0ad4e;
-    background-color: white;
+.money-table th, td {
+    border: 1px solid #ddd;
 }

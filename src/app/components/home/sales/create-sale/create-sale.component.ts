@@ -160,7 +160,6 @@ export class CreateSaleComponent implements OnInit {
     } else {
       this.salesService.getProductsStock(branchID).subscribe(response => {
         this.products = response;
-        console.log(this.products);
         if (this.products.length > 0) {
           this.enableProducts();
         } else {
@@ -226,7 +225,6 @@ export class CreateSaleComponent implements OnInit {
       this.total = this.subtotal;
       if (this.discount > 0) {
         let realDiscount = (100 - this.discount)/100;
-        console.log(realDiscount);
         this.total = Math.floor(this.total * realDiscount);
       }
       this.discountValue = this.subtotal - this.total;

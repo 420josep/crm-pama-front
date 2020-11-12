@@ -19,10 +19,13 @@
           <tr>
             <th>#</th>
             <th>Fecha</th>
-            <th>Número de factura</th>
+            <th>Factura</th>
+            <th>Total</th>
             <th>Proveedor</th>
             <th *ngIf="currentUser?.type != 3">Sucursal</th>
-            <th *ngIf="currentUser?.type === 1" class="table-right-border">Empresa</th>
+            <th *ngIf="currentUser?.type === 1">Empresa</th>
+            <th *ngIf="currentUser?.type != 3">Usuario de creación</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -30,9 +33,16 @@
             <td [routerLink]="['/menu/entradas/ver', entry.id]"> {{(i+offset)+1}} </td>
             <td [routerLink]="['/menu/entradas/ver', entry.id]"> {{entry?.date}} </td>
             <td [routerLink]="['/menu/entradas/ver', entry.id]"> {{entry?.billNumber}} </td>
+            <td [routerLink]="['/menu/entradas/ver', entry.id]"> ${{entry?.total | number}} </td>
             <td [routerLink]="['/menu/entradas/ver', entry.id]"> {{entry?.provider}} </td>
             <td [routerLink]="['/menu/entradas/ver', entry.id]" *ngIf="currentUser?.type != 3">{{entry?.branch}}</td>
             <td [routerLink]="['/menu/entradas/ver', entry.id]" *ngIf="currentUser?.type === 1"> {{entry?.company}} </td>
+            <td [routerLink]="['/menu/entradas/ver', entry.id]" *ngIf="currentUser?.type != 3">{{entry?.creationUser}}</td>
+            <td>
+              <div>
+                <i class="far fa-trash-alt trash-icon" (click)="deleteEntry(entry.id, entry.billNumber)"></i>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

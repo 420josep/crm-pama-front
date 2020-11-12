@@ -40,6 +40,7 @@ export class EditSquareComponent implements OnInit {
       initialMoney: ['', [Validators.required]],
       cash: ['', [Validators.required]],
       mismatch: ['', [Validators.required]],
+      observation: [''],
     });
 
 

@@ -178,6 +178,7 @@ export class SquaresService {
             totalOutputs: +response.totalOutputs,
             mismatch: +response.mismatch,
             branch: branch,
+            observation: response.observation,
             company: company,
             creationDate: creationDate,
           }

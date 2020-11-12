@@ -70,27 +70,33 @@ export class EntriesService {
       if(response){
         let array: EntriesList[] = [];
         for (let index = 0; index < response.length; index++) {
-          let company, branch = "";
+          let company, branch, creationUser = "";
           let date = response[index].date;
           date = this.tools.sqlToDate(date, 2);
 
           if(this.currentUser.type === 1) {
             company = response[index].company;
             branch = response[index].branch;
+            creationUser = response[index].creationUser;
           } else if(this.currentUser.type === 2) {
             company = "";
             branch = response[index].branch;
+            creationUser = response[index].creationUser;
           } else {
             company = "";
             branch = "";
+            creationUser = "";
           }
+
           const item: EntriesList = {
             id: +response[index].id,
             date: date,
-            billNumber: response[index].billNumber,
+            billNumber: +response[index].billNumber,
+            total: +response[index].total,
             provider: response[index].provider,
             branch: branch,
             company: company,
+            creationUser: creationUser
           }
           array.push(item);
         }
@@ -114,26 +120,35 @@ export class EntriesService {
     };
 
     return this.http.get<Entry>(environment.apiURL + 'get_entries.php', httpOptions).pipe(map( response => {
-      console.log(response);
       if(response){
         let date = response.date;
+        let company, creationUser = "";
+        let companyID, branchID = 0;
         date = this.tools.sqlToDate(date, 2);
-        let company, branch = "";
+
         if(this.currentUser.type === 1) {
           company = response.company;
-          branch = response.branch;
+          companyID = +response.companyID;
+          branchID = +response.branchID;
+          creationUser = response.creationUser;
         } else if(this.currentUser.type === 2) {
           company = "";
-          branch = response.branch;
+          companyID = 0;
+          branchID = +response.branchID;
+          creationUser = response.creationUser;
         } else {
           company = "";
-          branch = "";
+          companyID = 0;
+          branchID = 0;
+          creationUser = "";
         }
         
         let products: ProductEntry[] = [];
         for (let index = 0; index < response.products.length; index++) {
           const item: ProductEntry = {
-            product: response.products[index].product,
+            id: +response.products[index].id,
+            productID: +response.products[index].productID,
+            unitValue: +response.products[index].unitValue,
             quantity: +response.products[index].quantity,
           }
           products.push(item);
@@ -142,11 +157,13 @@ export class EntriesService {
         const item: Entry = {
           id: +response.id,
           date: date,
-          billNumber: response.billNumber,
-          provider: response.provider,
-          branch: branch,
+          billNumber: +response.billNumber,
+          total: +response.total,
+          providerID: +response.providerID,
+          branchID: +branchID,
+          companyID: +companyID,
           company: company,
-          creationUser: response.creationUser,
+          creationUser: creationUser,
           products: products
         }
         return item;
@@ -156,5 +173,27 @@ export class EntriesService {
       }
 
     }));;
+  }
+
+  deleteEntry(entryID: number) {
+    const object = {
+      entryID: entryID,
+    };
+    const json = JSON.stringify(object);
+    return this.http.post(environment.apiURL + 'delete_entry.php', json, httpOptions);
+  }
+
+  updateEntry( data: any ) {
+    //let json = JSON.stringify(data);
+    //console.log(json);
+    return this.http.post(environment.apiURL + 'update_entry.php', data, httpOptions);
+  }
+
+  deleteSaleProduct(entryDetailID: number) {
+    const object = {
+      entryDetailID: entryDetailID,
+    };
+    const json = JSON.stringify(object);
+    return this.http.post(environment.apiURL + 'delete_entry_product.php', json, httpOptions);
   }
 }

@@ -20,5 +20,6 @@ export interface Square {
     mismatch: number;
     branch: string;
     company: string;
+    observation: string;
     creationDate: string;
 }

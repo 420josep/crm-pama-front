@@ -25,6 +25,7 @@ export class CreateSquareComponent implements OnInit {
   squareDate: string;
   canContinue: boolean = false;
   moneyInCash: number = 0;
+  total: number = 0;
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -87,6 +88,18 @@ export class CreateSquareComponent implements OnInit {
           this.squareForm.addControl('totalSalesMoney', new FormControl(data['totalSalesMoney'], Validators.required));
           this.squareForm.addControl('cash', new FormControl('', Validators.required));
           this.squareForm.addControl('mismatch', new FormControl('', Validators.required));
+          this.squareForm.addControl('observation', new FormControl(''));
+          this.squareForm.addControl('one', new FormControl(''));
+          this.squareForm.addControl('two', new FormControl(''));
+          this.squareForm.addControl('three', new FormControl(''));
+          this.squareForm.addControl('four', new FormControl(''));
+          this.squareForm.addControl('five', new FormControl(''));
+          this.squareForm.addControl('six', new FormControl(''));
+          this.squareForm.addControl('seven', new FormControl(''));
+          this.squareForm.addControl('eight', new FormControl(''));
+          this.squareForm.addControl('nine', new FormControl(''));
+          this.squareForm.addControl('ten', new FormControl(''));
+          this.squareForm.addControl('eleven', new FormControl(''));
           this.canContinue = true;
         });
       } else {
@@ -110,6 +123,37 @@ export class CreateSquareComponent implements OnInit {
     this.squareForm.removeControl('totalSalesMoney');
     this.squareForm.removeControl('cash');
     this.squareForm.removeControl('mismatch');
+    this.squareForm.removeControl('observation');
+    this.squareForm.removeControl('one');
+    this.squareForm.removeControl('two');
+    this.squareForm.removeControl('three');
+    this.squareForm.removeControl('four');
+    this.squareForm.removeControl('five');
+    this.squareForm.removeControl('six');
+    this.squareForm.removeControl('seven');
+    this.squareForm.removeControl('eight');
+    this.squareForm.removeControl('nine');
+    this.squareForm.removeControl('ten');
+    this.squareForm.removeControl('eleven');
+  }
+
+  checkValues() {
+    let one = this.form.one.value;
+    let two = this.form.two.value;
+    let three = this.form.three.value;
+    let four = this.form.four.value;
+    let five = this.form.five.value;
+    let six = this.form.six.value;
+    let seven = this.form.seven.value;
+    let eight = this.form.eight.value;
+    let nine = this.form.nine.value;
+    let ten = this.form.ten.value;
+    let eleven = this.form.eleven.value;
+
+    this.total = (one*100000) + (two*50000) + (three*20000) + (four*10000) + (five*5000) + (six*2000) 
+      + (seven*1000) + (eight*500) + (nine*200) + (ten*100) + (eleven*50);
+    
+    this.form.cash.setValue(this.total);
   }
 
   updateCashRegister(){
@@ -118,11 +162,11 @@ export class CreateSquareComponent implements OnInit {
     let initialMoney = +this.form.initialMoney.value;
     let cash = +this.form.cash.value;
 
-    if( (!isNaN(initialMoney) && initialMoney > 0) && (this.form.initialMoney.value.toString().length > 3) ){
+    if( (!isNaN(initialMoney) && initialMoney > 0) && (this.form.initialMoney.value.toString().length > 2) ){
       let totalOutputs = +this.form.totalOutputs.value;
       let totalSalesMoney = +this.form.totalSalesMoney.value;
       this.moneyInCash = initialMoney + totalSalesMoney - totalOutputs;
-      if ( (!isNaN(cash) && cash > 0) && (this.form.cash.value.toString().length > 3) ) {
+      if ( (!isNaN(cash) && cash > 0) && (this.form.cash.value.toString().length > 2) ) {
         let mismatch = cash - this.moneyInCash;
         this.form.mismatch.setValue(mismatch);
       }

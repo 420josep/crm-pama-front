@@ -1,24 +1,30 @@
 export interface EntriesList {
     id: number;
     date: string;
-    billNumber: string;
+    billNumber: number;
+    total: number;
     provider: string;
     company: string;
     branch: string;
+    creationUser: string;
 }
 
 export interface Entry {
     id: number;
     date: string;
-    billNumber: string;
-    provider: string;
-    company: string;
-    branch: string;
-    creationUser: string;
+    billNumber: number;
+    total: number;
+    branchID: number;
+    providerID: number;
     products: ProductEntry[];
+    companyID: number;
+    company: string;
+    creationUser: string;
 }
 
 export interface ProductEntry {
-    product: string;
+    id: number;
+    productID: number;
+    unitValue: number;
     quantity: number;
 }

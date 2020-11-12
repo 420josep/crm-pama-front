@@ -79,7 +79,6 @@ export class EditSaleComponent implements OnInit {
     });
 
     this.getSale(this.saleID);
-    //this.addProduct();
   }
 
   get form() {
@@ -89,8 +88,9 @@ export class EditSaleComponent implements OnInit {
   getSale( saleID: string ){
     this.salesService.getSale(saleID).subscribe( response => {
       if(response){
+        this.editSaleForm.controls.products = this.formBuilder.array([]);
+
         this.currentSale = response;
-        console.log(this.currentSale);
         let date =  this.datePipe.transform(this.currentSale.date, 'yyyy-MM-dd');
 
         if(this.currentUser.type === 3){
@@ -167,18 +167,17 @@ export class EditSaleComponent implements OnInit {
         this.products = response;
         if (this.products.length > 0) {
           for (let index = 0; index < this.currentSale.products.length; index++) {
-            this.addProduct();
-            const element = this.currentSale.products[index];
             for (let secondIndex = 0; secondIndex < this.products.length; secondIndex++) {
               if (this.currentSale.products[index].productID === this.products[secondIndex].id) {
+                this.addProduct();
                 this.products[secondIndex]['id'] = this.currentSale.products[index].id;
                 this.products[secondIndex]['productID'] = this.currentSale.products[index].productID;
                 this.productContainer.controls[index].get('product').setValue(this.products[secondIndex]);
+                this.productContainer.controls[index].get('quantity').setValue(this.currentSale.products[index].quantity);
                 break;
               }
             }
           }
-          //this.updateTotal();
           this.enableProducts(1);
         } else {
           this.editSaleForm.controls.products = this.formBuilder.array([]);
@@ -214,11 +213,6 @@ export class EditSaleComponent implements OnInit {
 
   }
 
-  removeProduct(index: number) {
-    this.productContainer.removeAt(index);
-    this.updateTotal();
-  }
-
   addProductFormGroup() {
     return this.formBuilder.group({
       product: ['', Validators.required],
@@ -247,7 +241,6 @@ export class EditSaleComponent implements OnInit {
       this.total = this.subtotal;
       if (this.discount > 0) {
         let realDiscount = (100 - this.discount)/100;
-        console.log(realDiscount);
         this.total = Math.floor(this.total * realDiscount);
       }
       this.discountValue = this.subtotal - this.total;
@@ -307,61 +300,18 @@ export class EditSaleComponent implements OnInit {
     }
   }
 
-  /*
-  updateTotal() {
-    this.total = 0;
-    this.subtotal = 0;
-    for (let index = 0; index < this.productContainer.length; index++) {
-      const product = this.productContainer.controls[index].value.product;
-      const quantity = this.productContainer.controls[index].value.quantity;
-      if (product && (quantity > 0)) {
-        this.subtotal += product.price * quantity;
-        if (this.discount > 0) {
-          let realDiscount = (100 - this.discount)/100;
-          this.total += Math.floor((product.price * quantity) * realDiscount);
-        } else {
-          this.total = this.subtotal;
-        }
-      }
+  removeProduct(index: number) {
+    if (this.productContainer.controls[index].get('product').value.productID) {
+      this.deleteSaleProduct(this.productContainer.controls[index].get('product').value.id, this.productContainer.controls[index].get('product').value.name);
     }
-    for (let index = 0; index < this.currentSale.products.length; index++) {
-      let product = this.currentSale.products[index];
-      let quantity = this.currentSale.products[index].quantity;
-
-      if (product && (quantity > 0)) {
-        this.subtotal += product.productPrice * quantity;
-        if (this.discount > 0) {
-          let realDiscount = (100 - this.discount)/100;
-          this.total += Math.floor((product.productPrice * quantity) * realDiscount);
-        } else {
-          this.total = this.subtotal;
-        }
-      }
-    }
-    if(this.subtotal > 0) {
-      this.form.total.setValue(this.total);
-      this.form.realTotal.setValue(this.subtotal);
-    } else {
-      this.form.total.setValue('');
-      this.form.realTotal.setValue('');
-    }
-  }*/
-
-  checkValues():boolean {
-    for (let index = 0; index < this.productContainer.length; index++) {
-      const product = this.productContainer.controls[index].value.product;
-      const quantity = this.productContainer.controls[index].value.quantity;
-      if ((quantity > product.stock) || (quantity <= 0)) {
-        return;
-      }
-    }
-    return true;
+    this.productContainer.removeAt(index);
+    this.updateTotal();
   }
 
-  deleteSaleProduct( product: EditProductSale ) {
-    let confirm = window.confirm(`¿Seguro que desea eliminar el producto "${product.product}" de la factura "${this.currentSale.billNumber}"? (Esta opción no se puede deshacer)`);
+  deleteSaleProduct( productID: number, productName ) {
+    let confirm = window.confirm(`¿Seguro que desea eliminar el producto "${productName}" de la factura "${this.currentSale.billNumber}"? (Esta opción no se puede deshacer)`);
     if (confirm) {
-      this.salesService.deleteSaleProduct(product.id).subscribe(response => {
+      this.salesService.deleteSaleProduct(productID).subscribe(response => {
         this.response = response['response'];
         if (this.response) {
           this.getSale(this.saleID);
@@ -370,6 +320,17 @@ export class EditSaleComponent implements OnInit {
         }
       })
     }
+  }
+  
+  checkValues():boolean {
+    for (let index = 0; index < this.productContainer.length; index++) {
+      const product = this.productContainer.controls[index].value.product;
+      const quantity = this.productContainer.controls[index].value.quantity;
+      if ( (quantity > (product.stock)) || (quantity <= 0)) {
+        return;
+      }
+    }
+    return true;
   }
 
   //Falta aplicar el descuento del cliente

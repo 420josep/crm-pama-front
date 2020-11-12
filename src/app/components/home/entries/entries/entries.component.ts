@@ -27,7 +27,7 @@ export class EntriesComponent implements OnInit {
   }
 
   
-  getEntries( text: string){
+  getEntries( text: string ){
     this.entriesService.getTotalEntries( text ).subscribe( total => {
       this.totalEntries = total;
     });
@@ -55,6 +55,17 @@ export class EntriesComponent implements OnInit {
       }
     }else{
       this.getEntries('');
+    }
+  }
+
+  deleteEntry( entryID: number, billNumber: number ) {
+    let confirm = window.confirm(`¿Eliminamos la entrada de mercancía de la factura "${billNumber}"?`);
+    if (confirm) {
+      this.entriesService.deleteEntry(entryID).subscribe( response => {
+        if(response['response']){
+          this.getEntries('');
+        }
+      });
     }
   }
 }

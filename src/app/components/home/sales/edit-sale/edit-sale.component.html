@@ -59,20 +59,20 @@
         <div class="item-field vertical-columns field-1">
           <label class="label-field">Productos en esta venta</label>
           <div class="field-1 flex-container columns">
-            <div class="flex-container-centered field-2">
+            <div class="item-field flex-container-centered field-2">
               <label class="label-field">Producto</label>
             </div>
             <div class="columns field-2">
-              <div class="flex-container-centered field-5">
+              <div class="item-field flex-container-centered field-5">
                 <label class="label-field">IVA</label>
               </div>
-              <div class="flex-container-centered field-5">
+              <div class="item-field flex-container-centered field-5">
                 <label class="label-field">Cantidad</label>
               </div>
-              <div class="flex-container-centered field-5">
+              <div class="item-field flex-container-centered field-5">
                 <label class="label-field">Valor unitario</label>
               </div>
-              <div class="flex-container-centered field-5">
+              <div class="item-fieldflex-container-centered field-5">
                 <label class="label-field">Valor total</label>
               </div>
             </div>
@@ -80,38 +80,40 @@
           <div formArrayName="products" *ngFor="let product of productContainer.controls; let i=index">
             <div formGroupName="{{i}}">
               <div class="field-1 columns">
-                <div class="field-2 flex-container-centered">
+                <div class="item-field field-2 flex-container-centered">
                   <select formControlName="product" class="field-1" (change)="checkSameProducts()">
                     <option value=""></option>
                     <option *ngFor="let product of products" [ngValue]="product"> {{product?.name}} (Disponibles: {{product?.stock}}) </option>
                   </select>
                 </div>
                 <div class="columns field-2">
-                  <div class="field-5 flex-container-centered">
+                  <div class="item-field field-5 flex-container-centered">
                     <span *ngIf="product?.value.product && product?.value.product.iva" class="span-field field-1">19%</span>
                     <span *ngIf="product?.value.product && !product?.value.product.iva" class="span-field field-1">0%</span>
                   </div>
-                  <div class="field-5 flex-container-centered relative-container">
-                    <div *ngIf="product?.value.product" (click)="updateQuantity(i, 1)" [ngClass]="{ 'error': product?.value.product && (product?.value.product?.stock < product?.value.quantity) }" class="left-arrow flex-container-centered">
-                      <i class="fas fa-minus"></i>
-                    </div>
-                    <input *ngIf="product?.value.product"
-                      [ngClass]="{ 'is-invalid': product?.value.product && (product?.value.product?.stock < product?.value.quantity) }"
-                      id="quantity{{i+1}}" name="quantity{{i+1}}" formControlName="quantity"
-                      (keyup)="updateTotal()" (blur)="updateTotal()" class="input-field field-1" style="text-align: center;"
-                      pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
-
-                    <div *ngIf="product?.value.product" (click)="updateQuantity(i, 2)" [ngClass]="{ 'error': product?.value.product && (product?.value.product?.stock < product?.value.quantity) }" class="rigth-arrow flex-container-centered">
-                      <i class="fas fa-plus"></i>
+                  <div class="item-field field-5 flex-container-centered">
+                    <div class="field-1 relative-container">
+                      <div *ngIf="product?.value.product" (click)="updateQuantity(i, 1)" [ngClass]="{ 'error': product?.value.product && (product?.value.product?.stock < product?.value.quantity) }" class="left-arrow flex-container-centered">
+                        <i class="fas fa-minus"></i>
+                      </div>
+                      <input *ngIf="product?.value.product"
+                        [ngClass]="{ 'is-invalid': product?.value.product && (product?.value.product?.stock < product?.value.quantity) }"
+                        id="quantity{{i+1}}" name="quantity{{i+1}}" formControlName="quantity"
+                        (keyup)="updateTotal()" (blur)="updateTotal()" class="input-field field-1" style="text-align: center;"
+                        pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+  
+                      <div *ngIf="product?.value.product" (click)="updateQuantity(i, 2)" [ngClass]="{ 'error': product?.value.product && (product?.value.product?.stock < product?.value.quantity) }" class="rigth-arrow flex-container-centered">
+                        <i class="fas fa-plus"></i>
+                      </div>
                     </div>
                   </div>
-                  <div class="field-5 flex-container-centered">
+                  <div class="item-field field-5 flex-container-centered">
                     <span class="span-field field-1" *ngIf="product?.value.product"> ${{product?.value.product.price | number}} </span>
                   </div>
-                  <div class="field-5 flex-container-centered">
+                  <div class="item-field field-5 flex-container-centered">
                     <span class="span-field field-1" *ngIf="product?.value.product && product?.value.quantity > 0"> ${{product?.value.product.price * product?.value.quantity | number}} </span>
                   </div>
-                  <div class="field-5 flex-container-centered">
+                  <div class="item-field field-5 flex-container-centered">
                     <i (click)="removeProduct( i )" class="far fa-trash-alt trash-icon"></i>
                   </div>
                 </div>

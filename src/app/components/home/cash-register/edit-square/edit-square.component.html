@@ -50,6 +50,10 @@
           <label class="label-field">¿Cuándo se realizó?</label>
           <span class="span-field"> {{currentSquare?.creationDate}} </span>
         </div>
+        <div class="item-field vertical-columns field-1">
+          <label class="label-field">Observaciones:</label>
+          <span class="span-field"> {{currentSquare?.observation}} </span>
+        </div>
         <div class="field-1">
           <label class="total-text">Nuevos valores</label>
         </div>
@@ -63,7 +67,10 @@
             <input (keyup)="updateCashRegister()" id="cash" name="cash" formControlName="cash" placeholder="Dinero con el cual cerraste el día" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
           </div>
         </div>
-
+        <div class="item-field vertical-columns field-1">
+          <label class="label-field" for="observation">Observación</label>
+          <textarea formControlName="observation" id="observation" name="observation" placeholder="Por si necesitas dejar un comentario de algo sucedido con esta cierre" autocomplete="off" maxlength="250" class="input-field text-area"></textarea>
+        </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field">Total de dinero en la caja</label>
           <span *ngIf="moneyInCash <= 0" class="span-field"> Digite el valor inicial de la caja para observar </span>
