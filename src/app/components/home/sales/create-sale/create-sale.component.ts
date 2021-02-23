@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import {Router} from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/templates/user';
@@ -57,18 +57,19 @@ export class CreateSaleComponent implements OnInit {
       date: [today, [Validators.required]],
       client: ['', [Validators.required]],
       clientID: ['', [Validators.required]],
-      billNumber: ['', [Validators.required]],
+      billNumber: ['', [Validators.required, Validators.maxLength(13)]],
       branchID: ['', [Validators.required]],
       total: ['', [Validators.required]],
       realTotal: ['', [Validators.required]],
       statusID: ['', [Validators.required]],
       paymentID: ['', [Validators.required]],
-      observation: [''],
+      observation: ['', Validators.maxLength(100)],
       products: this.formBuilder.array([]),
       userID: [this.currentUser.id, [Validators.required]],
       companyID: ['', [Validators.required]],
       discountValue: ['', [Validators.required]],
       ivaValue: ['', [Validators.required]],
+      paySome: [false, [Validators.required]],
     });
     
     this.addProduct();
@@ -175,6 +176,19 @@ export class CreateSaleComponent implements OnInit {
     return <FormArray>this.newSaleForm.get('products');
   }
 
+  showParcialPayment() {
+    if (this.form.statusID.value == 2) {
+      if (this.form.paySome.value) {
+        this.newSaleForm.addControl('parcialPayment', new FormControl("", [Validators.required,Validators.maxLength(13)]));
+      } else {
+        this.newSaleForm.removeControl('parcialPayment');
+      }
+    } else {
+      this.form.paySome.setValue(false);
+      this.newSaleForm.removeControl('parcialPayment');
+    }
+  }
+
   addProduct() {
     (this.productContainer).push(this.addProductFormGroup());
     if (this.products) {
@@ -200,7 +214,7 @@ export class CreateSaleComponent implements OnInit {
   addProductFormGroup() {
     return this.formBuilder.group({
       product: [{value:'', disabled: true}, Validators.required],
-      quantity: [1, Validators.required]
+      quantity: [1, [Validators.required, Validators.maxLength(7)]]
     });
   }
 
@@ -297,7 +311,6 @@ export class CreateSaleComponent implements OnInit {
 
   createSale(){
     if(this.newSaleForm.valid){
-
       if (this.checkValues()) {
         this.salesService.createSale(this.newSaleForm.value).subscribe( response => {
           this.response = response['response'];

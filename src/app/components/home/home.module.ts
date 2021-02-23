@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
@@ -42,7 +42,12 @@ import {  HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomHttpInterceptorService } from 'src/app/services/interceptor';
 import { QuickStartComponent } from './quick-start/quick-start.component';
 import { QuotationComponent } from './quotation/quotation.component';
-import { WalletComponent } from './wallet/wallet.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { SeeSalesComponent } from './wallet/see-sales/see-sales.component';
+import { CreatePartialPaymentComponent } from './wallet/create-partial-payment/create-partial-payment.component';
+import { EditPartialPaymentComponent } from './wallet/edit-partial-payment/edit-partial-payment.component';
+import { SeeSaleComponent } from './wallet/see-sale/see-sale.component';
+import { CreatePartialPaymentForSaleComponent } from './wallet/create-partial-payment-for-sale/create-partial-payment-for-sale.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +87,11 @@ import { WalletComponent } from './wallet/wallet.component';
     ReportsComponent,
     QuickStartComponent,
     QuotationComponent,
-    WalletComponent,
+    SeeSalesComponent,
+    CreatePartialPaymentComponent,
+    EditPartialPaymentComponent,
+    SeeSaleComponent,
+    CreatePartialPaymentForSaleComponent,
   ],
   imports: [
     CommonModule,
@@ -90,10 +99,12 @@ import { WalletComponent } from './wallet/wallet.component';
     FormsModule,
     ReactiveFormsModule,
     PaginatorModule,
-    PipesModule.forRoot()
+    PipesModule.forRoot(),
+    NgxChartsModule
   ],
   providers: [
     DatePipe,
+    DecimalPipe,
     { provide: HTTP_INTERCEPTORS, useClass: CustomHttpInterceptorService, multi: true }
   ]
 })

@@ -46,13 +46,13 @@ export class EditProviderComponent implements OnInit {
     // Asignación de variables y método de validación
     this.editProviderForm = this.formBuilder.group({
       providerID: ['' , [Validators.required]],
-      name: ['' , [Validators.required]],
-      nick: [''],
-      businessName: ['' , [Validators.required]],
-      nit: ['' , [Validators.required]],
-      manager: ['' , [Validators.required]],
-      phone: ['' , [Validators.required]],
-      description: [''],
+      name: ['', [Validators.required, Validators.maxLength(150)]],
+      nick: ['', Validators.maxLength(150)],
+      businessName: ['', [Validators.required, Validators.maxLength(150)]],
+      nit: ['', [Validators.required, Validators.maxLength(15)]],
+      manager: ['', [Validators.required, Validators.maxLength(80)]],
+      phone: ['', [Validators.required, Validators.maxLength(10)]],
+      description: ['', Validators.maxLength(150)],
       userID: [this.currentUser.id, [Validators.required]],
       companyID: ['', [Validators.required]],
     });
@@ -82,7 +82,6 @@ export class EditProviderComponent implements OnInit {
     this.providerServices.getProvider( providerID ).subscribe( (response : Provider) => {
       if(response){
         this.currentProvider = response;
-        console.log(this.currentProvider);
         this.form.providerID.setValue(this.currentProvider.id);
         this.form.name.setValue(this.currentProvider.name);
         this.form.nick.setValue(this.currentProvider.nick);

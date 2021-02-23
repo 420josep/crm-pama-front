@@ -11,11 +11,11 @@
       <div class="form-container columns">
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="firstName">Nombres (*)</label>
-          <input autocomplete="off" formControlName="firstName" id="firstName" name="firstName" class="input-field" type="text">
+          <input autocomplete="off" formControlName="firstName" id="firstName" name="firstName" maxlength="100" class="input-field" type="text">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="lastName">Apellidos (*)</label>
-          <input autocomplete="off" formControlName="lastName" id="lastName" name="lastName" class="input-field" type="text">
+          <input autocomplete="off" formControlName="lastName" id="lastName" name="lastName" maxlength="100" class="input-field" type="text">
         </div>
         <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
           <label class="label-field">Empresa (*)</label>
@@ -33,20 +33,17 @@
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="dni">CC (*)</label>
-          <input autocomplete="off" formControlName="dni" id="dni" name="dni" class="input-field" type="text">
+          <input formControlName="dni" id="dni" name="dni" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && message == 'Ya existe un usuario con la cédula ingresada' }" maxlength="15" class="input-field" type="text">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="email">Email</label>
-          <input autocomplete="off" formControlName="email" id="email" name="email" class="input-field" type="email">
+          <input autocomplete="off" formControlName="email" id="email" name="email" maxlength="120" class="input-field" type="email">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="phone">Teléfono (*)</label>
-          <input autocomplete="off" formControlName="phone" id="phone" name="phone" class="input-field" pattern="[0-9]*" min="0"
+          <input formControlName="phone" id="phone" name="phone" autocomplete="off" placeholder="Celular o fijo" maxlength="10"
+            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="input-field" pattern="[0-9]*" min="0" 
             onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number">
-        </div>
-        <div class="item-field vertical-columns field-2">
-          <label class="label-field" [ngClass]="{ 'error-text': message == 'Nombre de usuario ya en uso' }" for="username">Nombre de usuario (*)</label>
-          <input autocomplete="off" [ngClass]="{ 'is-invalid': message == 'Nombre de usuario ya en uso' }" formControlName="username" id="username" name="username" class="input-field">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field">Tipo de usuario (*)</label>
@@ -55,9 +52,17 @@
             <option *ngFor="let type of userTypes" [ngValue]="type?.id" [selected]="form.typeID.value === type?.id"> {{type?.name}} </option>
           </select>
         </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" [ngClass]="{ 'error-text': message == 'Nombre de usuario ya en uso' }" for="username">Nombre de usuario (*)</label>
+          <input autocomplete="off" [ngClass]="{ 'is-invalid': message == 'Nombre de usuario ya en uso' }" formControlName="username" id="username" name="username" maxlength="50" class="input-field">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="newPassword">Nueva contraseña</label>
+          <input autocomplete="off" formControlName="newPassword" id="newPassword" name="newPassword" class="input-field" type="password" maxlength="10" placeholder="Mínimo 6 caracteres">
+        </div>
         <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
           <label class="label-field" for="state">Estado (*)</label>
-          <input autocomplete="off" formControlName="state" id="state" name="state" [checked]="form.state.value" class="input-field" type="checkbox">
+          <input formControlName="state" id="state" name="state" [checked]="form.state.value" class="input-field" type="checkbox">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field">Última conexión </label>

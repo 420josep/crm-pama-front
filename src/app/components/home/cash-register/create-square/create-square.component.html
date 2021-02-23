@@ -42,11 +42,16 @@
           </div>
           <div class="item-field vertical-columns field-2">
             <label class="label-field" for="initialMoney">Dinero inicial de la caja (*)</label>
-            <input (keyup)="updateCashRegister()" id="initialMoney" name="initialMoney" formControlName="initialMoney" placeholder="Dinero en caja al momento de abrir" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+            <input (keyup)="updateCashRegister()" id="initialMoney" name="initialMoney" formControlName="initialMoney" 
+            placeholder="Dinero en caja al momento de abrir" class="input-field" pattern="[0-9]*" min="0"
+            onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" maxlength="13"
+            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
           </div>
           <div class="item-field vertical-columns field-2">
             <label class="label-field" for="cash">Dinero final en la caja (*)</label>
-            <input (keyup)="updateCashRegister()" id="cash" name="cash" formControlName="cash" placeholder="Dinero con el cual cerraste el día" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+            <input (keyup)="updateCashRegister()" id="cash" name="cash" formControlName="cash" placeholder="Dinero con el cual cerraste el día"
+            class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+            type="number" autocomplete="off" maxlength="13" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
           </div>
           <div class="item-field vertical-columns field-1">
             <label class="label-field" for="observation">Observación</label>
@@ -64,57 +69,57 @@
                 </tr>
                 <tr>
                   <td>${{100000 | number}}</td>
-                  <td><input (keyup)="checkValues()" formControlName="one" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
+                  <td class="flex-container-centered"><input (keyup)="checkValues()" formControlName="one" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
                   <td>${{form?.one.value * 100000 | number }}</td>
                 </tr>
                 <tr>
                   <td>${{50000 | number}}</td>
-                  <td><input (keyup)="checkValues()" formControlName="two" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
+                  <td class="flex-container-centered"><input (keyup)="checkValues()" formControlName="two" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
                   <td>${{form?.two.value * 50000 | number }}</td>
                 </tr>
                 <tr>
                   <td>${{20000 | number}}</td>
-                  <td><input (keyup)="checkValues()" formControlName="three" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
+                  <td class="flex-container-centered"><input (keyup)="checkValues()" formControlName="three" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
                   <td>${{form?.three.value * 20000 | number }}</td>
                 </tr>
                 <tr>
                   <td>${{10000 | number}}</td>
-                  <td><input (keyup)="checkValues()" formControlName="four" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
+                  <td class="flex-container-centered"><input (keyup)="checkValues()" formControlName="four" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
                   <td>${{form?.four.value * 10000 | number }}</td>
                 </tr>
                 <tr>
                   <td>${{5000 | number}}</td>
-                  <td><input (keyup)="checkValues()" formControlName="five" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
+                  <td class="flex-container-centered"><input (keyup)="checkValues()" formControlName="five" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
                   <td>${{form?.five.value * 5000 | number }}</td>
                 </tr>
                 <tr>
                   <td>${{2000 | number}}</td>
-                  <td><input (keyup)="checkValues()" formControlName="six" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
+                  <td class="flex-container-centered"><input (keyup)="checkValues()" formControlName="six" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
                   <td>${{form?.six.value * 2000 | number }}</td>
                 </tr>
                 <tr>
                   <td>${{1000 | number}}</td>
-                  <td><input (keyup)="checkValues()" formControlName="seven" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
+                  <td class="flex-container-centered"><input (keyup)="checkValues()" formControlName="seven" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
                   <td>${{form?.seven.value * 1000 | number }}</td>
                 </tr>
                 <tr>
                   <td>${{500 | number}}</td>
-                  <td><input (keyup)="checkValues()" formControlName="eight" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
+                  <td class="flex-container-centered"><input (keyup)="checkValues()" formControlName="eight" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
                   <td>${{form?.eight.value * 500 | number }}</td>
                 </tr>
                 <tr>
                   <td>${{200 | number}}</td>
-                  <td><input (keyup)="checkValues()" formControlName="nine" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
+                  <td class="flex-container-centered"><input (keyup)="checkValues()" formControlName="nine" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
                   <td>${{form?.nine.value * 200 | number }}</td>
                 </tr>
                 <tr>
                   <td>${{100 | number}}</td>
-                  <td><input (keyup)="checkValues()" formControlName="ten" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
+                  <td class="flex-container-centered"><input (keyup)="checkValues()" formControlName="ten" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
                   <td>${{form?.ten.value * 100 | number }}</td>
                 </tr>
                 <tr>
                   <td>${{50 | number}}</td>
-                  <td><input (keyup)="checkValues()" formControlName="eleven" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
+                  <td class="flex-container-centered"><input (keyup)="checkValues()" formControlName="eleven" type="text" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;"></td>
                   <td>${{form?.eleven.value * 50 | number }}</td>
                 </tr>
                 <tr>

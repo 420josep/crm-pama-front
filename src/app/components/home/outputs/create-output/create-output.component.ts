@@ -3,7 +3,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from 'src/app/templates/user';
 import { Router } from '@angular/router';
 import { CompaniesService } from 'src/app/services/companies.service';
-import { ToolsService } from 'src/app/services/tools.service';
 import { BranchOfficeService } from 'src/app/services/branch-office.service';
 import { ListItem } from 'src/app/templates/global';
 import { AuthService } from 'src/app/services/auth.service';
@@ -37,10 +36,10 @@ export class CreateOutputComponent implements OnInit {
 
     // Asignación de variables y método de validación
     this.outputForm = this.formBuilder.group({
-      value: ['', [Validators.required]],
+      value: ['', [Validators.required, Validators.maxLength(10)]],
       companyID: ['', [Validators.required]],
       branchID: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      description: ['', [Validators.required, Validators.maxLength(150)]],
       creationUser: [ this.currentUser.id, [Validators.required]],
     });
     

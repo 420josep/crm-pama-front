@@ -29,12 +29,24 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     let url: string = state.url;
+    this.checkLogin();
     if( (url.includes('/menu/empresas') && this.currentUser.type != 1) ){
       this.router.navigate(['/menu']);
       return false;
     }
-
-    return this.checkLogin();
+    if( (url.includes('/menu/usuarios') && this.currentUser.type === 3) ){
+      this.router.navigate(['/menu']);
+      return false;
+    }
+    if( (url.includes('/menu/sucursales') && this.currentUser.type === 3) ){
+      this.router.navigate(['/menu']);
+      return false;
+    }
+    if( (url.includes('/menu/reportes') && this.currentUser.type === 3) ){
+      this.router.navigate(['/menu']);
+      return false;
+    }
+    return true;
   }
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {

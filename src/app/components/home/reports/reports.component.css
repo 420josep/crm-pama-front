@@ -1,14 +1,46 @@
-
-.secundary-button {
-    padding: .5rem;
-    font-weight: bold;
-    font-size: 1em;
-    color: white;
-    background-color: #f0ad4e;
-    border: 1px solid #f0ad4e;
+.summary-card {
+    padding: .8rem 1.5rem;
+    border: 1px solid #c0c5c9;
+    border-radius: 5px;
+    overflow: hidden;
 }
 
-.secundary-button:hover {
+.summary-title {
+    color: #525a60;
+    font-weight: bolder;
+}
+
+.summary-value {
+    color: #2a2a2a;
+    font-size: 1.2em;
+}
+
+.text-nowrap {
+    white-space: nowrap!important;
+    color: #8898aa;
+    font-style: .85em;
+}
+
+.summary-card .text.up{
+    color: #2dce89;
+}
+
+.summary-card .text.same{
     color: #f0ad4e;
-    background-color: white;
+}
+
+.summary-card .text.down{
+    color: #ff4d4d;
+}
+
+.summary-card-icon-container {
+    position: absolute;
+    top: 12%;
+    right: 5%;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: #428bca;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.2em;
 }

@@ -48,11 +48,11 @@ export class EditProductComponent implements OnInit {
     // Asignación de variables y método de validación
     this.editProductForm = this.formBuilder.group({
       productID: [this.productID, [Validators.required]],
-      name: ['', [Validators.required]],
-      brand: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.maxLength(150)]],
+      brand: ['', [Validators.required, Validators.maxLength(150)]],
       presentationID: ['', [Validators.required]],
-      content: ['', [Validators.required]],
-      price: ['', [Validators.required]],
+      content: ['', [Validators.required, Validators.maxLength(45)]],
+      price: ['', [Validators.required, Validators.maxLength(13)]],
       userID: [this.currentUser.id, [Validators.required]],
       companyID: ['', [Validators.required]],
       iva: ['', [Validators.required]],

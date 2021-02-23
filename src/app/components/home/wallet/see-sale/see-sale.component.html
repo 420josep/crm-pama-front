@@ -1,0 +1,78 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <div class="field-1" style="margin-top: 3rem;">
+      <a routerLink="/menu/ventas/cartera" class="add-button"><i class="fas fa-chevron-left"></i> Volver</a>
+    </div>
+    <h1 class="title">Abonos de la venta #{{currentSale?.billNumber}}</h1>
+    <div class="text-align-center error-text" *ngIf="!response">
+      ¡{{message}}!
+    </div>
+    <div class="field-1 flex-container-centered" *ngIf="!existSale">
+      <button class="cancel-button back-button" type="button" routerLink="/menu/ventas/cartera">Volver</button>
+    </div>
+    <div class="form-container columns field-1">
+      <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-3">
+        <label class="label-field">Empresa</label>
+        <span class="span-field">{{currentSale?.company}}</span>
+      </div>
+      <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-3">
+        <label class="label-field">Sucursal</label>
+        <span class="span-field">{{currentSale?.branch}}</span>
+      </div>
+      <div class="item-field vertical-columns field-3">
+        <label class="label-field">Fecha</label>
+        <span class="span-field">{{currentSale?.date}}</span>
+      </div>
+      <div class="item-field vertical-columns field-3">
+        <label class="label-field">Cliente</label>
+        <span class="span-field">{{currentSale?.client}}</span>
+      </div>
+      <div class="item-field vertical-columns field-3">
+        <label class="label-field">Medio de pago</label>
+        <span class="span-field">{{currentSale?.payment}}</span>
+      </div>
+      <div class="item-field vertical-columns field-3">
+        <label class="label-field">Total</label>
+        <span class="span-field">${{currentSale?.total | number}}</span>
+      </div>
+      <div class="item-field vertical-columns field-3">
+        <label class="label-field">Total abonos</label>
+        <span class="span-field">${{currentSale?.totalPartialPayments | number}}</span>
+      </div>
+      <div class="item-field vertical-columns field-3">
+        <label class="label-field">Pendiente de pago</label>
+        <span class="span-field">${{currentSale?.pendingToPay | number}}</span>
+      </div>
+      <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-3">
+        <label class="label-field">Vendedor</label>
+        <span class="span-field">{{currentSale?.creationUser}}</span>
+      </div>
+    </div>
+
+    <div class="item-field vertical-columns field-1">
+      <label class="label-field">Abonos de esta venta</label>
+      <div class="form-container columns field-1">
+        <div *ngFor="let partialPayment of currentSale?.partialPayments; let i=index" class="vertical-columns field-3" style="padding: 1rem;min-width: 330px;">
+          <div class="partial-payment-card-container flex-container">
+            <div class="left flex-container-centered" style="flex-grow: 1">
+              <span>{{partialPayment?.date}}</span>
+            </div>
+            <div class="right vertical-columns relative-container" style="flex-grow: 3">
+              <span class="info field-1">Valor:</span>
+              <span class="center field-1">${{partialPayment?.value | number}}</span>
+              <span class="info field-1">Registró:</span>
+              <span class="info field-1">{{partialPayment?.creationUser}}</span>
+              <div class="flex-container" style="margin: .5rem 0;">
+                <button  [routerLink]="['/menu/ventas/cartera/abonos', partialPayment?.id]" class="edit-button">Editar</button>
+                <i class="far fa-trash-alt trash-icon" (click)="deletePartialPayment(partialPayment.id, partialPayment.date, partialPayment.value)" style="color: #2a265f;margin-left: 1rem;"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="item-field flex-container-centered field-1">
+      <button [routerLink]="['/menu/ventas/cartera/crear', saleID]" class="add-partial-button">Añadir otro abono &#43;</button>
+    </div>
+  </div>
+</div>

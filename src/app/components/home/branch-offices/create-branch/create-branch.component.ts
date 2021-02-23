@@ -40,7 +40,7 @@ export class CreateBranchComponent implements OnInit {
 
     // Asignación de variables y método de validación
     this.newBranchForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.maxLength(45)]],
       companyID: ['', [Validators.required]],
       countryID: ['', [Validators.required]],
       provinceID: ['', [Validators.required]],

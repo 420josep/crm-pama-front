@@ -4,8 +4,7 @@ import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { User } from '../templates/user';
 import { ListItem } from '../templates/global';
-import { stringify } from 'querystring';
-import { ProductSaleList, SaleList, Sale, EditProductSale } from '../templates/sale';
+import { ProductSaleList, SaleList, Sale, EditProductSale, PartialPaymentDescription, PendingSaleList, PendingSaleItem, SaleForPartialPayments } from '../templates/sale';
 import { ToolsService } from './tools.service';
 import { environment } from 'src/environments/environment';
 
@@ -202,6 +201,7 @@ export class SalesService {
             client: response[index].client,
             direction: response[index].direction,
             phone: response[index].phone,
+            useMobile: response[index].useMobile,
             total: +response[index].total,
             branch: branch,
             company: company,
@@ -209,7 +209,7 @@ export class SalesService {
             status: response[index].status,
             paymentID: +response[index].paymentID,
             payment: response[index].payment,
-            creationUser: response[index].creationUser,
+            creationUser: creationUser,
           }
           array.push(item);
         }
@@ -235,53 +235,66 @@ export class SalesService {
 
     return this.http.get<Sale>(environment.apiURL + 'get_sales.php', httpOptions).pipe(map( response => {
       if(response){
-          let company = "";
-          let branch, companyID = 0;
-          if(this.currentUser.type === 1) {
-            company = response.company;
-            companyID = +response.companyID;
-            branch = +response.branchID;
-          } else if(this.currentUser.type === 2) {
-            company = "";
-            companyID = 0;
-            branch = +response.branchID;
-          } else {
-            company = "";
-            companyID = 0;
-            branch = 0;
+        //console.log(response);
+        let company = "";
+        let branch, companyID = 0;
+        if(this.currentUser.type === 1) {
+          company = response.company;
+          companyID = +response.companyID;
+          branch = +response.branchID;
+        } else if(this.currentUser.type === 2) {
+          company = "";
+          companyID = 0;
+          branch = +response.branchID;
+        } else {
+          company = "";
+          companyID = 0;
+          branch = 0;
+        }
+        let products: EditProductSale[] = [];
+        for (let index = 0; index < response.products.length; index++) {
+          const item: EditProductSale = {
+            id: +response.products[index].id,
+            productID: +response.products[index].productID,
+            product: response.products[index].product,
+            productPrice: +response.products[index].productPrice,
+            quantity: +response.products[index].quantity,
+            iva: response.products[index].iva
           }
-          let products: EditProductSale[] = [];
-          for (let index = 0; index < response.products.length; index++) {
-            const item: EditProductSale = {
-              id: +response.products[index].id,
-              productID: +response.products[index].productID,
-              product: response.products[index].product,
-              productPrice: +response.products[index].productPrice,
-              quantity: +response.products[index].quantity,
-              iva: response.products[index].iva
-            }
-            products.push(item);
-          }
+          products.push(item);
+        }
 
-          const item: Sale = {
-            id: +response.id,
-            date: response.date,
-            clientID: +response.clientID,
-            total: +response.total,
-            realTotal: +response.realTotal,
-            billNumber: +response.billNumber,
-            branchID: branch,
-            companyID: companyID,
-            company: company,
-            statusID: +response.statusID,
-            paymentID: +response.paymentID,
-            observation: response.observation,
-            discountValue: +response.discountValue,
-            ivaValue: +response.ivaValue,
-            products: products
+        let partialPayment: PartialPaymentDescription[] = [];
+        for (let index = 0; index < response.partialPayments.length; index++) {
+          const item: PartialPaymentDescription = {
+            id: +response.partialPayments[index].id,
+            date: this.tools.sqlToDate(response.partialPayments[index].date, 3),
+            value: +response.partialPayments[index].value,
+            creationUser: response.partialPayments[index].creationUser,
           }
-          return item;
-        
+          partialPayment.push(item);
+        }
+
+        const item: Sale = {
+          id: +response.id,
+          date: this.tools.sqlToDate(response.date, 3),
+          clientID: +response.clientID,
+          total: +response.total,
+          realTotal: +response.realTotal,
+          billNumber: +response.billNumber,
+          branchID: branch,
+          companyID: companyID,
+          company: company,
+          statusID: +response.statusID,
+          paymentID: +response.paymentID,
+          observation: response.observation,
+          discountValue: +response.discountValue,
+          ivaValue: +response.ivaValue,
+          products: products,
+          partialPayments: partialPayment
+        }
+        return item;
+      
       }else {
         return;
       }
@@ -303,5 +316,190 @@ export class SalesService {
     return this.http.post(environment.apiURL + 'delete_sale_product.php', json, httpOptions);
   }
 
+  getTotalPendingSales( text: string ) {
+    const params = new HttpParams()
+    .set('userID', this.currentUser.id.toString())
+    .set('companyID', this.currentUser.companyID.toString())
+    .set('word', text)
+    .set('option', "6")
 
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json; UTF8' }),
+      params: params
+    };
+
+    return this.http.get<number>(environment.apiURL + 'get_sales.php', httpOptions).pipe(map( response => {
+      if(response){
+        return +response;
+      }else {
+        return 0;
+      }
+    }));
+  }
+
+  getPendingSales( text: string, offset: number ) {
+    const params = new HttpParams()
+    .set('userID', this.currentUser.id.toString())
+    .set('companyID', this.currentUser.companyID.toString())
+    .set('word', text)
+    .set('option', "7")
+    .set('offset', offset.toString());
+
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json; UTF8' }),
+      params: params
+    };
+    
+    return this.http.get<PendingSaleList[]>(environment.apiURL + 'get_sales.php', httpOptions).pipe(map( response => {
+      if(response){
+        let array: PendingSaleList[] = [];
+        for (let index = 0; index < response.length; index++) {
+          let company, branch, creationUser = "";
+          let date = response[index].date;
+          let dateLastPartialPayment = response[index].dateLastPartialPayment;
+          date = this.tools.sqlToDate(date, 2);
+          dateLastPartialPayment = (!dateLastPartialPayment) ? dateLastPartialPayment : this.tools.sqlToDate(dateLastPartialPayment, 2);
+
+          if(this.currentUser.type === 1) {
+            company = response[index].company;
+            branch = response[index].branch;
+            creationUser = response[index].creationUser;
+          } else if(this.currentUser.type === 2) {
+            company = "";
+            branch = response[index].branch;
+            creationUser = response[index].creationUser;
+          } else {
+            company = "";
+            branch = "";
+            creationUser = "";
+          }
+          const item: PendingSaleList = {
+            id: +response[index].id,
+            date: date,
+            billNumber: +response[index].billNumber,
+            client: response[index].client,
+            direction: response[index].direction,
+            phone: response[index].phone,
+            useMobile: response[index].useMobile,
+            total: +response[index].total,
+            branch: branch,
+            company: company,
+            paymentID: +response[index].paymentID,
+            payment: response[index].payment,
+            creationUser: creationUser,
+            totalPartialPayments: +response[index].totalPartialPayments,
+            dateLastPartialPayment: dateLastPartialPayment,
+            valueLastPartialPayment: +response[index].valueLastPartialPayment,
+            pendingToPay: +response[index].pendingToPay
+          }
+          array.push(item);
+        }
+        return array;
+      }else {
+        return [];
+      }
+
+    }));
+  }
+
+  searchPendingSale( companyID: string, branchID: string, text: string ) {
+    const params = new HttpParams()
+    .set('userID', this.currentUser.id.toString())
+    .set('companyID', companyID)
+    .set('branchID', branchID)
+    .set('word', text)
+    .set('option', "8")
+
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json; UTF8' }),
+      params: params
+    };
+
+    return this.http.get<PendingSaleItem[]>(environment.apiURL + 'get_sales.php', httpOptions).pipe(map( response => {
+      if(response){
+        let array: PendingSaleItem[] = [];
+        for (let index = 0; index < response.length; index++) {
+          let date = response[index].date;
+          date = this.tools.sqlToDate(date, 2);
+
+          const item: PendingSaleItem = {
+            id: +response[index].id,
+            date: date,
+            billNumber: +response[index].billNumber,
+            client: response[index].client,
+            total: +response[index].total,
+            pendingToPay: +response[index].pendingToPay,
+          }
+          array.push(item);
+        }
+        return array;
+      }else {
+        return [];
+      }
+
+    }));
+  }
+
+  getSaleForPartialPayments( saleID: string ) {
+    const params = new HttpParams()
+    .set('userID', this.currentUser.id.toString())
+    .set('companyID', this.currentUser.companyID.toString())
+    .set('saleID', saleID)
+    .set('option', "9");
+
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json; UTF8' }),
+      params: params
+    };
+    
+    return this.http.get<SaleForPartialPayments>(environment.apiURL + 'get_sales.php', httpOptions).pipe(map( response => {
+      if(response){
+        let company, branch, creationUser = "";
+        let date = response.date;
+        date = this.tools.sqlToDate(date, 2);
+
+        if(this.currentUser.type === 1) {
+          company = response.company;
+          branch = response.branch;
+          creationUser = response.creationUser;
+        } else if(this.currentUser.type === 2) {
+          company = "";
+          branch = response.branch;
+          creationUser = response.creationUser;
+        } else {
+          company = "";
+          branch = "";
+          creationUser = "";
+        }
+
+        let partialPayment: PartialPaymentDescription[] = [];
+        for (let index = 0; index < response.partialPayments.length; index++) {
+          const item: PartialPaymentDescription = {
+            id: +response.partialPayments[index].id,
+            date: this.tools.sqlToDate(response.partialPayments[index].date, 3),
+            value: +response.partialPayments[index].value,
+            creationUser: response.partialPayments[index].creationUser,
+          }
+          partialPayment.push(item);
+        }
+
+        const item: SaleForPartialPayments = {
+          date: date,
+          billNumber: +response.billNumber,
+          client: response.client,
+          total: +response.total,
+          branch: branch,
+          company: company,
+          payment: response.payment,
+          totalPartialPayments: +response.totalPartialPayments,
+          pendingToPay: +response.pendingToPay,
+          partialPayments: partialPayment,
+          creationUser: creationUser,
+        }
+        return item;
+      }else {
+        return null;
+      }
+    }));
+  }
 }

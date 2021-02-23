@@ -39,15 +39,17 @@ export class CreateUserComponent implements OnInit {
 
     // Asignación de variables y método de validación
     this.newUserForm = this.formBuilder.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
+      firstName: ['', [Validators.required, Validators.maxLength(100)]],
+      lastName: ['', [Validators.required, Validators.maxLength(100)]],
       companyID: ['', [Validators.required]],
       branchID: ['', [Validators.required]],
-      DNI: ['', [Validators.required]],
-      email: [''],
-      phone: ['', [Validators.required]],
-      username: ['', [Validators.required]],
+      DNI: ['', [Validators.required, Validators.maxLength(15)]],
+      email: ['', [Validators.email, Validators.maxLength(120)]],
+      phone: ['', [Validators.required, Validators.maxLength(10)]],
+      username: ['', [Validators.required, Validators.maxLength(50)]],
       typeID: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(10)]],
+      creationUser: [this.currentUser.id, [Validators.required]],
     });
 
     if(this.currentUser.type != 1){

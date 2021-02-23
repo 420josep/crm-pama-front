@@ -18,6 +18,7 @@ export interface SaleList {
     client: string;
     direction: string;
     phone: string;
+    useMobile: boolean;
     total: number;
     branch: string;
     company: string;
@@ -44,6 +45,7 @@ export interface Sale {
     discountValue: number;
     ivaValue: number;
     products: EditProductSale[];
+    partialPayments: PartialPaymentDescription[];
 }
 
 export interface EditProductSale {
@@ -53,5 +55,55 @@ export interface EditProductSale {
     productPrice: number;
     quantity: number;
     iva: boolean;
+}
+
+export interface PartialPaymentDescription {
+    id: number;
+    date: string;
+    value: number;
+    creationUser: string;
+}
+
+export interface PendingSaleList {
+    id: number;
+    date: string;
+    billNumber: number;
+    client: string;
+    direction: string;
+    phone: string;
+    useMobile: boolean;
+    total: number;
+    branch: string;
+    company: string;
+    paymentID: number;
+    payment: string;
+    creationUser: string;
+    totalPartialPayments: number;
+    dateLastPartialPayment: string;
+    valueLastPartialPayment: number;
+    pendingToPay: number;
+}
+
+export interface PendingSaleItem {
+    id: number;
+    date: string;
+    billNumber: number;
+    client: string;
+    total: number;
+    pendingToPay: number;
+}
+
+export interface SaleForPartialPayments {
+    date: string;
+    billNumber: number;
+    client: number;
+    total: number;
+    branch: string;
+    company: string;
+    payment: string;
+    totalPartialPayments: number;
+    pendingToPay: number;
+    creationUser: string;
+    partialPayments: PartialPaymentDescription[];
 }
 

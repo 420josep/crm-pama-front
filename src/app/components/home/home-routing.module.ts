@@ -36,7 +36,11 @@ import { EditOutputComponent } from './outputs/edit-output/edit-output.component
 import { ReportsComponent } from './reports/reports.component';
 import { QuickStartComponent } from './quick-start/quick-start.component';
 import { QuotationComponent } from './quotation/quotation.component';
-import { WalletComponent } from './wallet/wallet.component';
+import { SeeSalesComponent } from './wallet/see-sales/see-sales.component';
+import { SeeSaleComponent } from './wallet/see-sale/see-sale.component';
+import { EditPartialPaymentComponent } from './wallet/edit-partial-payment/edit-partial-payment.component';
+import { CreatePartialPaymentComponent } from './wallet/create-partial-payment/create-partial-payment.component';
+import { CreatePartialPaymentForSaleComponent } from './wallet/create-partial-payment-for-sale/create-partial-payment-for-sale.component';
 
 const routes: Routes = [
   { 
@@ -46,10 +50,14 @@ const routes: Routes = [
       { path: '', redirectTo: 'inicio' },
       { path: 'inicio', component:  QuickStartComponent },
       { path: 'ventas/cotizacion', component:  QuotationComponent },
-      { path: 'ventas/cartera', component:  WalletComponent },
       { path: 'ventas', redirectTo: 'ventas/lista' },
       { path: 'ventas/nueva', component:  CreateSaleComponent },
       { path: 'ventas/lista', component:  SalesComponent },
+      { path: 'ventas/cartera/crear', component:  CreatePartialPaymentComponent },
+      { path: 'ventas/cartera/crear/:id', component:  CreatePartialPaymentForSaleComponent },
+      { path: 'ventas/cartera', component:  SeeSalesComponent },
+      { path: 'ventas/cartera/abonos/:id', component: EditPartialPaymentComponent },
+      { path: 'ventas/cartera/:id', component: SeeSaleComponent },
       { path: 'ventas/:id', component:  EditSaleComponent },
       { path: 'proveedores/nuevo', component:  NewProviderComponent },
       { path: 'proveedores/lista', component:  ProvidersComponent },

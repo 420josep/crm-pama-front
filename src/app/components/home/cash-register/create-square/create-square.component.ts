@@ -86,9 +86,9 @@ export class CreateSquareComponent implements OnInit {
           this.squareForm.addControl('totalOutputs', new FormControl(data['totalOutputs'], Validators.required));
           this.squareForm.addControl('totalSales', new FormControl(data['totalSales'], Validators.required));
           this.squareForm.addControl('totalSalesMoney', new FormControl(data['totalSalesMoney'], Validators.required));
-          this.squareForm.addControl('cash', new FormControl('', Validators.required));
-          this.squareForm.addControl('mismatch', new FormControl('', Validators.required));
-          this.squareForm.addControl('observation', new FormControl(''));
+          this.squareForm.addControl('cash', new FormControl('', [Validators.required, Validators.maxLength(13) ]));
+          this.squareForm.addControl('mismatch', new FormControl('', [Validators.required, Validators.maxLength(13) ]));
+          this.squareForm.addControl('observation', new FormControl('', Validators.maxLength(250)));
           this.squareForm.addControl('one', new FormControl(''));
           this.squareForm.addControl('two', new FormControl(''));
           this.squareForm.addControl('three', new FormControl(''));
@@ -138,22 +138,23 @@ export class CreateSquareComponent implements OnInit {
   }
 
   checkValues() {
-    let one = this.form.one.value;
-    let two = this.form.two.value;
-    let three = this.form.three.value;
-    let four = this.form.four.value;
-    let five = this.form.five.value;
-    let six = this.form.six.value;
-    let seven = this.form.seven.value;
-    let eight = this.form.eight.value;
-    let nine = this.form.nine.value;
-    let ten = this.form.ten.value;
-    let eleven = this.form.eleven.value;
+    let one = +this.form.one.value;
+    let two = +this.form.two.value;
+    let three = +this.form.three.value;
+    let four = +this.form.four.value;
+    let five = +this.form.five.value;
+    let six = +this.form.six.value;
+    let seven = +this.form.seven.value;
+    let eight = +this.form.eight.value;
+    let nine = +this.form.nine.value;
+    let ten = +this.form.ten.value;
+    let eleven = +this.form.eleven.value;
 
     this.total = (one*100000) + (two*50000) + (three*20000) + (four*10000) + (five*5000) + (six*2000) 
       + (seven*1000) + (eight*500) + (nine*200) + (ten*100) + (eleven*50);
     
     this.form.cash.setValue(this.total);
+    this.updateCashRegister();
   }
 
   updateCashRegister(){

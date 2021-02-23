@@ -29,7 +29,9 @@
         </div>
         <div class="item-field vertical-columns field-3">
           <label class="label-field" for="billNumber">Número de factura (*)</label>
-          <input id="billNumber" name="billNumber" formControlName="billNumber" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+          <input id="billNumber" name="billNumber" formControlName="billNumber" class="input-field" pattern="[0-9]*" min="0"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" maxlength="13"
+          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
         </div>
         <div class="item-field vertical-columns field-3">
           <label class="label-field">Cliente (*)</label>
@@ -56,6 +58,29 @@
           <label class="label-field" for="observation">Observación</label>
           <textarea formControlName="observation" id="observation" name="observation" placeholder="Por si necesitas dejar un comentario de algo sucedido con esta venta" autocomplete="off" maxlength="150" class="input-field text-area"></textarea>
         </div>
+        <div *ngIf="currentSale?.partialPayments.length > 0" class="item-field vertical-columns field-1">
+          <label class="label-field">Abonos de esta venta</label>
+          <div class="flex-container-centered field-1">
+            <div class="field-2 vertical-columns">
+              <div class="field-1 flex-container">
+                <label class="field-4 flex-container-centered sale-cell head">Fecha</label>
+                <label class="field-4 flex-container-centered sale-cell head">Valor abonado</label>
+                <label class="field-2 flex-container-centered sale-cell head">Vendedor que registró</label>
+              </div>
+              <div *ngFor="let partialPayment of currentSale?.partialPayments; let i=index" class="field-1 flex-container" style="color:#525a60">
+                <div class="field-4 flex-container-centered sale-cell">{{partialPayment?.date }}</div>
+                <div class="field-4 flex-container-centered sale-cell">${{partialPayment?.value | number }}</div>
+                <div class="field-2 flex-container-centered sale-cell">{{partialPayment?.creationUser }}</div>
+              </div>
+              <div class="field-1 flex-container">
+                <label class="field-4 flex-container-centered sale-cell head">Total abonos</label>
+                <label class="field-4 flex-container-centered sale-cell head">${{totalPartialPayments |number}}</label>
+                <label class="field-2 flex-container-centered sale-cell head"></label>
+              </div>
+            </div>
+          </div>
+
+        </div>
         <div class="item-field vertical-columns field-1">
           <label class="label-field">Productos en esta venta</label>
           <div class="field-1 flex-container columns">
@@ -72,7 +97,7 @@
               <div class="item-field flex-container-centered field-5">
                 <label class="label-field">Valor unitario</label>
               </div>
-              <div class="item-fieldflex-container-centered field-5">
+              <div class="item-field flex-container-centered field-5">
                 <label class="label-field">Valor total</label>
               </div>
             </div>
@@ -100,7 +125,8 @@
                         [ngClass]="{ 'is-invalid': product?.value.product && (product?.value.product?.stock < product?.value.quantity) }"
                         id="quantity{{i+1}}" name="quantity{{i+1}}" formControlName="quantity"
                         (keyup)="updateTotal()" (blur)="updateTotal()" class="input-field field-1" style="text-align: center;"
-                        pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+                        pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" maxlength="7"
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
   
                       <div *ngIf="product?.value.product" (click)="updateQuantity(i, 2)" [ngClass]="{ 'error': product?.value.product && (product?.value.product?.stock < product?.value.quantity) }" class="rigth-arrow flex-container-centered">
                         <i class="fas fa-plus"></i>
@@ -123,30 +149,46 @@
           </div>
           <div *ngIf="discount > 0" class="item-field vertical-columns field-1">
             <div class="flex-container total-container">
-              <span class="total-text" for="quantity">Subtotal :</span>
-              <span class="total-text" > ${{subtotal | number}} </span>
-            </div>
-            <div class="flex-container total-container">
-              <span class="total-text" for="quantity">Descuento (-{{discount}}%):</span>
-              <span class="total-text"> ${{discountValue | number}} </span>
-            </div>
-            <div class="flex-container total-container">
-              <span class="total-text" for="quantity">IVA:</span>
+              <span class="total-text">IVA:</span>
               <span class="total-text"> ${{ivaValue | number}} </span>
             </div>
             <div class="flex-container total-container">
-              <span class="total-text" for="quantity">Total:</span>
+              <span class="total-text">Subtotal :</span>
+              <span class="total-text" > ${{subtotal | number}} </span>
+            </div>
+            <div class="flex-container total-container">
+              <span class="total-text">Descuento (-{{discount}}%):</span>
+              <span class="total-text"> ${{discountValue | number}} </span>
+            </div>
+            <div class="flex-container total-container">
+              <span class="total-text">Total:</span>
               <span class="total-text"> ${{total | number}} </span>
+            </div>
+            <div *ngIf="pendingToPay > 0" class="flex-container total-container">
+              <span class="total-text">Total Abonos:</span>
+              <span class="total-text">-${{totalPartialPayments | number}} </span>
+            </div>
+            <div *ngIf="pendingToPay > 0" class="flex-container total-container">
+              <span class="total-text">Pendiente por pagar:</span>
+              <span class="total-text"> ${{pendingToPay | number}} </span>
             </div>
           </div>
           <div *ngIf="discount === 0" class="item-field vertical-columns field-1">
             <div class="flex-container total-container">
-              <span class="total-text" for="quantity">IVA:</span>
+              <span class="total-text">IVA:</span>
               <span class="total-text"> ${{ivaValue | number}} </span>
             </div>
             <div class="flex-container total-container">
-              <span class="total-text" for="quantity">Total:</span>
+              <span class="total-text">Total:</span>
               <span class="total-text"> ${{subtotal | number}} </span>
+            </div>
+            <div *ngIf="pendingToPay > 0" class="flex-container total-container">
+              <span class="total-text">Total Abonos:</span>
+              <span class="total-text">-${{totalPartialPayments | number}} </span>
+            </div>
+            <div *ngIf="pendingToPay > 0" class="flex-container total-container">
+              <span class="total-text">Pendiente por pagar:</span>
+              <span class="total-text"> ${{pendingToPay | number}} </span>
             </div>
           </div>
           <div class="item-field flex-container-centered field-1">

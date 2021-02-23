@@ -11,30 +11,44 @@
       <div class="form-container columns">
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="firstName">Nombres (*)</label>
-          <input id="firstName" name="firstName" formControlName="firstName" class="input-field" type="text" autocomplete="off">
+          <input id="firstName" name="firstName" formControlName="firstName" maxlength="100" class="input-field" type="text" autocomplete="off">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="lastName">Apellidos (*)</label>
-          <input id="lastName" name="lastName" formControlName="lastName" class="input-field" type="text" autocomplete="off">
+          <input id="lastName" name="lastName" formControlName="lastName" maxlength="100" class="input-field" type="text" autocomplete="off">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="dni">Cédula (*)</label>
-          <input id="dni" name="dni" formControlName="dni" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+          <input id="dni" name="dni" formControlName="dni" class="input-field" pattern="[0-9]*" min="0"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" maxlength="15"
+          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="discount">Descuento % (*)</label>
-          <input id="discount" name="discount" maxlength="2" formControlName="discount" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+          <input id="discount" name="discount" formControlName="discount" class="input-field" pattern="[0-9]*" min="0"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" maxlength="2"
+          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="direction">Dirección</label>
-          <input id="direction" name="direction" formControlName="direction" class="input-field" type="text" autocomplete="off">
+          <input id="direction" name="direction" formControlName="direction" maxlength="150" class="input-field" type="text" autocomplete="off">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="phone">Teléfono</label>
-          <input id="phone" name="phone" formControlName="phone" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+          <input id="phone" name="phone" formControlName="phone" class="input-field" pattern="[0-9]*" min="0"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" maxlength="10"
+          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
         </div>
-        <div *ngIf="currentUser.type === 1" class="field-1">
-          <div class="item-field vertical-columns field-2">
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="useMobile">¿El teléfono (si escribiste uno arriba) es un celular?</label>
+          <input formControlName="useMobile" id="useMobile" name="useMobile" [checked]="form.useMobile.value" class="input-field" type="checkbox">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field"><span style="color: #2dce89;">¡Información de tu interés!</span></label>
+          <span >Si marca esta opción tendrá un ícono de Whatsapp <i class="fab fa-whatsapp"></i> cada que este cliente realice una venta, al darle click le generará una conversación directa con él/ella vía Whatsapp Web. <br><span class="warning-text" style="padding-left: 0;">(Disponible solo para navegadores Chrome)</span></span>
+        </div> 
+        <div *ngIf="currentUser.type === 1" class="field-2">
+          <div class="item-field vertical-columns field-1">
             <label class="label-field">Empresa (*)</label>
             <select formControlName="companyID">
               <option value=""></option>
@@ -42,16 +56,14 @@
             </select>
           </div>
         </div>
-        <div class="flex-container field-1">
-          <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
-            <label class="label-field" for="state">Estado (*)</label>
-            <input autocomplete="off" formControlName="state" [checked]="form.state.value" id="state" name="state" class="input-field" type="checkbox">
-          </div>
-  
-          <div class="item-field vertical-columns field-2">
-            <label class="label-field">Fecha de creación </label>
-            <span > {{currentClient?.creationDate}} </span>
-          </div>
+        <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
+          <label class="label-field" for="state">Estado (*)</label>
+          <input autocomplete="off" formControlName="state" id="state" name="state" class="input-field" type="checkbox">
+        </div>
+
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Fecha de creación </label>
+          <span > {{currentClient?.creationDate}} </span>
         </div>
         <div class="field-1 flex-container">
           <label class="warning-text">¡Todos los campos con <span class="error-text">*</span> son obligatorios!</label>

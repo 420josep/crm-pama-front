@@ -3,16 +3,12 @@
     <div class="field-1" style="margin-top: 3rem;">
       <a routerLink="/menu/gastos/lista" class="add-button"><i class="fas fa-chevron-left"></i> Volver</a>
     </div>
-    <h1 class="title">Reportar un gasto </h1>
+    <h1 class="title">Registrar un gasto</h1>
     <div class="text-align-center error-text" *ngIf="!response">
       ¡{{message}}!
     </div>
     <form [formGroup]="outputForm" (ngSubmit)="saveOutput()">
       <div class="form-container columns">
-        <div class="item-field vertical-columns field-2">
-          <label class="label-field" for="value">Valor</label>
-          <input id="value" name="value" formControlName="value" placeholder="$" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
-        </div>
         <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
           <label class="label-field">Empresa</label>
           <select formControlName="companyID" (change)="getBranchs(form.companyID.value)">
@@ -26,6 +22,12 @@
             <option value=""></option>
             <option *ngFor="let branch of branchs" [ngValue]="branch?.id"> {{branch?.name}} </option>
           </select>
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="value">Valor</label>
+          <input formControlName="value" id="value" name="value" autocomplete="off" maxlength="10" placeholder="$"
+          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="input-field" pattern="[0-9]*" min="0" 
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number">
         </div>
         <div class="item-field vertical-columns field-1">
           <label class="label-field" for="description">Descripción</label>

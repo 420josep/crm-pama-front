@@ -11,7 +11,7 @@
       <div class="form-container columns">
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="name">Nombre (*)</label>
-          <input formControlName="name" id="name" name="name" autocomplete="off" class="input-field" type="text">
+          <input formControlName="name" id="name" name="name" autocomplete="off" maxlength="45" class="input-field" type="text">
         </div>
         <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
           <label class="label-field">Empresa (*)</label>

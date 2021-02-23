@@ -124,7 +124,7 @@ export class EntriesService {
         let date = response.date;
         let company, creationUser = "";
         let companyID, branchID = 0;
-        date = this.tools.sqlToDate(date, 2);
+        date = this.tools.sqlToDate(date, 3);
 
         if(this.currentUser.type === 1) {
           company = response.company;

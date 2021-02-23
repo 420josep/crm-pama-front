@@ -11,11 +11,11 @@
       <div class="form-container columns">
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="firstName">Nombres (*)</label>
-          <input formControlName="firstName" id="firstName" name="firstName" autocomplete="off" class="input-field" type="text">
+          <input formControlName="firstName" id="firstName" name="firstName" autocomplete="off" maxlength="100" class="input-field" type="text">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="lastName">Apellidos (*)</label>
-          <input formControlName="lastName" id="lastName" name="lastName" autocomplete="off" class="input-field" type="text">
+          <input formControlName="lastName" id="lastName" name="lastName" autocomplete="off" maxlength="100" class="input-field" type="text">
         </div>
         <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
           <label class="label-field">Empresa (*)</label>
@@ -32,21 +32,18 @@
           </select>
         </div>
         <div class="item-field vertical-columns field-2">
-          <label class="label-field" [ngClass]="{ 'is-invalid': submitted && message == 'Ya existe un usuario con la cédula ingresada' }" for="DNI">NIT o CC (*)</label>
-          <input formControlName="DNI" id="DNI" name="DNI" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && message == 'Ya existe un usuario con la cédula ingresada' }" class="input-field" type="text">
+          <label class="label-field" [ngClass]="{ 'is-invalid': submitted && message == 'Ya existe un usuario con la cédula ingresada' }" for="DNI">CC (*)</label>
+          <input formControlName="DNI" id="DNI" name="DNI" autocomplete="off" [ngClass]="{ 'is-invalid': submitted && message == 'Ya existe un usuario con la cédula ingresada' }" maxlength="15" class="input-field" type="text">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="email">Email</label>
-          <input formControlName="email" id="email" name="email" autocomplete="off" class="input-field" type="email">
+          <input formControlName="email" id="email" name="email" autocomplete="off" maxlength="120" class="input-field" type="email">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="phone">Teléfono (*)</label>
-          <input formControlName="phone" id="phone" name="phone" autocomplete="off" placeholder="Celular o fijo" class="input-field" pattern="[0-9]*" min="0"
+          <input formControlName="phone" id="phone" name="phone" autocomplete="off" placeholder="Celular o fijo" maxlength="10"
+            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="input-field" pattern="[0-9]*" min="0" 
             onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number">
-        </div>
-        <div class="item-field vertical-columns field-2">
-          <label class="label-field" [ngClass]="{ 'is-invalid': submitted && message == 'Ya existe el nombre de usuario ingresado' }" for="username">Usuario (*)</label>
-          <input formControlName="username" id="username" name="username" autocomplete="off" placeholder="Usuario para ingresar al sistema" [ngClass]="{ 'is-invalid': submitted && message == 'Ya existe el nombre de usuario ingresado' }" class="input-field" type="text">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field">Tipo de usuario (*)</label>
@@ -54,6 +51,14 @@
             <option value=""></option>
             <option *ngFor="let type of userTypes" [ngValue]="type?.id"> {{type?.name}} </option>
           </select>
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" [ngClass]="{ 'is-invalid': submitted && message == 'Ya existe el nombre de usuario ingresado' }" for="username">Usuario (*)</label>
+          <input formControlName="username" id="username" name="username" autocomplete="off" placeholder="Usuario para ingresar al sistema" [ngClass]="{ 'is-invalid': submitted && message == 'Ya existe el nombre de usuario ingresado' }" maxlength="50" class="input-field" type="text">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="password">Contraseña (*)</label>
+          <input autocomplete="off" formControlName="password" id="password" name="password" maxlength="10" class="input-field" placeholder="Mínimo 6 caracteres" type="password">
         </div>
         <div class="field-1 flex-container">
           <label class="warning-text">¡Todos los campos con <span class="error-text">*</span> son obligatorios!</label>

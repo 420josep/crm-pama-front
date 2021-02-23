@@ -6,6 +6,8 @@ import { CompaniesService } from 'src/app/services/companies.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/templates/user';
 import { HttpEventType } from '@angular/common/http';
+import { env } from 'process';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-edit-company',
@@ -48,9 +50,9 @@ export class EditCompanyComponent implements OnInit {
     this.editCompanyForm = this.formBuilder.group({
       companyID: ['', [Validators.required]],
       logo: ['', [Validators.required]],
-      name: ['', [Validators.required]],
-      manager: ['', [Validators.required]],
-      contact: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.maxLength(100)]],
+      manager: ['', [Validators.required, Validators.maxLength(100)]],
+      contact: ['', [Validators.required, Validators.maxLength(10)]],
       pricingID: ['', [Validators.required]],
       state: ['', [Validators.required]]
     });
@@ -74,8 +76,7 @@ export class EditCompanyComponent implements OnInit {
         this.currentCompany = response;
         this.form.companyID.setValue(this.currentCompany.id);
         this.form.logo.setValue(this.currentCompany.logo);
-        // TODO pendiente por cambiar a versión del servidor
-        this.companyLogoSrc = 'http://localhost/crm_pama_back/' + this.currentCompany.logo;
+        this.companyLogoSrc = environment.apiURL + this.currentCompany.logo;
         this.form.name.setValue(this.currentCompany.name);
         this.form.manager.setValue(this.currentCompany.manager);
         this.form.contact.setValue(this.currentCompany.contact);

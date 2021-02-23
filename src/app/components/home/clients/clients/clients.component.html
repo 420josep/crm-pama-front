@@ -26,7 +26,7 @@
             <th>Teléfono</th>
             <th *ngIf="currentUser.type === 1">Empresa</th>
             <th *ngIf="currentUser.type === 1" class="table-right-border">Estado</th>
-            <th></th>
+            <th *ngIf="currentUser.type < 3"></th>
           </tr>
         </thead>
         <tbody>
@@ -38,7 +38,7 @@
             <td [routerLink]="['/menu/clientes', client.id]"> {{client?.phone}} </td>
             <td [routerLink]="['/menu/clientes', client.id]" *ngIf="currentUser.type === 1"> {{client?.company}} </td>
             <td [routerLink]="['/menu/clientes', client.id]" *ngIf="currentUser.type === 1"> {{client?.state}} </td>
-            <td>
+            <td *ngIf="currentUser.type < 3">
               <div>
                 <i class="far fa-trash-alt trash-icon" (click)="deleteClient(client.id, client.name)"></i>
               </div>

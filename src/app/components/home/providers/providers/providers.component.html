@@ -27,7 +27,7 @@
             <th *ngIf="currentUser?.type === 1">Usuario de creación</th>
             <th *ngIf="currentUser?.type === 1">Empresa</th>
             <th *ngIf="currentUser?.type === 1" class="table-right-border">Estado</th>
-            <th></th>
+            <th *ngIf="currentUser?.type < 3"></th>
           </tr>
         </thead>
         <tbody>
@@ -40,7 +40,7 @@
             <td *ngIf="currentUser?.type === 1"[routerLink]="['/menu/proveedores', provider.id]"> {{provider?.creationUser}} </td>
             <td *ngIf="currentUser?.type === 1" [routerLink]="['/menu/proveedores', provider.id]"> {{provider?.company}} </td>
             <td *ngIf="currentUser?.type === 1" [routerLink]="['/menu/proveedores', provider.id]"> {{provider?.state}} </td>
-            <td>
+            <td *ngIf="currentUser?.type < 3">
               <div>
                 <i class="far fa-trash-alt trash-icon" (click)="deleteProvider(provider.id, provider.name)"></i>
               </div>

@@ -31,9 +31,9 @@ export class CreateCompanyComponent implements OnInit {
     // Asignación de variables y método de validación
     this.newCompanyForm = this.formBuilder.group({
       logo: ['', Validators.required],
-      name: ['', [Validators.required]],
-      manager: ['', [Validators.required]],
-      contact: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.maxLength(100)]],
+      manager: ['', [Validators.required, Validators.maxLength(100)]],
+      contact: ['', [Validators.required, Validators.maxLength(10)]],
       pricingID: ['', [Validators.required]]
     });
 

@@ -51,7 +51,7 @@ export class CreateEntryComponent implements OnInit {
     // Asignación de variables y método de validación
     this.newEntryForm = this.formBuilder.group({
       date: [today, [Validators.required]],
-      billNumber: ['', [Validators.required]],
+      billNumber: ['', [Validators.required, Validators.maxLength(13)]],
       providerID: ['', [Validators.required]],
       branchID: ['', [Validators.required]],
       products: this.formBuilder.array([]),
@@ -140,8 +140,8 @@ export class CreateEntryComponent implements OnInit {
   addProductFormGroup() {
     return this.formBuilder.group({
       id: [{value:'', disabled: true}, Validators.required],
-      unitValue: ['', Validators.required],
-      quantity: [1, Validators.required]
+      unitValue: ['', [Validators.required, Validators.maxLength(13)]],
+      quantity: [1, [Validators.required, Validators.maxLength(7)]]
     });
   }
 

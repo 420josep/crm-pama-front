@@ -41,13 +41,14 @@ export class EditClientComponent implements OnInit {
     // Asignación de variables y método de validación
     this.editClientForm = this.formBuilder.group({
       clientID: [this.clientID, [Validators.required]],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      dni: ['', [Validators.required]],
-      discount: ['', [Validators.required],],
-      direction: [''],
-      phone: [''],
+      firstName: ['', [Validators.required, Validators.maxLength(100)]],
+      lastName: ['', [Validators.required, Validators.maxLength(100)]],
+      dni: ['', [Validators.required, Validators.maxLength(15)]],
+      discount: ['', [Validators.required, Validators.maxLength(2)]],
+      direction: ['', Validators.maxLength(150)],
+      phone: ['', Validators.maxLength(10)],
       companyID: ['', [Validators.required]],
+      useMobile: ['', [Validators.required]],
     });
     
     if(this.currentUser.type != 1){
@@ -76,6 +77,7 @@ export class EditClientComponent implements OnInit {
         this.form.discount.setValue(this.currentClient.discount);
         this.form.direction.setValue(this.currentClient.direction);
         this.form.phone.setValue(this.currentClient.phone);
+        this.form.useMobile.setValue(this.currentClient.useMobile);
         if(this.currentUser.type === 1){
           this.form.companyID.setValue(this.currentClient.companyID);
           this.form.state.setValue(this.currentClient.state);

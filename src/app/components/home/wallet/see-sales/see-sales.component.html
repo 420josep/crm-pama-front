@@ -1,0 +1,109 @@
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="Sat, 01 Jan 2000 00:00:00 GMT">
+
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <h1 class="title">Cartera</h1>
+    <div class="list-content-container field-1">
+      <div class="space-between alone-search-container field-1">
+        <a routerLink="/menu/ventas/cartera/crear" class="add-button">Registrar un abono &#43;</a>
+
+        <div class="flex-container field-2 relative-container">
+          <input class="search-input" (keyup)='searchClient()' [(ngModel)]="searchField" type="text" placeholder="Buscar una venta por su # de factura o cliente">
+          <div *ngIf="searchField.length > 0" class="flex-container-centered delete-search-icon" (click)="deleteSearch()">
+            x
+          </div>
+          <div class="flex-container-centered input-icon-container" (click)="searchClient()">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="vertical-columns field-1">
+        <div *ngFor="let sale of sales; trackBy:trackBySaleID;" class="sale-container">
+          <div [routerLink]="['/menu/ventas/cartera', sale.id]" class="summary-container-card space-between">
+            <div class="vertical-columns" style="flex: 1 1 0px">
+              <div class="section vertical-columns">
+                <span class="important-text">Factura:</span>
+                <span class="important-text"># {{sale?.billNumber}}</span>
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Fecha:</span>
+                <span>{{sale?.date}}</span>
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Cliente:</span>
+                <span class="important-text">{{sale?.client}}</span>
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Dirección:</span>
+                <span><i class="fas fa-map-marker-alt"></i> {{sale?.direction}}</span> 
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Teléfono:</span>
+                <span><i class="fas fa-mobile-alt"></i> {{sale?.phone}} <a *ngIf="sale?.useMobile" target="_blank" (click)="$event.stopPropagation()" href="https://api.whatsapp.com/send?phone={{sale?.phone}}" ><i class="whatsapp-icon fab fa-whatsapp"></i></a> </span>
+              </div>
+            </div>
+            <div class="vertical-columns" style="flex: 1 1 0px">
+              <div class="section vertical-columns">
+                <span class="important-text">Medio de pago:</span>
+                <span *ngIf="sale?.paymentID === 1"><i class="fas fa-money-bill-wave"></i> {{sale?.payment}}</span>
+                <span *ngIf="sale?.paymentID === 2 || sale?.paymentID === 3"><i class="far fa-credit-card"></i> {{sale?.payment}}</span>
+                <span *ngIf="sale?.paymentID ===4"><i class="fas fa-exchange-alt"></i> {{sale?.payment}}</span>
+
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Total:</span>
+                <span class="important-text">${{sale?.total | number}}</span>
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Total Abonos:</span>
+                <span *ngIf="sale?.totalPartialPayments === 0">No ha realizado</span>
+                <span *ngIf="sale?.totalPartialPayments > 0">${{sale?.totalPartialPayments | number}}</span>
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text" style="color: #ff4d4d !important;">Pendiente por pagar:</span>
+                <span class="important-text">${{sale?.pendingToPay | number}}</span>
+              </div>
+            </div>
+            <div class="vertical-columns" style="flex: 1 1 0px">
+              <div class="section vertical-columns">
+                <span class="important-text">Fecha último abono:</span>
+                <span *ngIf="sale?.totalPartialPayments === 0">No ha realizado</span>
+                <span *ngIf="sale?.totalPartialPayments > 0">{{sale?.dateLastPartialPayment}}</span>
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Valor último abono:</span>
+                <span *ngIf="sale?.totalPartialPayments === 0">No ha realizado</span>
+                <span *ngIf="sale?.totalPartialPayments > 0">${{sale?.valueLastPartialPayment | number}}</span>
+              </div>
+            </div>
+            <div *ngIf="currentUser?.type !=3" class="vertical-columns" style="flex: 1 1 0px">
+              <div *ngIf="currentUser?.type === 1" class="section vertical-columns">
+                <span class="important-text">Empresa:</span>
+                <span >{{sale?.company}}</span>
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Sucursal:</span>
+                <span >{{sale?.branch}}</span>
+              </div>
+              <div class="section vertical-columns">
+                <span class="important-text">Vendedor:</span>
+                <span>{{sale?.creationUser}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      <div class="horizontal-align">
+        <div class="field-4">
+          <paginator *ngIf="totalSales>0" (updateCurrentPage)="updatePaginator($event)" [limit]="10"
+            [total]="totalSales"></paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

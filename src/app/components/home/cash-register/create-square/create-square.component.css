@@ -8,8 +8,19 @@
     text-align: center;
     border-collapse: collapse;
     margin-top: 1rem;
+    table-layout:fixed;
+    border-spacing: 0;
 }
 
-.money-table th, td {
+.money-table tr {
     border: 1px solid #ddd;
+}
+
+.money-table th,
+.money-table td {
+    padding: .5rem;
+}
+
+.money-table td input {
+    width: 80%;
 }

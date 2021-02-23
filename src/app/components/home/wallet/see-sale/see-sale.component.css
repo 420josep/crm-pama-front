@@ -1,0 +1,66 @@
+.span-field {
+    padding: 0;
+}
+
+.partial-payment-card-container {
+    border: 1px solid #2a265f;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: all .2s ease;
+}
+
+.partial-payment-card-container:hover {
+    box-shadow: 1px 1px 5px 0px rgba(128,128,128,.50);
+}
+
+.partial-payment-card-container .left {
+    padding: .5rem;
+    background-color: #2a265f;
+    color: white;
+    font-size: 1.3em;
+}
+
+.partial-payment-card-container .right {
+    background-color: #f3f3f3;
+    padding: .5rem 1rem;
+}
+
+.partial-payment-card-container .right .info {
+    font-style: italic;
+    font-size: .8em;
+}
+
+.partial-payment-card-container .right .center {
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.partial-payment-card-container .right .edit-button {
+    margin-left: auto;
+    background-color: #2a265f;
+    border: 1px solid  #2a265f;
+    color: white;
+    border-radius: 15px;
+    padding: .25rem .5rem;
+}
+
+.partial-payment-card-container .right .edit-button:hover {
+    margin-left: auto;
+    background-color: #f3f3f3;
+    color:  #2a265f;
+}
+
+
+.add-partial-button {
+    padding: .5rem;
+    font-weight: bold;
+    font-size: 1em;
+    color: white;
+    background-color: #2A265D;
+    border: 1px solid #2a265f;
+}
+
+.add-partial-button:hover {
+    color: #2A265D;
+    background-color: white;
+}

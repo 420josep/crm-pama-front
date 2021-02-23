@@ -37,10 +37,10 @@ export class EditSquareComponent implements OnInit {
 
     this.editSquareForm = this.formBuilder.group({
       squareID: [this.squareID, [Validators.required]],
-      initialMoney: ['', [Validators.required]],
-      cash: ['', [Validators.required]],
+      initialMoney: ['', [Validators.required, Validators.maxLength(13)]],
+      cash: ['', [Validators.required, Validators.maxLength(13)]],
       mismatch: ['', [Validators.required]],
-      observation: [''],
+      observation: ['', Validators.maxLength(250)],
     });
 
 

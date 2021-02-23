@@ -29,7 +29,10 @@
         </div> 
         <div class="item-field vertical-columns field-3">
           <label class="label-field" for="billNumber">Número de factura</label>
-          <input id="billNumber" name="billNumber" formControlName="billNumber" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+          <input id="billNumber" name="billNumber" formControlName="billNumber" class="input-field" pattern="[0-9]*" min="0"
+            onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" maxlength="13"
+            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+            >
         </div>
         <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-3">
           <label class="label-field">Sucursal</label>
@@ -75,7 +78,10 @@
                 </div>
                 <div class="columns field-2">
                   <div class="item-field field-4 flex-container-centered">
-                    <input *ngIf="product?.value.id" id="unitValue" name="unitValue" formControlName="unitValue" (keyup)="updateTotal()" (blur)="updateTotal()" class="input-field field-1" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" style="text-align: center;">
+                    <input *ngIf="product?.value.id" id="unitValue" name="unitValue" formControlName="unitValue" (keyup)="updateTotal()" (blur)="updateTotal()"
+                    class="input-field field-1" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                     type="number" autocomplete="off" style="text-align: center;" maxlength="13"
+                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                   </div>
                   <div class="item-field field-4 flex-container-centered">
                     <div class="field-1 relative-container">
@@ -85,7 +91,8 @@
                       <input *ngIf="product?.value.id"
                         id="quantity{{i+1}}" name="quantity{{i+1}}" formControlName="quantity"
                         (keyup)="updateTotal()" (blur)="updateTotal()" class="input-field field-1" style="text-align: center;"
-                        pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+                        pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" maxlength="7"
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                       <div *ngIf="product?.value.id" (click)="updateQuantity(i, 2)" class="rigth-arrow flex-container-centered">
                         <i class="fas fa-plus"></i>
                       </div>

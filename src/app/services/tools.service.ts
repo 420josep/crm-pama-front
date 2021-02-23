@@ -33,12 +33,32 @@ export class ToolsService {
         var ampm = hours >= 12 ? 'PM' : 'AM';
         hours = hours % 12;
         hours = hours ? hours : 12; // the hour '0' should be '12'
-        var strTime = hours + ':' + minutes + ampm;
+        let newHour = "";
+        if (hours.toString().length < 2) {
+          newHour = "0" + hours;
+        } else {
+          newHour = hours.toString();
+        }
+        let newMinutes = "";
+        if (minutes.toString().length < 2) {
+          newMinutes = "0" + minutes;
+        } else {
+          newMinutes = minutes.toString();
+        }
+        var strTime = newHour + ':' + newMinutes + ampm;
         newDate =  strTime + " " + date.getDate() + "/" + months[date.getMonth()] + "/" + date.getFullYear();
         break;
       case 2:
+        if (date.getDate().toString().length < 2) {
+          let newDay = "0" + date.getDate();
+          newDate = newDay + "/" + months[date.getMonth()] + "/" + date.getFullYear();
+        } else  {
           newDate = date.getDate() + "/" + months[date.getMonth()] + "/" + date.getFullYear();
-          break;
+        }
+        break;
+      case 3:
+        newDate =  date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+        break;
     }
     return newDate;
   }

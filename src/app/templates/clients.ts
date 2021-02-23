@@ -16,6 +16,7 @@ export interface Client {
     discount: number;
     direction: string;
     phone: string;
+    useMobile: boolean;
     companyID: number;
     creationDate: string;
     state: boolean;

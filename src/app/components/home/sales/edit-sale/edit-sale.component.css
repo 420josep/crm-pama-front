@@ -9,3 +9,13 @@
 .span-field {
     text-align: center;
 }
+
+.sale-cell {
+    border: 1px solid #c0c5c9;
+    padding: .5rem;
+    color:#525a60;
+}
+
+.sale-cell.head {
+    font-weight: bolder;
+}

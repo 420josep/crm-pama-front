@@ -25,15 +25,16 @@
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="name">Nombre (*)</label>
-          <input formControlName="name" id="name" name="name" autocomplete="off" class="input-field" type="text">
+          <input formControlName="name" id="name" name="name" autocomplete="off" maxlength="100" class="input-field" type="text">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="manager">Encargado (*)</label>
-          <input formControlName="manager" id="manager" name="manager" autocomplete="off" class="input-field" type="text">
+          <input formControlName="manager" id="manager" name="manager" autocomplete="off" maxlength="100" class="input-field" type="text">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="contact">Teléfono de contacto (*)</label>
-          <input formControlName="contact" id="contact" name="contact" autocomplete="off" class="input-field" pattern="[0-9]*" min="0"
+          <input formControlName="contact" id="contact" name="contact" autocomplete="off" placeholder="Celular o fijo" maxlength="10"
+            oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="input-field" pattern="[0-9]*" min="0" 
             onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number">
         </div>
 

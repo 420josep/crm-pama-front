@@ -52,7 +52,7 @@ export class SeeEntryComponent implements OnInit {
     this.editEntryForm = this.formBuilder.group({
       entryID: [this.entryID, [Validators.required]],
       date: ['', [Validators.required]],
-      billNumber: ['', [Validators.required]],
+      billNumber: ['', [Validators.required, Validators.maxLength(13)]],
       providerID: ['', [Validators.required]],
       branchID: ['', [Validators.required]],
       products: this.formBuilder.array([]),
@@ -85,7 +85,7 @@ export class SeeEntryComponent implements OnInit {
       }else{
         this.existEntry = false;
         this.response = false;
-        this.message = "La entrada buscada buscado no existe";
+        this.message = "La entrada buscada no existe";
       }
     });
   }
@@ -121,6 +121,7 @@ export class SeeEntryComponent implements OnInit {
     }
     this.providersService.getProvidersList(companyID).subscribe(response => {
       this.providers = response;
+      console.log(this.providers);
     });
     
     this.productsService.getProductsList(companyID, 1).subscribe(response => {
@@ -178,8 +179,8 @@ export class SeeEntryComponent implements OnInit {
     return this.formBuilder.group({
       id: [''],
       productID: ['', Validators.required],
-      unitValue: ['', Validators.required],
-      quantity: [1, Validators.required]
+      unitValue: ['', [Validators.required, Validators.maxLength(13)]],
+      quantity: [1, [Validators.required, Validators.maxLength(7)]]
     });
   }
 

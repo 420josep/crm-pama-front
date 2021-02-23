@@ -11,11 +11,11 @@
       <div class="form-container columns">
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="name">Nombre (*)</label>
-          <input id="name" name="name" formControlName="name" class="input-field" type="text" autocomplete="off">
+          <input id="name" name="name" formControlName="name" maxlength="150" class="input-field" type="text" autocomplete="off">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="brand">Marca (*)</label>
-          <input id="brand" name="brand" formControlName="brand" class="input-field" type="text" autocomplete="off">
+          <input id="brand" name="brand" formControlName="brand" maxlength="150" class="input-field" type="text" autocomplete="off">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field">Presentación (*)</label>
@@ -26,7 +26,7 @@
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="content">Contenido (*)</label>
-          <input id="content" name="content" formControlName="content" class="input-field" type="text" autocomplete="off">
+          <input id="content" name="content" formControlName="content" maxlength="45" class="input-field" type="text" autocomplete="off">
         </div>
         <div *ngIf="currentUser.type === 1" class="flex-container field-1">
           <div class="item-field vertical-columns field-2">
@@ -43,7 +43,9 @@
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="price">Precio (*)</label>
-          <input id="price" name="price" formControlName="price" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+          <input id="price" name="price" formControlName="price" class="input-field" pattern="[0-9]*" min="0"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" maxlength="13"
+          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="iva">¿Posee IVA? (*)</label>

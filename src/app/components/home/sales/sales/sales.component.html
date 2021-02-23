@@ -23,7 +23,7 @@
 
       <div class="vertical-columns field-1">
         <div *ngFor="let sale of sales; trackBy:trackBySaleID;" class="sale-container">
-          <div [routerLink]="['/menu/ventas', sale.id]" class="summary-container-card space-between" 
+          <div [routerLink]="['/menu/ventas', sale.id]" class="summary-container-card space-between"
             [ngClass]="{ 'cancelled': sale?.statusID === 1,  'pending': sale?.statusID === 2,  'canceled': sale?.statusID === 3}">
             <div class="vertical-columns" style="flex: 1 1 0px">
               <div class="section vertical-columns">
@@ -44,7 +44,7 @@
               </div>
               <div class="section vertical-columns">
                 <span class="important-text">Teléfono:</span>
-                <span><i class="fas fa-mobile-alt"></i> {{sale?.phone}}</span>
+                <span><i class="fas fa-mobile-alt"></i> {{sale?.phone}} <a *ngIf="sale?.useMobile" target="_blank" (click)="$event.stopPropagation()" href="https://api.whatsapp.com/send?phone={{sale?.phone}}" ><i class="whatsapp-icon fab fa-whatsapp"></i></a> </span>
               </div>
             </div>
             <div class="vertical-columns" style="flex: 1 1 0px">
@@ -74,48 +74,13 @@
                 <span >{{sale?.branch}}</span>
               </div>
               <div class="section vertical-columns">
-                <span class="important-text">Fecha de pago:</span>
-                <span>Fecha de pago</span>
-              </div>
-              <div class="section vertical-columns">
-                <span class="important-text">Usuario que la registró:</span>
+                <span class="important-text">Vendedor:</span>
                 <span>{{sale?.creationUser}}</span>
               </div>
             </div>
           </div>
         </div>
-        
       </div>
-<!--
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Fecha</th>
-            <th># Factura</th>
-            <th>Cliente</th>
-            <th>Total</th>
-            <th *ngIf="currentUser.type != 3">Sucursal</th>
-            <th *ngIf="currentUser.type === 1">Empresa</th>
-            <th>Estado</th>
-            <th class="table-right-border">Medio de pago</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let sale of sales; trackBy:trackBySaleID; index as i">
-            <td [routerLink]="['/menu/ventas', sale.id]"> {{(i+offset)+1}} </td>
-            <td [routerLink]="['/menu/ventas', sale.id]"> {{sale?.date}} </td>
-            <td [routerLink]="['/menu/ventas', sale.id]"> {{sale?.billNumber}} </td>
-            <td [routerLink]="['/menu/ventas', sale.id]"> {{sale?.client}} </td>
-            <td [routerLink]="['/menu/ventas', sale.id]"> ${{sale?.total | number}} </td>
-            <td [routerLink]="['/menu/ventas', sale.id]" *ngIf="currentUser.type !=3"> {{sale?.branch}} </td>
-            <td [routerLink]="['/menu/ventas', sale.id]" *ngIf="currentUser.type === 1"> {{sale?.company}} </td>
-            <td [routerLink]="['/menu/ventas', sale.id]"> {{sale?.status}} </td>
-            <td [routerLink]="['/menu/ventas', sale.id]"> {{sale?.payment}} </td>
-          </tr>
-        </tbody>
-      </table>
-      -->
       <div class="horizontal-align">
         <div class="field-4">
           <paginator *ngIf="totalSales>0" (updateCurrentPage)="updatePaginator($event)" [limit]="10"

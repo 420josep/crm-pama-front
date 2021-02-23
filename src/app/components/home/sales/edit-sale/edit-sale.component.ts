@@ -37,6 +37,8 @@ export class EditSaleComponent implements OnInit {
   currentSale: Sale;
   ivaValue: number = 0;
   discountValue: number = 0;
+  totalPartialPayments: number = 0;
+  pendingToPay: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -60,13 +62,13 @@ export class EditSaleComponent implements OnInit {
       date: ['', [Validators.required]],
       client: ['', [Validators.required]],
       clientID: ['', [Validators.required]],
-      billNumber: ['', [Validators.required]],
+      billNumber: ['', [Validators.required, Validators.maxLength(13)]],
       branchID: ['', [Validators.required]],
       total: ['', [Validators.required]],
       realTotal: ['', [Validators.required]],
       statusID: ['', [Validators.required]],
       paymentID: ['', [Validators.required]],
-      observation: [''],
+      observation: ['', Validators.maxLength(100)],
       discountValue: ['', [Validators.required]],
       ivaValue: ['', [Validators.required]],
       products: this.formBuilder.array([]),
@@ -88,6 +90,7 @@ export class EditSaleComponent implements OnInit {
   getSale( saleID: string ){
     this.salesService.getSale(saleID).subscribe( response => {
       if(response){
+        console.log(response);
         this.editSaleForm.controls.products = this.formBuilder.array([]);
 
         this.currentSale = response;
@@ -120,7 +123,19 @@ export class EditSaleComponent implements OnInit {
         this.ivaValue = this.currentSale.ivaValue;
         this.subtotal = this.currentSale.realTotal;
         this.total = this.currentSale.total;
+        if (this.currentSale.partialPayments.length > 0) {
+          this.totalPartialPayments = 0;
+          this.pendingToPay = 0;
+          for (let index = 0; index < this.currentSale.partialPayments.length; index++) {
+            this.totalPartialPayments += this.currentSale.partialPayments[index].value;
+          }
+          this.pendingToPay = this.total - this.totalPartialPayments;
+        } else {
+          this.totalPartialPayments = 0;
+          this.pendingToPay = 0;
+        }
       }else{
+        this.totalPartialPayments = 0;
         this.existSale = false;
         this.response = false;
         this.message = "La venta buscada no existe"
@@ -216,7 +231,7 @@ export class EditSaleComponent implements OnInit {
   addProductFormGroup() {
     return this.formBuilder.group({
       product: ['', Validators.required],
-      quantity: [1, Validators.required]
+      quantity: [1, [Validators.required, Validators.maxLength(7)]]
     });
   }
 

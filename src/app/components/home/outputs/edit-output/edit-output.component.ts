@@ -45,9 +45,9 @@ export class EditOutputComponent implements OnInit {
     // Asignación de variables y método de validación
     this.editOutputForm = this.formBuilder.group({
       outputID: [this.outputID, [Validators.required]],
-      value: ['', [Validators.required]],
+      value: ['', [Validators.required, Validators.maxLength(10)]],
       branchID: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      description: ['', [Validators.required, Validators.maxLength(150)]],
     });
     if(this.currentUser.type === 3){
       this.form.branchID.setValue(this.currentUser.branchID);

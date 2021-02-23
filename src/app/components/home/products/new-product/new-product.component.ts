@@ -5,7 +5,6 @@ import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/templates/user';
 import { CompaniesService } from 'src/app/services/companies.service';
 import { ListItem } from 'src/app/templates/global';
-import { CategoryService } from 'src/app/services/category.service';
 import { ProductsService } from 'src/app/services/products.service';
 import { PresentationType } from 'src/app/templates/products';
 
@@ -33,7 +32,6 @@ export class NewProductComponent implements OnInit {
     private router: Router, 
     private authService: AuthService,
     private companiesService: CompaniesService,
-    private categoriesService: CategoryService,
     private productsService: ProductsService
   ) { 
   }
@@ -43,11 +41,11 @@ export class NewProductComponent implements OnInit {
 
     // Asignación de variables y método de validación
     this.newProductForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      brand: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.maxLength(150)]],
+      brand: ['', [Validators.required, Validators.maxLength(150)]],
       presentationID: ['', [Validators.required]],
-      content: ['', [Validators.required]],
-      price: ['', [Validators.required]],
+      content: ['', [Validators.required, Validators.maxLength(45)]],
+      price: ['', [Validators.required, Validators.maxLength(13)]],
       userID: [this.currentUser.id, [Validators.required]],
       companyID: ['', [Validators.required]],
       iva: [true, [Validators.required]],

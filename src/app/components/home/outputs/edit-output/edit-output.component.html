@@ -21,7 +21,9 @@
         </div>
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="value">Valor</label>
-          <input id="value" name="value" formControlName="value" placeholder="$" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+          <input formControlName="value" id="value" name="value" autocomplete="off" maxlength="10" placeholder="$"
+          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="input-field" pattern="[0-9]*" min="0" 
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number">
         </div>
         <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-2">
           <label class="label-field">Sucursal</label>

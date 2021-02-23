@@ -1,14 +1,14 @@
 <div class="field-1 flex-container">
   <div class="content-container vertical-columns">
-    <div class="field-1" style="margin-top: 3rem;">
+    <div class="field-1 flex-container" style="margin-top: 3rem;">
       <a routerLink="/menu/ventas/lista" class="add-button"><i class="fas fa-chevron-left"></i> Volver</a>
     </div>
     <h1 class="title">Nueva venta</h1>
+    <div class="field-1 flex-container">
+      <label class="warning-text">¡Todos los campos con <span class="error-text">*</span> son obligatorios!</label>
+    </div>
     <form [formGroup]="newSaleForm" (ngSubmit)="createSale()">
       <div class="form-container columns">
-        <div class="field-1 flex-container">
-          <label class="warning-text">¡Todos los campos con <span class="error-text">*</span> son obligatorios!</label>
-        </div>
         <div class="item-field vertical-columns field-3">
           <label class="label-field" for="date">Fecha (*)</label>
           <input type="date" formControlName="date" id="date" name="date">
@@ -33,7 +33,9 @@
         </div>
         <div class="item-field vertical-columns field-3">
           <label class="label-field" for="billNumber">Número de factura (*)</label>
-          <input id="billNumber" name="billNumber" formControlName="billNumber" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+          <input id="billNumber" name="billNumber" formControlName="billNumber" class="input-field" pattern="[0-9]*" min="0"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" maxlength="13"
+          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
         </div>
         <div class="item-field vertical-columns field-3">
           <label class="label-field">Cliente (*)</label>
@@ -43,22 +45,32 @@
           </select>
         </div>
         <div class="item-field vertical-columns field-3">
-          <label class="label-field">Estado (*)</label>
-          <select formControlName="statusID">
-            <option value=""></option>
-            <option *ngFor="let status of saleStatus" [ngValue]="status?.id"> {{status?.name}} </option>
-          </select>
-        </div>
-        <div class="item-field vertical-columns field-3">
           <label class="label-field">Método de pago (*)</label>
           <select formControlName="paymentID">
             <option value=""></option>
             <option *ngFor="let payment of paymentMethods" [ngValue]="payment?.id"> {{payment?.name}} </option>
           </select>
         </div>
+        <div class="item-field vertical-columns field-3">
+          <label class="label-field">Estado (*)</label>
+          <select formControlName="statusID" (change)="showParcialPayment()">
+            <option value=""></option>
+            <option *ngFor="let status of saleStatus" [ngValue]="status?.id"> {{status?.name}} </option>
+          </select>
+        </div>
+        <div *ngIf="form.statusID.value == 2" class="item-field vertical-columns field-3">
+          <label class="label-field" for="paySome">¿Deseas realizarle un abono?</label>
+          <input formControlName="paySome" id="paySome" name="paySome" class="input-field" type="checkbox" (change)="showParcialPayment()">
+        </div>
+        <div *ngIf="form.paySome.value && form.statusID.value == 2" class="item-field vertical-columns field-3">
+          <label class="label-field" for="parcialPayment">Valor del abono</label>
+          <input id="parcialPayment" name="parcialPayment" formControlName="parcialPayment" class="input-field" pattern="[0-9]*" min="0"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" maxlength="13" placeholder="$"
+          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+        </div>
         <div class="item-field vertical-columns field-1">
           <label class="label-field" for="observation">Observación</label>
-          <textarea formControlName="observation" id="observation" name="observation" placeholder="Por si necesitas dejar un comentario de algo sucedido con esta venta" autocomplete="off" maxlength="150" class="input-field text-area"></textarea>
+          <textarea formControlName="observation" id="observation" name="observation" placeholder="Por si necesitas dejar un comentario de algo sucedido con esta venta" autocomplete="off" maxlength="100" class="input-field text-area"></textarea>
         </div>
         <div class="item-field vertical-columns field-1">
           <label class="label-field">Productos en esta venta</label>
@@ -104,7 +116,8 @@
                         [ngClass]="{ 'is-invalid': product?.value.product && (product?.value.product?.stock < product?.value.quantity) }"
                         id="quantity{{i+1}}" name="quantity{{i+1}}" formControlName="quantity"
                         (keyup)="updateTotal()" (blur)="updateTotal()" class="input-field field-1" style="text-align: center;"
-                        pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+                        pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" maxlength="7"
+                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
   
                       <div *ngIf="product?.value.product" (click)="updateQuantity(i, 2)" [ngClass]="{ 'error': product?.value.product && (product?.value.product?.stock < product?.value.quantity) }" class="rigth-arrow flex-container-centered">
                         <i class="fas fa-plus"></i>

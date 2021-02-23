@@ -1,0 +1,84 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <div class="field-1 flex-container" style="margin-top: 3rem;">
+      <a routerLink="/menu/ventas/cartera" class="add-button"><i class="fas fa-chevron-left"></i> Volver</a>
+    </div>
+    <h1 class="title">Registrar un abono</h1>
+    <div class="text-align-center error-text" *ngIf="!response">
+      ¡{{message}}!
+    </div>
+    <div class="field-1 flex-container">
+      <label class="warning-text">¡Todos los campos con <span class="error-text">*</span> son obligatorios!</label>
+    </div>
+    <form [formGroup]="partialPaymentForm" (ngSubmit)="savePartialPayment()">
+      <div class="form-container columns">
+        <div class="field-1 flex-container">
+          <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-3">
+            <label class="label-field">Empresa (*)</label>
+            <select formControlName="companyID" (change)="getBranchs(form.companyID.value)">
+              <option value=""></option>
+              <option *ngFor="let company of companies" [ngValue]="company.id"> {{company.name}} </option>
+            </select>
+          </div>
+          <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-3">
+            <label class="label-field">Sucursal (*)</label>
+            <select formControlName="branchID" (change)="enableFields()">
+              <option value=""></option>
+              <option *ngFor="let branch of branchs" [ngValue]="branch?.id"> {{branch?.name}} </option>
+            </select>
+          </div>
+        </div>
+        <div class="field-1 flex-container-centered">
+          <div class="item-field vertical-columns" style="width: 80%;">
+            <label class="label-field" for="search">Buscar venta por factura o por cliente (*)</label>
+            <div class="flex-container relative-container">
+              <input id="search" name="search" formControlName="search" (keyup)='searchSale()' placeholder="Escriba el número de factura o el nombre del cliente" maxlength="150" class="input-field field-1" type="text" autocomplete="off">
+              <div *ngIf="form?.search.value.length > 0" class="flex-container-centered delete-search-icon" (click)="deleteSearchSale()">
+                x
+              </div>
+              <div *ngIf="showDropdown" class="dropdown-content vertical-columns field-1">
+                <table class="field-1 dropdown-table">
+                  <thead>
+                    <tr>
+                      <th># Fact</th>
+                      <th>Fecha</th>
+                      <th>Cliente</th>
+                      <th>Total</th>
+                      <th>Pendiente</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr (click)="selectSale(sale)" *ngFor="let sale of pendingSaleItems; let i=index">
+                      <td>{{sale?.billNumber}}</td>
+                      <td>{{sale?.date}}</td>
+                      <td>{{sale?.client}}</td>
+                      <td>${{sale?.total | number}}</td>
+                      <td>${{sale?.pendingToPay | number}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="date">Fecha (*)</label>
+          <input type="date" formControlName="date" id="date" name="date">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="value">Valor (*)</label>
+          <input formControlName="value" id="value" name="value" autocomplete="off" maxlength="10" placeholder="$"
+          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="input-field" pattern="[0-9]*" min="0" 
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number">
+        </div>
+        <div class="field-1 flex-container-centered">
+          <button class="primary-button save-button" [disabled]="partialPaymentForm.invalid">Guardar
+            &#43;</button>
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+</div>

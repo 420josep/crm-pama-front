@@ -37,13 +37,13 @@ export class NewProviderComponent implements OnInit {
 
     // Asignación de variables y método de validación
     this.newProviderForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      nick: [''],
-      businessName: ['', [Validators.required]],
-      nit: ['', [Validators.required]],
-      manager: ['', [Validators.required]],
-      phone: ['', [Validators.required]],
-      description: [''],
+      name: ['', [Validators.required, Validators.maxLength(150)]],
+      nick: ['', Validators.maxLength(150)],
+      businessName: ['', [Validators.required, Validators.maxLength(150)]],
+      nit: ['', [Validators.required, Validators.maxLength(15)]],
+      manager: ['', [Validators.required, Validators.maxLength(80)]],
+      phone: ['', [Validators.required, Validators.maxLength(10)]],
+      description: ['', Validators.maxLength(150)],
       userID: [this.currentUser.id, [Validators.required]],
       companyID: ['', [Validators.required]],
     });

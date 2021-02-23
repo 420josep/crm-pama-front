@@ -48,7 +48,7 @@ export class EditBranchComponent implements OnInit {
     // Asignación de variables y método de validación
     this.editBranchForm = this.formBuilder.group({
       branchID: [this.branchID, [Validators.required]],
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.maxLength(45)]],
       companyID: ['', [Validators.required]],
       countryID: ['', [Validators.required]],
       provinceID: ['', [Validators.required]],

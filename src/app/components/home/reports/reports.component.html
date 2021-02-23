@@ -3,138 +3,295 @@
     <h1 class="title">Reportes</h1>
     <form [formGroup]="reportForm" (ngSubmit)="getReport()">
       <div class="form-container columns">
-        <div class="flex-container field-1">
-          <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
-            <label class="label-field">Empresa (*)</label>
-            <select formControlName="companyID" (change)="getBranchs(form.companyID.value)">
-              <option value=""></option>
-              <option *ngFor="let company of companies" [ngValue]="company?.id"> {{company?.name}} </option>
-            </select>
-          </div>
-        </div>
-        <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-2">
-          <label class="label-field">Sucursal (*)</label>
-          <select formControlName="branchID" (change)="removeControls()">
+        <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-3">
+          <label class="label-field">Empresa (*)</label>
+          <select formControlName="companyID" (change)="getBranchs(form.companyID.value)">
             <option value=""></option>
-            <option *ngFor="let branch of branchs" [ngValue]="branch?.id"> {{branch?.name}} </option>
+            <option *ngFor="let company of companies" [ngValue]="company?.id"> {{company?.name}} </option>
           </select>
         </div>
-        <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-2">
+        <div *ngIf="currentUser.type != 3" class="item-field vertical-columns field-3">
           <label class="label-field">Tipo de reporte:</label>
           <select formControlName="reportType" (change)="showOptions(form.reportType.value)">
             <option value=""></option>
             <option *ngFor="let reportType of reportTypes" [ngValue]="reportType?.id"> {{reportType?.name}} </option>
           </select>
         </div>
-        <div class="field-1">
-          <div class="dynamic-container columns">
-            <div *ngIf="submitted" class="field-1">
-              <label class="total-text">Reporte / {{currentTypeName}} </label>
-            </div>
-            <div *ngIf="!submitted && form.reportType.value === 1" class="field-1 flex-container-centered">
-              <div class="item-field vertical-columns field-2">
-                <label class="label-field" for="day">Seleccione el día</label>
-                <input type="date" formControlName="day" id="day" name="day">
-              </div>
-            </div>
+        <div *ngIf="currentUser.type != 3 && (form.reportType.value == 3 || form.reportType.value == 6 || form.reportType.value == 7)" class="item-field vertical-columns field-3">
+          <label class="label-field">Sucursal (*)</label>
+          <select formControlName="branchID" (change)="showOptions(form.reportType.value)">
+            <option value=""></option>
+            <option *ngFor="let branch of branchs" [ngValue]="branch?.id"> {{branch?.name}} </option>
+          </select>
+        </div>
+        <div *ngIf="false && !submitted && form.reportType.value === 1" class="item-field vertical-columns field-3">
+          <label class="label-field" for="day">Seleccione el día</label>
+          <input type="date" formControlName="day" id="day" name="day">
+        </div>
 
-            <div *ngIf="!submitted && form.reportType.value === 2" class="field-1 flex-container-centered">
-              <div class="item-field vertical-columns field-2">
-                <label class="label-field">Seleccione el año</label>
-                <select formControlName="year">
-                  <option *ngFor="let year of years" [ngValue]="year.id"> {{year?.name}} </option>
-                </select>
-              </div>
-            </div>
+        <div *ngIf="!submitted && (form.reportType.value === 2 || form.reportType.value === 3)" class="item-field vertical-columns field-3">
+          <label class="label-field">Seleccione el año</label>
+          <select formControlName="year">
+            <option *ngFor="let year of years" [ngValue]="year.id"> {{year?.name}} </option>
+          </select>
+        </div>
 
-            <div *ngIf="submitted && form.reportType.value === 1" class="field-1 flex-container">
-              <div class="item-field vertical-columns field-2">
-                <label class="label-field">Total ventas:</label>
-                <span class="span-field"> {{responseData?.totalSales | number}} </span>
-              </div>
-              <div class="item-field vertical-columns field-2">
-                <label class="label-field">Total vendido:</label>
-                <span class="span-field"> ${{responseData?.totalSalesMoney | number}} </span>
-              </div>
-            </div>
+        <div class="item-field field-1">
+          <div *ngIf="submitted" class="field-1">
+            <label class="total-text">Reporte / {{currentTypeName}} </label>
+          </div>
 
-            <div *ngIf="submitted && form.reportType.value === 2" class="field-1">
-              <div *ngFor="let response of responseData; let i=index" class="field-1 flex-container">
-                <div class="item-field vertical-columns field-3">
-                  <label class="label-field">Mes</label>
-                  <span class="span-field"> {{response?.month}} </span>
+          <div *ngIf="submitted && form.reportType.value === 1" class="field-1 columns">
+            <div class="item-field field-4">
+              <div class="field-1 vertical-columns relative-container summary-card">
+                <span class="summary-title">Nuevos Clientes</span>
+                <span class="summary-value">{{ responseData?.newClients.today | number}}</span>
+                <div style="padding: .5rem;" class="flex-container-centered vertical-columns">
+                  <span *ngIf="responseData?.newClients.difference > 0" class="text up"><i class="fas fa-arrow-up"></i> {{ responseData?.newClients.difference | number}}</span>
+                  <span *ngIf="responseData?.newClients.difference == 0" class="text same">Igual</span>
+                  <span *ngIf="responseData?.newClients.difference < 0" class="text down"><i class="fas fa-arrow-down"></i> {{ responseData?.newClients.difference | number}}</span>
+                  <span class="text-nowrap">A comparación de ayer</span>
                 </div>
-                <div class="item-field vertical-columns field-3">
-                  <label class="label-field">Total ventas:</label>
-                  <span class="span-field"> {{response?.totalSales | number}} </span>
-                </div>
-                <div class="item-field vertical-columns field-2">
-                  <label class="label-field">Total vendido:</label>
-                  <span class="span-field"> ${{response?.totalSalesMoney | number}} </span>
+                <div class="summary-card-icon-container flex-container-centered">
+                  <i class="fas fa-users"></i>
                 </div>
               </div>
             </div>
-
-            <div *ngIf="submitted && form.reportType.value === 3" class="field-1">
-              <div *ngFor="let response of responseData; let i=index" class="field-1 flex-container">
-                <div class="item-field vertical-columns field-3">
-                  <label class="label-field">Año</label>
-                  <span class="span-field"> {{response?.year}} </span>
+            <div class="item-field field-4">
+              <div class="field-1 vertical-columns relative-container summary-card">
+                <span class="summary-title">Gastos</span>
+                <span class="summary-value">${{ responseData?.totalOutputs.today | number}}</span>
+                <div style="padding: .5rem;" class="flex-container-centered vertical-columns">
+                  <span *ngIf="responseData?.totalOutputs.difference > 0" class="text up"><i class="fas fa-arrow-down"></i> ${{ responseData?.totalOutputs.difference | number}}</span>
+                  <span *ngIf="responseData?.totalOutputs.difference == 0" class="text same">Igual</span>
+                  <span *ngIf="responseData?.totalOutputs.difference < 0" class="text down"><i class="fas fa-arrow-up"></i> ${{ responseData?.totalOutputs.difference | number}}</span>
+                  <span class="text-nowrap">A comparación de ayer</span>
                 </div>
-                <div class="item-field vertical-columns field-3">
-                  <label class="label-field">Total ventas:</label>
-                  <span class="span-field"> {{response?.totalSales | number}} </span>
-                </div>
-                <div class="item-field vertical-columns field-2">
-                  <label class="label-field">Total vendido:</label>
-                  <span class="span-field"> ${{response?.totalSalesMoney | number}} </span>
+                <div class="summary-card-icon-container flex-container-centered">
+                  <i class="fas fa-cash-register"></i>
                 </div>
               </div>
             </div>
+            <div class="item-field field-4">
+              <div class="field-1 vertical-columns relative-container summary-card">
+                <span class="summary-title">Ventas</span>
+                <span class="summary-value">{{ responseData?.totalSalesAndSold.today[0].totalSales | number}}</span>
+                <div style="padding: .5rem;" class="flex-container-centered vertical-columns">
+                  <span *ngIf="responseData?.totalSalesAndSold.totalSalesDifference > 0" class="text up"><i class="fas fa-arrow-up"></i> {{ responseData?.totalSalesAndSold.totalSalesDifference  | number}}</span>
+                  <span *ngIf="responseData?.totalSalesAndSold.totalSalesDifference == 0" class="text same">Igual</span>
+                  <span *ngIf="responseData?.totalSalesAndSold.totalSalesDifference < 0" class="text down"><i class="fas fa-arrow-down"></i> {{ responseData?.totalSalesAndSold.totalSalesDifference  | number}}</span>
+                  <span class="text-nowrap">A comparación de ayer</span>
+                </div>
+                <div class="summary-card-icon-container flex-container-centered">
+                  <i class="fas fa-clipboard-list"></i>
+                </div>
 
-            <div *ngIf="submitted && form.reportType.value === 4" class="field-1">
-              <div *ngFor="let response of responseData; let i=index" class="field-1 flex-container">
-                <div class="item-field vertical-columns field-3">
-                  <label class="label-field">Nombres y apellidos</label>
-                  <span class="span-field"> {{response?.name}} </span>
-                </div>
-                <div class="item-field vertical-columns field-3">
-                  <label class="label-field">Total ventas realizadas:</label>
-                  <span class="span-field"> {{response?.totalSales | number}} </span>
-                </div>
-                <div class="item-field vertical-columns field-2">
-                  <label class="label-field">Total comprado:</label>
-                  <span class="span-field"> ${{response?.totalSalesMoney | number}} </span>
-                </div>
               </div>
             </div>
-
-            <div *ngIf="submitted && (form.reportType.value === 5 || form.reportType.value === 6)" class="field-1">
-              <div *ngFor="let response of responseData; let i=index" class="field-1 flex-container">
-                <div class="item-field vertical-columns field-2">
-                  <label class="label-field">Producto</label>
-                  <span class="span-field"> {{response?.name}} </span>
+            <div class="item-field field-4">
+              <div class="field-1 vertical-columns relative-container summary-card">
+                <span class="summary-title">Vendido</span>
+                <span class="summary-value">${{ responseData?.totalSalesAndSold.today[0].totalSold | number}}</span>
+                <div style="padding: .5rem;" class="flex-container-centered vertical-columns">
+                  <span *ngIf="responseData?.totalSalesAndSold.totalSoldDifference > 0" class="text up"><i class="fas fa-arrow-up"></i> ${{ responseData?.totalSalesAndSold.totalSoldDifference  | number}}</span>
+                  <span *ngIf="responseData?.totalSalesAndSold.totalSoldDifference == 0" class="text same">Igual</span>
+                  <span *ngIf="responseData?.totalSalesAndSold.totalSoldDifference < 0" class="text down"><i class="fas fa-arrow-down"></i> ${{ responseData?.totalSalesAndSold.totalSoldDifference  | number}}</span>
+                  <span class="text-nowrap">A comparación de ayer</span>
                 </div>
-                <div class="item-field vertical-columns field-2">
-                  <label class="label-field">Unidades vendidas:</label>
-                  <span class="span-field"> {{response?.timesSold}} </span>
+                <div class="summary-card-icon-container flex-container-centered">
+                  <i class="fas fa-hand-holding-usd"></i>
                 </div>
               </div>
             </div>
 
-            <div *ngIf="!response" class="field-1 flex-container-centered">
-              <div class="text-align-center error-text">
-                ¡{{message}}!
+
+            <div class="field-1 flex-container">
+              <div #containerRef class="item-field flex-container" style="width: 60%;">
+                <ngx-charts-bar-vertical *ngIf="isDataSetted && responseData?.sales"
+                [view]="[containerRef.offsetWidth, 400]"
+                [scheme]="colorScheme"
+                [results]="information"
+                [gradient]="gradient"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [legend]="showLegend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel"
+                [legendTitle]="legendTitle"
+                [xAxisTickFormatting]="xAxisTickFormattingFn"
+                [yAxisTickFormatting]="yAxisTickFormattingFn"
+                [showDataLabel]="true"
+                [dataLabelFormatting] = "dataLabelFormattingFn"
+                [barPadding]="20"
+                (select)="onSelect($event)">
+                <ng-template #tooltipTemplate let-model="model">
+                  <div class="vertical-columns">
+                    <span style="padding: .3rem;">Ventas realizadas: {{model?.extra.tooltipText | number }}</span>
+                    <span style="padding: .3rem;">Total ventas: ${{model?.value | number }}</span>
+                  </div>
+                </ng-template>
+                </ngx-charts-bar-vertical>
+              </div>
+
+              <div #pieContainer class="flex-container-centered" style="width: 40%; overflow: hidden;">
+                <ngx-charts-pie-chart *ngIf="isDataSetted"
+                  [view]="[pieContainer.offsetWidth, 250]"
+                  [scheme]="secondColorScheme"
+                  [results]="secondInformation"
+                  [gradient]="gradient"
+                  [legend]="showLegend"
+                  [legendPosition]="'below'"
+                  [labels]="showLabels"
+                  [doughnut]="isDoughnut"
+                  [legendTitle]="secondLegend"
+                  (select)="onSelect($event)"
+                  (activate)="onActivate($event)"
+                  (deactivate)="onDeactivate($event)"
+                  [maxLabelLength]="25"
+                  >
+                </ngx-charts-pie-chart>
               </div>
             </div>
 
+          </div>
 
-            <div *ngIf="!submitted" class="item-field flex-container-centered field-1">
-              <button class="primary-button" (click)="getReport()" [disabled]="reportForm.invalid" type="button">Generar</button>
+          <div *ngIf="submitted && form.reportType.value === 2" class="field-1 flex-container-centered">
+            <div #chartContainer style="width: 90%;">
+              <ngx-charts-bar-vertical-2d *ngIf="isDataSetted"
+                [view]="[chartContainer.offsetWidth, 400]"
+                [scheme]="secondColorScheme"
+                [results]="multi"
+                [gradient]="gradient"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [legend]="showLegend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel"
+                [legendTitle]="legendTitle"
+                [xAxisTickFormatting]="xAxisTickFormattingFn"
+                [yAxisTickFormatting]="yAxisTickFormattingFn"
+                [showDataLabel]="true"
+                [dataLabelFormatting] = "dataLabelFormattingFn"
+                [barPadding]="10"
+                (select)="onSelect($event)">
+              </ngx-charts-bar-vertical-2d>
             </div>
-            <div *ngIf="submitted" class="item-field flex-container-centered field-1">
-              <button class="secundary-button" (click)="default()" [disabled]="reportForm.invalid" type="button">Volver</button>
+          </div>
+
+          <div *ngIf="submitted && (form.reportType.value === 3 || form.reportType.value === 4)" class="field-1 flex-container-centered">
+            <div #chartContainer style="width: 90%;">
+              <ngx-charts-bar-vertical *ngIf="isDataSetted"
+                [view]="[chartContainer.offsetWidth, 400]"
+                [scheme]="colorScheme"
+                [results]="information"
+                [gradient]="gradient"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [legend]="showLegend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel"
+                [legendTitle]="legendTitle"
+                [xAxisTickFormatting]="xAxisTickFormattingFn"
+                [yAxisTickFormatting]="yAxisTickFormattingFn"
+                [showDataLabel]="true"
+                [dataLabelFormatting] = "dataLabelFormattingFn"
+                [barPadding]="20"
+                (select)="onSelect($event)">
+                <ng-template #tooltipTemplate let-model="model">
+                  <div class="vertical-columns">
+                    <span style="padding: .3rem;">Ventas realizadas: {{model?.extra.tooltipText | number }}</span>
+                    <span style="padding: .3rem;">Total ventas: ${{model?.value | number }}</span>
+                  </div>
+                </ng-template>
+              </ngx-charts-bar-vertical>
             </div>
+          </div>
+
+          <div *ngIf="submitted && (form.reportType.value === 5)" class="field-1 flex-container-centered">
+            <div #chartContainer style="width: 90%;">
+              <ngx-charts-pie-chart *ngIf="isDataSetted"
+                [view]="[chartContainer.offsetWidth, 400]"
+                [scheme]="secondColorScheme"
+                [results]="information"
+                [gradient]="gradient"
+                [legend]="showLegend"
+                [legendPosition]="'below'"
+                [labels]="showLabels"
+                [doughnut]="isDoughnut"
+                [legendTitle]="legendTitle"
+                (select)="onSelect($event)"
+                (activate)="onActivate($event)"
+                (deactivate)="onDeactivate($event)"
+                [maxLabelLength]="25"
+                >
+              </ngx-charts-pie-chart>
+            </div>
+          </div>
+
+          <div *ngIf="submitted && (form.reportType.value === 6 || form.reportType.value === 7)" class="field-1 flex-container-centered">
+            <div #chartContainer style="width: 90%;">
+              <ngx-charts-pie-chart *ngIf="isDataSetted"
+                [view]="[chartContainer.offsetWidth, 400]"
+                [scheme]="colorScheme"
+                [results]="information"
+                [gradient]="gradient"
+                [legend]="showLegend"
+                [legendPosition]="'below'"
+                [labels]="showLabels"
+                [doughnut]="isDoughnut"
+                [legendTitle]="legendTitle"
+                (select)="onSelect($event)"
+                (activate)="onActivate($event)"
+                (deactivate)="onDeactivate($event)"
+                [maxLabelLength]="25"
+                >
+              </ngx-charts-pie-chart>
+            </div>
+          </div>
+
+          <div *ngIf="submitted && (form.reportType.value === 8)" class="field-1 flex-container-centered">
+            <div #chartContainer style="width: 90%;">
+              <ngx-charts-bar-vertical *ngIf="isDataSetted"
+                [view]="[chartContainer.offsetWidth, 400]"
+                [scheme]="colorScheme"
+                [results]="information"
+                [gradient]="gradient"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [legend]="showLegend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel"
+                [legendTitle]="legendTitle"
+                [xAxisTickFormatting]="xAxisTickFormattingFn"
+                [yAxisTickFormatting]="yAxisTickFormattingFn"
+                [showDataLabel]="true"
+                [dataLabelFormatting]="dataLabelFormattingFn"
+                [barPadding]="20"
+                (select)="onSelect($event)">
+              </ngx-charts-bar-vertical>
+            </div>
+          </div>
+
+          <div *ngIf="!response" class="field-1 flex-container-centered">
+            <div class="text-align-center error-text">
+              ¡{{message}}!
+            </div>
+          </div>
+
+
+          <div *ngIf="!submitted" class="item-field flex-container-centered field-1">
+            <button class="primary-button" (click)="getReport()" [disabled]="reportForm.invalid" type="button">Generar</button>
+          </div>
+          <div *ngIf="submitted" class="item-field flex-container-centered field-1">
+            <button class="add-button" (click)="default()" [disabled]="reportForm.invalid" type="button">Volver</button>
           </div>
         </div>
 

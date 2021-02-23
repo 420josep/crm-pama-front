@@ -1,0 +1,42 @@
+<div class="field-1 flex-container">
+  <div class="content-container vertical-columns">
+    <div *ngIf="existPayment"  class="field-1" style="margin-top: 3rem;">
+      <a routerLink="/menu/ventas/cartera/{{currentPayment?.saleID}}" class="add-button"><i class="fas fa-chevron-left"></i> Volver</a>
+    </div>
+    <h1 class="title">Editar un abono</h1>
+    <div class="text-align-center error-text" *ngIf="!response">
+      ¡{{message}}!
+    </div>
+    <form [formGroup]="partialPaymentForm" *ngIf="existPayment" (ngSubmit)="savePayment()">
+      <div class="form-container columns">
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Fecha (*)</label>
+          <input type="date" formControlName="date" id="date" name="date">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field" for="value">Valor (*)</label>
+          <input formControlName="value" id="value" name="value" autocomplete="off" maxlength="10" placeholder="$"
+          oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="input-field" pattern="[0-9]*" min="0" 
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number">
+        </div>
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Usuario que lo registró</label>
+          <span class="span-field"> {{currentPayment?.creationUser }}</span>
+        </div>
+        <div class="field-1 flex-container">
+          <label class="warning-text">¡Todos los campos con <span class="error-text">*</span> son obligatorios!</label>
+        </div>
+        <div class="field-1 flex-container">
+          <div class="form-buttons-container space-between">
+            <button class="cancel-button" type="button" routerLink="/menu/ventas/cartera/{{currentPayment?.saleID}}">Cancelar</button>
+            <button class="primary-button save-button" type="submit" [disabled]="partialPaymentForm.invalid">Actualizar</button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+    <div class="field-1 flex-container-centered" *ngIf="!existPayment">
+      <button class="cancel-button back-button" type="button" routerLink="/menu/ventas/cartera">Volver</button>
+    </div>
+  </div>
+</div>

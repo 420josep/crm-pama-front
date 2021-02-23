@@ -35,14 +35,15 @@ export class CreateClientComponent implements OnInit {
 
     // Asignación de variables y método de validación
     this.newClientForm = this.formBuilder.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      dni: ['', [Validators.required]],
-      discount: ['', [Validators.required],],
-      direction: [''],
-      phone: [''],
+      firstName: ['', [Validators.required, Validators.maxLength(100)]],
+      lastName: ['', [Validators.required, Validators.maxLength(100)]],
+      dni: ['', [Validators.required, Validators.maxLength(15)]],
+      discount: ['', [Validators.required, Validators.maxLength(2)]],
+      direction: ['', Validators.maxLength(150)],
+      phone: ['', Validators.maxLength(10)],
       userID: [this.currentUser.id, [Validators.required]],
       companyID: ['', [Validators.required]],
+      useMobile: [true, [Validators.required]],
     });
     
     if(this.currentUser.type != 1){

@@ -25,7 +25,7 @@
             <th *ngIf="currentUser?.type != 3">Sucursal</th>
             <th *ngIf="currentUser?.type === 1">Empresa</th>
             <th *ngIf="currentUser?.type != 3">Usuario de creación</th>
-            <th></th>
+            <th *ngIf="currentUser.type < 3"></th>
           </tr>
         </thead>
         <tbody>
@@ -38,7 +38,7 @@
             <td [routerLink]="['/menu/entradas/ver', entry.id]" *ngIf="currentUser?.type != 3">{{entry?.branch}}</td>
             <td [routerLink]="['/menu/entradas/ver', entry.id]" *ngIf="currentUser?.type === 1"> {{entry?.company}} </td>
             <td [routerLink]="['/menu/entradas/ver', entry.id]" *ngIf="currentUser?.type != 3">{{entry?.creationUser}}</td>
-            <td>
+            <td *ngIf="currentUser.type < 3">
               <div>
                 <i class="far fa-trash-alt trash-icon" (click)="deleteEntry(entry.id, entry.billNumber)"></i>
               </div>

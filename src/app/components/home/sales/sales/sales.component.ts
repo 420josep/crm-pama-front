@@ -35,7 +35,6 @@ export class SalesComponent implements OnInit {
       this.sales = [];
       this.sales = sales;
       console.log(this.sales);
-
     });
   }
 

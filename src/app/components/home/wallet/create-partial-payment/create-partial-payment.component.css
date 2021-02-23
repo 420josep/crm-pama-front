@@ -1,0 +1,42 @@
+.input-field {
+    margin-bottom: unset;
+}
+
+.delete-search-icon {
+    right: 0%;
+}
+
+.dropdown-content {
+    top: 120%;
+    left: 0;
+    position: absolute;
+    z-index: 999;
+    background-color: white;
+    border: 1px solid #c0c5c9;
+    border-radius: 5px;
+    box-shadow: 0px 2px 2px 2px rgba(0,0,0,0.10);
+}
+
+.dropdown-table {
+    border-collapse: collapse;
+}
+
+.dropdown-table thead tr {
+    border-bottom: 1px solid #c0c5c9;
+}
+
+.dropdown-table tr th,
+.dropdown-table tr td{
+    text-align: center;
+    padding: .5rem 1rem;
+}
+
+.dropdown-table tbody tr{
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.dropdown-table tbody tr:hover{
+    background-color: #428bca;
+    color: white;
+}

@@ -11,7 +11,7 @@
       <div class="form-container columns">
         <div class="item-field vertical-columns field-2">
           <label class="label-field" for="name">Nombre (*)</label>
-          <input formControlName="name" id="name" name="name" autocomplete="off" class="input-field" type="text">
+          <input formControlName="name" id="name" name="name" autocomplete="off" maxlength="45" class="input-field" type="text">
         </div>
         <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
           <label class="label-field">Empresa (*)</label>
@@ -41,18 +41,16 @@
             <option *ngFor="let city of cities" [ngValue]="city.id" [selected]="form.cityID.value === city?.id"> {{city.name}} </option>
           </select>
         </div>
-        <div class="flex-container field-1">
-          <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
-            <label class="label-field" for="state">Estado (*)</label>
-            <input autocomplete="off" formControlName="state" [checked]="form.state.value" id="state" name="state" class="input-field" type="checkbox">
-          </div>
-  
-          <div class="item-field vertical-columns field-2">
-            <label class="label-field">Fecha de creación </label>
-            <span > {{currentBranch?.creationDate}} </span>
-          </div>
+        <div *ngIf="currentUser.type === 1" class="item-field vertical-columns field-2">
+          <label class="label-field" for="state">Estado (*)</label>
+          <input autocomplete="off" formControlName="state" [checked]="form.state.value" id="state" name="state" class="input-field" type="checkbox">
         </div>
 
+        <div class="item-field vertical-columns field-2">
+          <label class="label-field">Fecha de creación </label>
+          <span > {{currentBranch?.creationDate}} </span>
+        </div>
+        
         <div class="field-1 flex-container">
           <label class="warning-text">¡Todos los campos con <span class="error-text">*</span> son obligatorios!</label>
         </div>

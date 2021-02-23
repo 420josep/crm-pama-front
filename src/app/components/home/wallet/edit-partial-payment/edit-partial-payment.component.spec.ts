@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WalletComponent } from './wallet.component';
+import { EditPartialPaymentComponent } from './edit-partial-payment.component';
 
-describe('WalletComponent', () => {
-  let component: WalletComponent;
-  let fixture: ComponentFixture<WalletComponent>;
+describe('EditPartialPaymentComponent', () => {
+  let component: EditPartialPaymentComponent;
+  let fixture: ComponentFixture<EditPartialPaymentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WalletComponent ]
+      declarations: [ EditPartialPaymentComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WalletComponent);
+    fixture = TestBed.createComponent(EditPartialPaymentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -60,11 +60,16 @@
         <div class="field-1 flex-container">
           <div class="item-field vertical-columns field-2">
             <label class="label-field" for="initialMoney">Dinero inicial de la caja (*)</label>
-            <input (keyup)="updateCashRegister()" id="initialMoney" name="initialMoney" formControlName="initialMoney" placeholder="Dinero en caja al momento de abrir" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+            <input (keyup)="updateCashRegister()" id="initialMoney" name="initialMoney" formControlName="initialMoney" 
+              placeholder="Dinero en caja al momento de abrir" class="input-field" pattern="[0-9]*" min="0" 
+              onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off" maxlength="13"
+              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
           </div>
           <div class="item-field vertical-columns field-2">
             <label class="label-field" for="cash">Dinero final en la caja (*)</label>
-            <input (keyup)="updateCashRegister()" id="cash" name="cash" formControlName="cash" placeholder="Dinero con el cual cerraste el día" class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" autocomplete="off">
+            <input (keyup)="updateCashRegister()" id="cash" name="cash" formControlName="cash" placeholder="Dinero con el cual cerraste el día"
+             class="input-field" pattern="[0-9]*" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="number" 
+             autocomplete="off" maxlength="13" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
           </div>
         </div>
         <div class="item-field vertical-columns field-1">
